@@ -1,0 +1,8 @@
+tls:
+  options:
+    default:
+      minVersion: VersionTLS13
+      sniStrict: true
+      curvePreferences:
+        - CurveP521
+        - CurveP384

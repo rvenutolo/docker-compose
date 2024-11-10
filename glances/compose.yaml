@@ -1,0 +1,16 @@
+services:
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
+    hostname: glances
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${GLANCES_WEB_PORT:?}:61208"
+      - "${TAILNET_IP:?}:${GLANCES_XMLRPC_PORT:?}:61209"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      - ${DOCKER_APP_DATA_DIR:?}/glances:/glances/conf/
+    environment:
+      GLANCES_OPT: '--webserver'

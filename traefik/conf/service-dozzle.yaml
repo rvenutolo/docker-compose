@@ -1,0 +1,12 @@
+http:
+  routers:
+    dozzle:
+      entryPoints:
+        - websecure
+      rule: 'Host(`dozzle.{{ env "DOMAIN_NAME" }}`)'
+      service: dozzle
+  services:
+    dozzle:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "DOMAIN_NAME" }}:{{ env "DOZZLE_PORT" }}'

@@ -1,0 +1,12 @@
+http:
+  routers:
+    webmin:
+      entryPoints:
+        - websecure
+      rule: 'Host(`webmin.{{ env "DOMAIN_NAME" }}`)'
+      service: webmin
+  services:
+    webmin:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "DOMAIN_NAME" }}:10000'

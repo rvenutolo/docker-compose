@@ -1,0 +1,15 @@
+services:
+  privatebin:
+    image: privatebin/fs:latest
+    container_name: privatebin
+    hostname: privatebin
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${PRIVATE_BIN_PORT:?}:8080"
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/privatebin/data:/srv/data
+      - ${DOCKER_APP_DATA_DIR:?}/privatebin/conf.php:/srv/cfg/conf.php:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: ${TZ:?}

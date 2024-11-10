@@ -1,0 +1,24 @@
+## TODO autorestic?
+
+services:
+  backrest:
+    image: garethgeorge/backrest:latest
+    container_name: backrest
+    hostname: backrest
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${BACKREST_PORT:?}:9898"
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}:/to-backup
+      - ${DOCKER_APP_DATA_DIR:?}/backrest/cache:/cache
+      - ${DOCKER_APP_DATA_DIR:?}/backrest/config:/config
+      - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
+      - ${DOCKER_APP_DATA_DIR:?}/backrest/ssh:/root/.ssh
+      - /backups/restic/wtf:/repos
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      BACKREST_DATA: /data
+      BACKREST_CONFIG: /config/config.json
+      XDG_CACHE_HOME: /cache
+      TZ: ${TZ:?}

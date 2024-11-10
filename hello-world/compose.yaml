@@ -1,0 +1,11 @@
+services:
+  hello-world:
+    image: crccheck/hello-world:latest
+    container_name: hello-world
+    hostname: hello-world
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${HELLO_WORLD_PORT:?}:8000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro

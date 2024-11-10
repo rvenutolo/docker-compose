@@ -1,0 +1,13 @@
+services:
+  openspeedtest:
+    image: openspeedtest/latest:latest
+    container_name: openspeedtest
+    hostname: openspeedtest
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${OPENSPEEDTEST_PORT:?}:3000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      SET_SERVER_NAME: openspeedtest.${DOMAIN_NAME:?}

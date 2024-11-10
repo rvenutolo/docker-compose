@@ -1,0 +1,12 @@
+http:
+  routers:
+    wetty:
+      entryPoints:
+        - websecure
+      rule: 'Host(`wetty.{{ env "DOMAIN_NAME" }}`)'
+      service: wetty
+  services:
+    wetty:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "DOMAIN_NAME" }}:{{ env "WETTY_PORT" }}'

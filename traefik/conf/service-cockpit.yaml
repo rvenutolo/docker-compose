@@ -1,0 +1,12 @@
+http:
+  routers:
+    cockpit:
+      entryPoints:
+        - websecure
+      rule: 'Host(`cockpit.{{ env "DOMAIN_NAME" }}`)'
+      service: cockpit
+  services:
+    cockpit:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "DOMAIN_NAME" }}:9090'

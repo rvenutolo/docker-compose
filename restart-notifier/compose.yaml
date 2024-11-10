@@ -1,0 +1,14 @@
+services:
+  restart-notifier:
+    image: index.docker.io/deduard/tools:restart-notifier-latest
+    container_name: restart-notifier
+    hostname: restart-notifier
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    network_mode: none
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      RESTART_CONTAINERS: ""
+      CRON_SCHEDULE: "0 5 * * *" # Every day at 5:00 AM

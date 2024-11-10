@@ -1,0 +1,60 @@
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    hostname: code-server
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${CODE_SERVER_PORT:?}:8443"
+    environment:
+      DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
+      VSCODE_EXTENSION_IDS: >
+        | vscode-icons-team.vscode-icons
+        | ms-azuretools.vscode-docker
+        | redhat.vscode-yaml
+        | PascalReitermann93.vscode-yaml-sort
+        | redhat.java
+        | vscjava.vscode-maven
+        | vscjava.vscode-java-dependency
+        | vscjava.vscode-java-pack
+        | scalameta.metals
+        | DontShaveTheYak.groovy-guru
+        | NicolasVuillamy.vscode-groovy-lint
+        | mads-hartmann.bash-ide-vscode
+        | rogalmic.bash-debug
+        | pinage404.bash-extension-pack
+        | foxundermoon.shell-format
+        | Shan.code-settings-sync
+        | ms-vscode-remote.remote-ssh
+        | esbenp.prettier-vscode
+        | formulahendry.auto-rename-tag
+        | eamodio.gitlens
+        | donjayamanne.githistory
+        | oderwat.indent-rainbow
+        | streetsidesoftware.code-spell-checker
+        | wayou.vscode-todo-highlight
+        | chrmarti.regex
+        | alefragnani.Bookmarks
+        | usernamehw.errorlens
+        | christian-kohler.path-intellisense
+        | alefragnani.project-manager
+        | Gruntfuggly.todo-tree
+        | VisualStudioExptTeam.vscodeintellicode
+        | humao.rest-client
+        | stylelint.vscode-stylelint
+        | SonarSource.sonarlint-vscode
+        | formulahendry.auto-close-tag
+        | mohsen1.prettify-json
+        | naumovs.color-highlight
+        | jakob101.RelativePath
+        | yzhang.markdown-all-in-one
+        | sdras.night-owl
+      TZ: ${TZ:?}
+      PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
+      DEFAULT_WORKSPACE: /code
+    volumes:
+      - ~/Code:/code
+      - ${DOCKER_APP_DATA_DIR:?}/code-server:/config
+      - /etc/localtime:/etc/localtime:ro
+      - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro

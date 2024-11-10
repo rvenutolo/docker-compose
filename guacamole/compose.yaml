@@ -1,0 +1,47 @@
+x-guacamaole-mysql-environment: &guacamaole-mysql-environment
+  MYSQL_DATABASE: guacamole_db
+  MYSQL_USER: guacamole_user
+  MYSQL_PASSWORD: ${MYSQL_PASSWORD:?}
+
+services:
+
+  guacamole-mysql:
+    image: mysql
+    container_name: guacamole-mysql
+    hostname: guacamole-mysql
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/init:/docker-entrypoint-initdb.d:ro
+      - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/data:/var/lib/mysql
+    environment:
+      <<: *guacamaole-mysql-environment
+      MYSQL_ROOT_PASSWORD: root_password
+
+  guacd:
+    image: guacamole/guacd:latest
+    container_name: guacd
+    hostname: guacd
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+  guacamole:
+    image: guacamole/guacamole:latest
+    container_name: guacamole
+    hostname: guacamole
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    ports:
+      - "${TAILNET_IP:?}:${GUACAMOLE_PORT:?}:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      <<: *guacamaole-mysql-environment
+      GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: guacamole-mysql
+    depends_on:
+      - guacamole-mysql
+      - guacd
