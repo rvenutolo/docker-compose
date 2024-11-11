@@ -1,6 +1,6 @@
 services:
   restart-notifier:
-    image: index.docker.io/deduard/tools:restart-notifier-latest
+    image: ${RESTART_NOTIFIER_IMAGE:-deduard/tools}:${RESTART_NOTIFIER_IMAGE_TAG:-restart-notifier-latest}
     container_name: restart-notifier
     hostname: restart-notifier
     restart: unless-stopped
@@ -9,5 +9,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      CRON_SCHEDULE: 0 5 * * *
-      RESTART_CONTAINERS:
+      CRON_SCHEDULE: ${CRON_SCHEDULE:-0 5 * * *}
+      RESTART_CONTAINERS: ${RESTART_CONTAINERS:-}

@@ -1,6 +1,6 @@
 services:
   code-server:
-    image: lscr.io/linuxserver/code-server:latest
+    image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
     container_name: code-server
     hostname: code-server
     restart: unless-stopped

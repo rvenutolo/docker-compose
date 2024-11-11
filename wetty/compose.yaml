@@ -1,6 +1,6 @@
 services:
   wetty:
-    image: wettyoss/wetty
+    image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:latest}
     container_name: wetty
     hostname: wetty
     restart: unless-stopped

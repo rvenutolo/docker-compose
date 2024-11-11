@@ -1,6 +1,6 @@
 services:
   speedtest-tracker:
-    image: lscr.io/linuxserver/speedtest-tracker:latest
+    image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
     container_name: speedtest-tracker
     hostname: speedtest-tracker
     restart: unless-stopped
@@ -8,12 +8,12 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
-      APP_KEY: base64:2/s3+slHvxao6cdcYbWGhgUInD6h9bJUPlvKM0Ll8jU=
+      APP_KEY: ${APP_KEY:?}
       APP_URL: http://speedtest-tracker.${DOMAIN_NAME:?}
       DB_CONNECTION: sqlite
       PRUNE_RESULTS_OLDER_THAN: 30
-      SPEEDTEST_SCHEDULE: 22 * * * *
-      SPEEDTEST_SERVERS: 35058,23094,51330
+      SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}
+      SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS:-35058,23094,51330}
       TZ: ${TZ:?}
     labels:
       - traefik.enable=true

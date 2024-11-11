@@ -1,7 +1,7 @@
 ## TODO autorestic?
 services:
   backrest:
-    image: garethgeorge/backrest:latest
+    image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
     container_name: backrest
     hostname: backrest
     restart: unless-stopped

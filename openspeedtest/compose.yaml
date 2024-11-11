@@ -1,6 +1,6 @@
 services:
   openspeedtest:
-    image: openspeedtest/latest:latest
+    image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
     container_name: openspeedtest
     hostname: openspeedtest
     restart: unless-stopped

@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v3
+    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
     hostname: traefik
     restart: unless-stopped
@@ -12,12 +12,13 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
 #      ## TODO check on email
       CF_API_EMAIL: ${CF_API_EMAIL:?}
 #      ## TODO just move these to command?
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
-      DOMAIN_NAME: ${DOMAIN_NAME}
+      DOMAIN_NAME: ${DOMAIN_NAME:?}
       TZ: ${TZ:?}
     command:
       ## TODO check on access logging - check on stdout
@@ -43,6 +44,12 @@ services:
       - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
+      - --providers.docker.endpoint=unix://${DOCKER_SOCKET:?}
+      - --providers.docker.exposedByDefault=false
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
       #- serversTransport.insecureSkipVerify=true # disables SSL certificate verification
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN_NAME:?}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      - traefik.http.routers.dashboard.service=api@internal

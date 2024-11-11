@@ -1,6 +1,6 @@
 services:
   privatebin:
-    image: privatebin/fs:latest
+    image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
     container_name: privatebin
     hostname: privatebin
     restart: unless-stopped
