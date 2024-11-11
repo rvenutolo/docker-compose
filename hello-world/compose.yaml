@@ -1,11 +1,14 @@
+include:
+  - ../defaults.yaml
+
 services:
   hello-world:
+    <<: *container-defaults
     image: crccheck/hello-world:latest
     container_name: hello-world
     hostname: hello-world
-    restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     labels:
       - traefik.enable=true
       - traefik.http.routers.hello-world.entryPoints=websecure

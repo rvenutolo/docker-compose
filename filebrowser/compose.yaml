@@ -1,14 +1,17 @@
+include:
+  - ../defaults.yaml
+
 services:
   filebrowser:
+    <<: *container-defaults
     image: ${FILEBROWSER_IMAGE:-filebrowser/filebrowser}:${FILEBROWSER_IMAGE_TAG:-latest}
     container_name: filebrowser
     hostname: filebrowser
-    restart: unless-stopped
     volumes:
       - ~:/srv
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.json:/.filebrowser.json
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     labels:
       - traefik.enable=true
       - traefik.http.routers.filebrowser.entryPoints=websecure

@@ -1,12 +1,15 @@
+include:
+  - ../defaults.yaml
+
 services:
   wetty:
+    <<: *container-defaults
     image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:latest}
     container_name: wetty
     hostname: wetty
-    restart: unless-stopped
     volumes:
       - ~/.keys/id_ed25519:/id_ed25519:ro
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     environment:
       BASE: /
       SSHHOST: ${DOMAIN_NAME:?}

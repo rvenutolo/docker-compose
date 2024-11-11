@@ -1,12 +1,15 @@
+include:
+  - ../defaults.yaml
+
 services:
   changedetection:
+    <<: *container-defaults
     image: ${CHANGEDETECTION_IMAGE:-dgtlmoon/changedetection.io}:${CHANGEDETECTION_IMAGE_TAG:-latest}
     container_name: changedetection
     hostname: changedetection
-    restart: unless-stopped
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/changedetection:/datastore
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     labels:
       - traefik.enable=true
       - traefik.http.routers.changedetection.entryPoints=websecure

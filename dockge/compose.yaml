@@ -1,15 +1,18 @@
 ## TODO komodo?
+include:
+  - ../defaults.yaml
+
 services:
   dockge:
+    <<: *container-defaults
     image: ${DOCKGE_IMAGE:-louislam/dockge}:${DOCKGE_IMAGE_TAG:-latest}
     container_name: dockge
     hostname: dockge
-    restart: unless-stopped
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/dockge:/app/data
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      - *localtime-bind
+      - *docker-socket-bind
     environment:
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
     labels:

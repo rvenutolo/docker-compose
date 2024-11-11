@@ -1,9 +1,12 @@
+include:
+  - ../defaults.yaml
+
 services:
   traefik:
+    <<: *container-defaults
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
     hostname: traefik
-    restart: unless-stopped
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
@@ -11,8 +14,8 @@ services:
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      - *localtime-bind
+      - *docker-socket-bind
     environment:
 #      ## TODO check on email
       CF_API_EMAIL: ${CF_API_EMAIL:?}

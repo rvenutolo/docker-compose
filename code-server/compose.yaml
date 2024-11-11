@@ -1,14 +1,17 @@
+include:
+  - ../defaults.yaml
+
 services:
   code-server:
+    <<: *container-defaults
     image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
     container_name: code-server
     hostname: code-server
-    restart: unless-stopped
     volumes:
       - ~/Code:/code
       - ${DOCKER_APP_DATA_DIR:?}/code-server:/config
       - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     environment:
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments

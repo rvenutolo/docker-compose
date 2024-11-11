@@ -1,13 +1,16 @@
+include:
+  - ../defaults.yaml
+
 services:
   privatebin:
+    <<: *container-defaults
     image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
     container_name: privatebin
     hostname: privatebin
-    restart: unless-stopped
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/conf.php:/srv/cfg/conf.php:ro
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/data:/srv/data
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     environment:
       TZ: ${TZ:?}
     labels:

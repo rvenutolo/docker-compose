@@ -1,4 +1,7 @@
-x-guacamaole-mysql-environment: &guacamaole-mysql-environment
+include:
+  - ../defaults.yaml
+
+x-guacamole-mysql-environment: &guacamole-mysql-environment
   MYSQL_DATABASE: guacamole_db
   MYSQL_PASSWORD: ${MYSQL_PASSWORD:?}
   MYSQL_USER: guacamole_user
@@ -6,35 +9,35 @@ x-guacamaole-mysql-environment: &guacamaole-mysql-environment
 services:
 
   guacamole-mysql:
+    <<: *container-defaults
     image: ${MYSQL_IMAGE:-mysql}:${MYSQL_IMAGE_TAG:-9}
     container_name: guacamole-mysql
     hostname: guacamole-mysql
-    restart: unless-stopped
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/data:/var/lib/mysql
       - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/init:/docker-entrypoint-initdb.d:ro
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     environment:
-      <<: *guacamaole-mysql-environment
+      <<: *guacamole-mysql-environment
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
 
   guacd:
+    <<: *container-defaults
     image: ${GUACD_IMAGE:-guacamole/guacd}:${GUACD_IMAGE_TAG:-latest}
     container_name: guacd
     hostname: guacd
-    restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
 
   guacamole:
+    <<: *container-defaults
     image: ${GUACAMOLE_IMAGE:-guacamole/guacamole}:${GUACAMOLE_IMAGE_TAG:-latest}
     container_name: guacamole
     hostname: guacamole
-    restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - *localtime-bind
     environment:
-      <<: *guacamaole-mysql-environment
+      <<: *guacamole-mysql-environment
       GUACD_HOSTNAME: guacd
       MYSQL_HOSTNAME: guacamole-mysql
     depends_on:

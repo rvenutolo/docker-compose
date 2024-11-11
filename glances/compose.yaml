@@ -1,13 +1,16 @@
+include:
+  - ../defaults.yaml
+
 services:
   glances:
+    <<: *container-defaults
     image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-latest-full}
     container_name: glances
     hostname: glances
-    restart: unless-stopped
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/glances:/glances/conf/
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      - *localtime-bind
+      - *docker-socket-bind
     environment:
       GLANCES_OPT: --webserver
     labels:
