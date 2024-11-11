@@ -10,3 +10,7 @@ services:
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       GLANCES_OPT: --webserver
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.glances.entryPoints=websecure
+      - traefik.http.routers.glances.rule=Host(`glances.${DOMAIN_NAME:?}`)

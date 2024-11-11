@@ -9,3 +9,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.json:/.filebrowser.json
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.filebrowser.entryPoints=websecure
+      - traefik.http.routers.filebrowser.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)

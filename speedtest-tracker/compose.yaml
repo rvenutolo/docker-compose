@@ -15,3 +15,7 @@ services:
       SPEEDTEST_SCHEDULE: 22 * * * *
       SPEEDTEST_SERVERS: 35058,23094,51330
       TZ: ${TZ:?}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.speedtest-tracker.entryPoints=websecure
+      - traefik.http.routers.speedtest-tracker.rule=Host(`speedtest-tracker.${DOMAIN_NAME:?}`)

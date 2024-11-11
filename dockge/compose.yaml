@@ -12,3 +12,7 @@ services:
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dockge.entryPoints=websecure
+      - traefik.http.routers.dockge.rule=Host(`dockge.${DOMAIN_NAME:?}`)

@@ -8,3 +8,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       SET_SERVER_NAME: openspeedtest.${DOMAIN_NAME:?}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.openspeedtest.entryPoints=websecure
+      - traefik.http.routers.openspeedtest.rule=Host(`openspeedtest.${DOMAIN_NAME:?}`)

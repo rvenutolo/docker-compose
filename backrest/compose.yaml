@@ -18,3 +18,7 @@ services:
       BACKREST_DATA: /data
       TZ: ${TZ:?}
       XDG_CACHE_HOME: /cache
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backrest.entryPoints=websecure
+      - traefik.http.routers.backrest.rule=Host(`backrest.${DOMAIN_NAME:?}`)

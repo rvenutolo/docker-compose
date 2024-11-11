@@ -55,3 +55,7 @@ services:
         | vscode-icons-team.vscode-icons
         | wayou.vscode-todo-highlight
         | yzhang.markdown-all-in-one
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.code-server.entryPoints=websecure
+      - traefik.http.routers.code-server.rule=Host(`code-server.${DOMAIN_NAME:?}`)

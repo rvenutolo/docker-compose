@@ -10,3 +10,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${TZ:?}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.privatebin.entryPoints=websecure
+      - traefik.http.routers.privatebin.rule=Host(`privatebin.${DOMAIN_NAME:?}`)

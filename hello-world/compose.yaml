@@ -6,3 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.hello-world.entryPoints=websecure
+      - traefik.http.routers.hello-world.rule=Host(`hello-world.${DOMAIN_NAME:?}`)

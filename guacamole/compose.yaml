@@ -40,3 +40,7 @@ services:
     depends_on:
       - guacamole-mysql
       - guacd
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.guacamole.entryPoints=websecure
+      - traefik.http.routers.guacamole.rule=Host(`guacamole.${DOMAIN_NAME:?}`)

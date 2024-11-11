@@ -7,3 +7,7 @@ services:
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/changedetection:/datastore
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.changedetection.entryPoints=websecure
+      - traefik.http.routers.changedetection.rule=Host(`changedetection.${DOMAIN_NAME:?}`)

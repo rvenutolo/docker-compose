@@ -14,3 +14,7 @@ services:
       SSHAUTH: publickey
       SSHKEY: /id_ed25519
       TITLE: WeTTY - ${DOMAIN_NAME:?}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wetty.entryPoints=websecure
+      - traefik.http.routers.wetty.rule=Host(`wetty.${DOMAIN_NAME:?}`)
