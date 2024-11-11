@@ -1,15 +1,13 @@
+## TODO komodo?
 services:
   dockge:
     image: louislam/dockge:latest
     container_name: dockge
     hostname: dockge
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
-    ports:
-      - "${TAILNET_IP:?}:${DOCKGE_PORT:?}:5001"
     volumes:
-      - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
       - ${DOCKER_APP_DATA_DIR:?}/dockge:/app/data
+      - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:

@@ -4,57 +4,54 @@ services:
     container_name: code-server
     hostname: code-server
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
-    ports:
-      - "${TAILNET_IP:?}:${CODE_SERVER_PORT:?}:8443"
-    environment:
-      DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
-      VSCODE_EXTENSION_IDS: >
-        | vscode-icons-team.vscode-icons
-        | ms-azuretools.vscode-docker
-        | redhat.vscode-yaml
-        | PascalReitermann93.vscode-yaml-sort
-        | redhat.java
-        | vscjava.vscode-maven
-        | vscjava.vscode-java-dependency
-        | vscjava.vscode-java-pack
-        | scalameta.metals
-        | DontShaveTheYak.groovy-guru
-        | NicolasVuillamy.vscode-groovy-lint
-        | mads-hartmann.bash-ide-vscode
-        | rogalmic.bash-debug
-        | pinage404.bash-extension-pack
-        | foxundermoon.shell-format
-        | Shan.code-settings-sync
-        | ms-vscode-remote.remote-ssh
-        | esbenp.prettier-vscode
-        | formulahendry.auto-rename-tag
-        | eamodio.gitlens
-        | donjayamanne.githistory
-        | oderwat.indent-rainbow
-        | streetsidesoftware.code-spell-checker
-        | wayou.vscode-todo-highlight
-        | chrmarti.regex
-        | alefragnani.Bookmarks
-        | usernamehw.errorlens
-        | christian-kohler.path-intellisense
-        | alefragnani.project-manager
-        | Gruntfuggly.todo-tree
-        | VisualStudioExptTeam.vscodeintellicode
-        | humao.rest-client
-        | stylelint.vscode-stylelint
-        | SonarSource.sonarlint-vscode
-        | formulahendry.auto-close-tag
-        | mohsen1.prettify-json
-        | naumovs.color-highlight
-        | jakob101.RelativePath
-        | yzhang.markdown-all-in-one
-        | sdras.night-owl
-      TZ: ${TZ:?}
-      PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
-      DEFAULT_WORKSPACE: /code
     volumes:
       - ~/Code:/code
       - ${DOCKER_APP_DATA_DIR:?}/code-server:/config
-      - /etc/localtime:/etc/localtime:ro
       - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DEFAULT_WORKSPACE: /code
+      DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
+      PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
+      TZ: ${TZ:?}
+      VSCODE_EXTENSION_IDS: >
+        | alefragnani.Bookmarks
+        | alefragnani.project-manager
+        | christian-kohler.path-intellisense
+        | chrmarti.regex
+        | donjayamanne.githistory
+        | DontShaveTheYak.groovy-guru
+        | eamodio.gitlens
+        | esbenp.prettier-vscode
+        | formulahendry.auto-close-tag
+        | formulahendry.auto-rename-tag
+        | foxundermoon.shell-format
+        | Gruntfuggly.todo-tree
+        | humao.rest-client
+        | jakob101.RelativePath
+        | mads-hartmann.bash-ide-vscode
+        | mohsen1.prettify-json
+        | ms-azuretools.vscode-docker
+        | ms-vscode-remote.remote-ssh
+        | naumovs.color-highlight
+        | NicolasVuillamy.vscode-groovy-lint
+        | oderwat.indent-rainbow
+        | PascalReitermann93.vscode-yaml-sort
+        | pinage404.bash-extension-pack
+        | redhat.java
+        | redhat.vscode-yaml
+        | rogalmic.bash-debug
+        | scalameta.metals
+        | sdras.night-owl
+        | Shan.code-settings-sync
+        | SonarSource.sonarlint-vscode
+        | streetsidesoftware.code-spell-checker
+        | stylelint.vscode-stylelint
+        | usernamehw.errorlens
+        | VisualStudioExptTeam.vscodeintellicode
+        | vscjava.vscode-java-dependency
+        | vscjava.vscode-java-pack
+        | vscjava.vscode-maven
+        | vscode-icons-team.vscode-icons
+        | wayou.vscode-todo-highlight
+        | yzhang.markdown-all-in-one

@@ -4,9 +4,6 @@ services:
     container_name: changedetection
     hostname: changedetection
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
-    ports:
-      - "${TAILNET_IP:?}:${CHANGEDETECTION_PORT:?}:5000"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_APP_DATA_DIR:?}/changedetection:/datastore
+      - /etc/localtime:/etc/localtime:ro

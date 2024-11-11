@@ -4,10 +4,6 @@ services:
     container_name: dozzle
     hostname: dozzle
     restart: unless-stopped
-    ## TODO figure this out
-    # user: ${PUID:?}:${PGID:?}
-    ports:
-      - "${TAILNET_IP:?}:${DOZZLE_PORT:?}:8080"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock

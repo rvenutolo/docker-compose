@@ -4,16 +4,13 @@ services:
     container_name: wetty
     hostname: wetty
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
-    ports:
-      - "${TAILNET_IP:?}:${WETTY_PORT:?}:3000"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ~/.keys/id_ed25519:/id_ed25519:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
+      BASE: /
       SSHHOST: ${DOMAIN_NAME:?}
-      SSHUSER: rvenutolo
+      SSHUSER: ${USER:?}
       SSHAUTH: publickey
       SSHKEY: /id_ed25519
-      BASE: /
       TITLE: WeTTY - ${DOMAIN_NAME:?}
