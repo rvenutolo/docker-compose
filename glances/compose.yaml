@@ -3,14 +3,14 @@ include:
 
 services:
   glances:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-latest-full}
     container_name: glances
     hostname: glances
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/glances:/glances/conf/
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       GLANCES_OPT: --webserver
     labels:

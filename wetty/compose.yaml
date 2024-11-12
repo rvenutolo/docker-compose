@@ -3,13 +3,13 @@ include:
 
 services:
   wetty:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:latest}
     container_name: wetty
     hostname: wetty
     volumes:
       - ~/.keys/id_ed25519:/id_ed25519:ro
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       BASE: /
       SSHHOST: ${DOMAIN_NAME:?}

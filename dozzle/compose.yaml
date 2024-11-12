@@ -3,13 +3,13 @@ include:
 
 services:
   dozzle:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
     container_name: dozzle
     hostname: dozzle
     volumes:
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       DOZZLE_ENABLE_ACTIONS: true
     labels:

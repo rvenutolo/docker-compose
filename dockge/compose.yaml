@@ -4,15 +4,15 @@ include:
 
 services:
   dockge:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${DOCKGE_IMAGE:-louislam/dockge}:${DOCKGE_IMAGE_TAG:-latest}
     container_name: dockge
     hostname: dockge
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/dockge:/app/data
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
     labels:

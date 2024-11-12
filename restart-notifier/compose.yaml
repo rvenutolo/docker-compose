@@ -3,14 +3,14 @@ include:
 
 services:
   restart-notifier:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${RESTART_NOTIFIER_IMAGE:-deduard/tools}:${RESTART_NOTIFIER_IMAGE_TAG:-restart-notifier-latest}
     container_name: restart-notifier
     hostname: restart-notifier
     network_mode: none
     volumes:
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       CRON_SCHEDULE: ${CRON_SCHEDULE:-0 5 * * *}
       RESTART_CONTAINERS: ${RESTART_CONTAINERS:-}

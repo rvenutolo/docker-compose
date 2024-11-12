@@ -3,7 +3,7 @@ include:
 
 services:
   traefik:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
     hostname: traefik
@@ -14,8 +14,8 @@ services:
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
 #      ## TODO check on email
       CF_API_EMAIL: ${CF_API_EMAIL:?}

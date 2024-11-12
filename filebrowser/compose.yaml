@@ -3,7 +3,7 @@ include:
 
 services:
   filebrowser:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${FILEBROWSER_IMAGE:-filebrowser/filebrowser}:${FILEBROWSER_IMAGE_TAG:-latest}
     container_name: filebrowser
     hostname: filebrowser
@@ -11,7 +11,7 @@ services:
       - ~:/srv
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.json:/.filebrowser.json
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.filebrowser.entryPoints=websecure

@@ -1,12 +1,9 @@
-x-traefik-proxy: &traefik-proxy traefik-proxy
+.traefik-proxy: &traefik-proxy traefik-proxy
 
-x-container-defaults: &container-defaults
+.container-defaults:
   restart: unless-stopped
   networks:
     - *traefik-proxy
-
-x-localtime: &localtime-bin /etc/localtime:/etc/localtime:ro
-x-docker-socket: &docker-socket-bind ${DOCKER_SOCKET:?}:/var/run/docker.sock
 
 networks:
   *traefik-proxy:

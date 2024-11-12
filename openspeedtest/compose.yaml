@@ -3,12 +3,12 @@ include:
 
 services:
   openspeedtest:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
     container_name: openspeedtest
     hostname: openspeedtest
     volumes:
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       SET_SERVER_NAME: openspeedtest.${DOMAIN_NAME:?}
     labels:

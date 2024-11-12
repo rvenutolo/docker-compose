@@ -3,7 +3,7 @@ include:
 
 services:
   code-server:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
     container_name: code-server
     hostname: code-server
@@ -11,7 +11,7 @@ services:
       - ~/Code:/code
       - ${DOCKER_APP_DATA_DIR:?}/code-server:/config
       - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments

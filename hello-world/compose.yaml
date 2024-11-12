@@ -3,12 +3,12 @@ include:
 
 services:
   hello-world:
-    <<: *container-defaults
+    extends: .container-defaults
     image: crccheck/hello-world:latest
     container_name: hello-world
     hostname: hello-world
     volumes:
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.hello-world.entryPoints=websecure

@@ -4,7 +4,7 @@ include:
 
 services:
   backrest:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
     container_name: backrest
     hostname: backrest
@@ -15,7 +15,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
       - ${DOCKER_APP_DATA_DIR:?}/backrest/ssh:/root/.ssh
       - /backups/restic/wtf:/repos
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       BACKREST_CONFIG: /config/config.json
       BACKREST_DATA: /data

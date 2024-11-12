@@ -9,33 +9,33 @@ x-guacamole-mysql-environment: &guacamole-mysql-environment
 services:
 
   guacamole-mysql:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${MYSQL_IMAGE:-mysql}:${MYSQL_IMAGE_TAG:-9}
     container_name: guacamole-mysql
     hostname: guacamole-mysql
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/data:/var/lib/mysql
       - ${DOCKER_APP_DATA_DIR:?}/guacamole-mysql/init:/docker-entrypoint-initdb.d:ro
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       <<: *guacamole-mysql-environment
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
 
   guacd:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${GUACD_IMAGE:-guacamole/guacd}:${GUACD_IMAGE_TAG:-latest}
     container_name: guacd
     hostname: guacd
     volumes:
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
 
   guacamole:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${GUACAMOLE_IMAGE:-guacamole/guacamole}:${GUACAMOLE_IMAGE_TAG:-latest}
     container_name: guacamole
     hostname: guacamole
     volumes:
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       <<: *guacamole-mysql-environment
       GUACD_HOSTNAME: guacd

@@ -3,14 +3,14 @@ include:
 
 services:
   privatebin:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
     container_name: privatebin
     hostname: privatebin
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/conf.php:/srv/cfg/conf.php:ro
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/data:/srv/data
-      - *localtime-bind
+      - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${TZ:?}
     labels:

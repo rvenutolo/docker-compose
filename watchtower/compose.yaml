@@ -3,13 +3,13 @@ include:
 
 services:
   watchtower:
-    <<: *container-defaults
+    extends: .container-defaults
     image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
     container_name: watchtower
     hostname: watchtower
     volumes:
-      - *localtime-bind
-      - *docker-socket-bind
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       TZ: ${TZ:?}
       WATCHTOWER_CLEANUP: ${WATCHTOWER_CLEANUP:-true}
