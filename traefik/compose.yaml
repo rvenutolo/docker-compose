@@ -10,7 +10,7 @@ services:
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
-      - "${TAILNET_IP:?}:${TRAEFIK_PORT:?}:8080"
+      - "${TAILNET_IP:?}:${TRAEFIK_DASHBOARD_PORT:-8080}:8080"
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
