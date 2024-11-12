@@ -1,3 +1,7 @@
+networks:
+  traefik-proxy:
+    external: true
+
 services:
   service-defaults:
     restart: unless-stopped

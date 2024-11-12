@@ -1,3 +1,0 @@
-networks:
-  traefik-proxy:
-    external: true
