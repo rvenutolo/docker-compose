@@ -1,9 +1,11 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   traefik:
-    extends: .container-defaults
+    extends:
+      file: service-defaults.yml
+      service: service-defaults
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
     hostname: traefik
