@@ -1,9 +1,11 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   restart-notifier:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${RESTART_NOTIFIER_IMAGE:-deduard/tools}:${RESTART_NOTIFIER_IMAGE_TAG:-restart-notifier-latest}
     container_name: restart-notifier
     hostname: restart-notifier

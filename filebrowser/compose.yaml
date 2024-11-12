@@ -1,9 +1,11 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   filebrowser:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${FILEBROWSER_IMAGE:-filebrowser/filebrowser}:${FILEBROWSER_IMAGE_TAG:-latest}
     container_name: filebrowser
     hostname: filebrowser

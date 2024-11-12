@@ -1,10 +1,12 @@
 ## TODO komodo?
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   dockge:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${DOCKGE_IMAGE:-louislam/dockge}:${DOCKGE_IMAGE_TAG:-latest}
     container_name: dockge
     hostname: dockge

@@ -1,9 +1,11 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   hello-world:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: crccheck/hello-world:latest
     container_name: hello-world
     hostname: hello-world

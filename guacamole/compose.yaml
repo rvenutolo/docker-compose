@@ -1,5 +1,5 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 x-guacamole-mysql-environment: &guacamole-mysql-environment
   MYSQL_DATABASE: guacamole_db
@@ -9,7 +9,9 @@ x-guacamole-mysql-environment: &guacamole-mysql-environment
 services:
 
   guacamole-mysql:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${MYSQL_IMAGE:-mysql}:${MYSQL_IMAGE_TAG:-9}
     container_name: guacamole-mysql
     hostname: guacamole-mysql
@@ -22,7 +24,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
 
   guacd:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${GUACD_IMAGE:-guacamole/guacd}:${GUACD_IMAGE_TAG:-latest}
     container_name: guacd
     hostname: guacd
@@ -30,7 +34,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   guacamole:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${GUACAMOLE_IMAGE:-guacamole/guacamole}:${GUACAMOLE_IMAGE_TAG:-latest}
     container_name: guacamole
     hostname: guacamole

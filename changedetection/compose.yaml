@@ -1,9 +1,11 @@
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   changedetection:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${CHANGEDETECTION_IMAGE:-dgtlmoon/changedetection.io}:${CHANGEDETECTION_IMAGE_TAG:-latest}
     container_name: changedetection
     hostname: changedetection

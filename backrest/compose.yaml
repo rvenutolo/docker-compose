@@ -1,10 +1,12 @@
 ## TODO autorestic?
 include:
-  - ../defaults.yaml
+  - ../traefik-proxy-network.yaml
 
 services:
   backrest:
-    extends: .container-defaults
+    extends:
+      file: ../service-defaults.yaml
+      service: service-defaults
     image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
     container_name: backrest
     hostname: backrest
