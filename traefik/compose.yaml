@@ -55,7 +55,3 @@ services:
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
       #- serversTransport.insecureSkipVerify=true # disables SSL certificate verification
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN_NAME:?}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
-      - traefik.http.routers.dashboard.service=api@internal
