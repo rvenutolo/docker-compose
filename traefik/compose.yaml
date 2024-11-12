@@ -4,7 +4,7 @@ include:
 services:
   traefik:
     extends:
-      file: ../service-defaults.yml
+      file: ../service-defaults.yaml
       service: service-defaults
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
