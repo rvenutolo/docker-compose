@@ -16,7 +16,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/backrest/config:/config
       - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
       - ${DOCKER_APP_DATA_DIR:?}/backrest/ssh:/root/.ssh
-      - /backups/restic/wtf:/repos
+      - /backups/restic:/repos
       - /etc/localtime:/etc/localtime:ro
     environment:
       BACKREST_CONFIG: /config/config.json
