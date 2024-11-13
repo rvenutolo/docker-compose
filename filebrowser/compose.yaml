@@ -11,8 +11,8 @@ services:
     hostname: filebrowser
     volumes:
       - ~:/srv
+      - ./config.json:/.filebrowser.json
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
-      - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.json:/.filebrowser.json
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
