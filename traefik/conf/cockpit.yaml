@@ -9,4 +9,8 @@ http:
     cockpit:
       loadBalancer:
         servers:
-          - url: 'http://{{ env "DOMAIN_NAME" }}:9090'
+          - url: 'https://{{ env "DOMAIN_NAME" }}:9090'
+        serversTransport: cockpit
+  serversTransports:
+    cockpit:
+      insecureSkipVerify: true
