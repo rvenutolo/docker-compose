@@ -27,3 +27,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.backrest.entryPoints=websecure
       - traefik.http.routers.backrest.rule=Host(`backrest.${DOMAIN_NAME:?}`)
+      - traefik.http.services.backrest.loadBalancer.server.port=9898

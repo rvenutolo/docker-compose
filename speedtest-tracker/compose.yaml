@@ -24,3 +24,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.speedtest-tracker.entryPoints=websecure
       - traefik.http.routers.speedtest-tracker.rule=Host(`speedtest-tracker.${DOMAIN_NAME:?}`)
+      - traefik.http.services.speedtest-tracker.loadBalancer.server.port=80

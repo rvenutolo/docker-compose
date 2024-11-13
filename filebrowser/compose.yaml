@@ -18,3 +18,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.filebrowser.entryPoints=websecure
       - traefik.http.routers.filebrowser.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
+      - traefik.http.services.filebrowser.loadBalancer.server.port=80

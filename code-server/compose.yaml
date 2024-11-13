@@ -64,3 +64,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.code-server.entryPoints=websecure
       - traefik.http.routers.code-server.rule=Host(`code-server.${DOMAIN_NAME:?}`)
+      - traefik.http.services.code-server.loadBalancer.server.port=8443

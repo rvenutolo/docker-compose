@@ -19,3 +19,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.glances.entryPoints=websecure
       - traefik.http.routers.glances.rule=Host(`glances.${DOMAIN_NAME:?}`)
+      - traefik.http.services.glances.loadBalancer.server.port=61208

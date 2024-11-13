@@ -21,3 +21,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.dockge.entryPoints=websecure
       - traefik.http.routers.dockge.rule=Host(`dockge.${DOMAIN_NAME:?}`)
+      - traefik.http.services.dockge.loadBalancer.server.port=5001

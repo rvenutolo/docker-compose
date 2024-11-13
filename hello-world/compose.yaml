@@ -15,3 +15,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.hello-world.entryPoints=websecure
       - traefik.http.routers.hello-world.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
+      - traefik.http.services.hello-world.loadBalancer.server.port=8000

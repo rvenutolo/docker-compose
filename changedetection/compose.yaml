@@ -16,3 +16,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.changedetection.entryPoints=websecure
       - traefik.http.routers.changedetection.rule=Host(`changedetection.${DOMAIN_NAME:?}`)
+      - traefik.http.services.changedetection.loadBalancer.server.port=5000
