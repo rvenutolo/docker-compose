@@ -6,7 +6,7 @@ services:
     extends:
       file: ../service-defaults.yaml
       service: service-defaults
-    image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:latest}
+    image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:-latest}
     container_name: wetty
     hostname: wetty
     volumes:
