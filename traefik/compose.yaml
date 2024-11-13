@@ -54,4 +54,3 @@ services:
       - --providers.docker.exposedByDefault=${DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
-      #- --serversTransport.insecureSkipVerify=true # disables SSL certificate verification
