@@ -9,4 +9,7 @@ http:
     webmin:
       loadBalancer:
         servers:
-          - url: 'http://{{ env "DOMAIN_NAME" }}:10000'
+          - url: 'https://{{ env "DOMAIN_NAME" }}:10000'
+  serversTransport:
+    webmin:
+      insecureSkipVerify: true
