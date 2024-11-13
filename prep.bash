@@ -10,4 +10,5 @@ sudo mkdir --parents "${restic_backup_dir}"
 sudo chown --recursive "${USER}:" "${restic_backup_dir}"
 
 # filebrowser
+mkdir --parents "${DOCKER_APP_DATA_DIR}/filebrowser"
 touch "${DOCKER_APP_DATA_DIR}/filebrowser/filebrowser.db"
