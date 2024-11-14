@@ -1,0 +1,7 @@
+http:
+  middlewares:
+    mdw-chain:
+      chain:
+        middlewares:
+          - rate-limit-mdw
+          - secure-headers-mdw
