@@ -19,7 +19,7 @@ services:
       PRUNE_RESULTS_OLDER_THAN: 30
       SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}
       SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS:-35058,23094,51330}
-      TZ: ${TZ:?}
+      TZ: ${DOCKER_TZ:?}
     labels:
       - traefik.enable=true
       - traefik.http.routers.speedtest-tracker.entryPoints=websecure

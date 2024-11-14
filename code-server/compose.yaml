@@ -18,7 +18,7 @@ services:
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
       PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
-      TZ: ${TZ:?}
+      TZ: ${DOCKER_TZ:?}
       VSCODE_EXTENSION_IDS: >
         | alefragnani.Bookmarks
         | alefragnani.project-manager

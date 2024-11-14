@@ -24,7 +24,7 @@ services:
 #      ## TODO just move these to command?
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
-      TZ: ${TZ:?}
+      TZ: ${DOCKER_TZ:?}
     command:
       ## TODO check on access logging - check on stdout
       # TODO figure out which statuses to keep in logging
