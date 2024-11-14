@@ -4,13 +4,13 @@ http:
       entryPoints:
         - websecure
       rule: 'Host(`webmin.{{ env "DOMAIN_NAME" }}`)'
-      service: webmin
+      service: webmin-svc
   services:
     webmin-svc:
       loadBalancer:
         servers:
           - url: 'https://{{ env "DOMAIN_NAME" }}:10000'
-        serversTransport: webmin
+        serversTransport: webmin-stx
   serversTransports:
     webmin-stx:
       insecureSkipVerify: true

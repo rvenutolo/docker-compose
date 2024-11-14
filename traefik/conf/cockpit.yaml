@@ -4,13 +4,13 @@ http:
       entryPoints:
         - websecure
       rule: 'Host(`cockpit.{{ env "DOMAIN_NAME" }}`)'
-      service: cockpit
+      service: cockpit-svc
   services:
     cockpit-svc:
       loadBalancer:
         servers:
           - url: 'https://{{ env "DOMAIN_NAME" }}:9090'
-        serversTransport: cockpit
+        serversTransport: cockpit-stx
   serversTransports:
     cockpit-stx:
       insecureSkipVerify: true
