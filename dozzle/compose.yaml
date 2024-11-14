@@ -16,6 +16,6 @@ services:
       DOZZLE_ENABLE_ACTIONS: true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dozzle.entryPoints=websecure
-      - traefik.http.routers.dozzle.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
-      - traefik.http.services.dozzle.loadBalancer.server.port=8080
+      - traefik.http.routers.dozzle-rtr.entryPoints=websecure
+      - traefik.http.routers.dozzle-rtr.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
+      - traefik.http.services.dozzle-svc.loadBalancer.server.port=8080

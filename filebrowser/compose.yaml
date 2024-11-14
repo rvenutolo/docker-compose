@@ -16,6 +16,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.filebrowser.entryPoints=websecure
-      - traefik.http.routers.filebrowser.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
-      - traefik.http.services.filebrowser.loadBalancer.server.port=80
+      - traefik.http.routers.filebrowser-rtr.entryPoints=websecure
+      - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
+      - traefik.http.services.filebrowser-svc.loadBalancer.server.port=80

@@ -19,6 +19,6 @@ services:
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dockge.entryPoints=websecure
-      - traefik.http.routers.dockge.rule=Host(`dockge.${DOMAIN_NAME:?}`)
-      - traefik.http.services.dockge.loadBalancer.server.port=5001
+      - traefik.http.routers.dockge-rtr.entryPoints=websecure
+      - traefik.http.routers.dockge-rtr.rule=Host(`dockge.${DOMAIN_NAME:?}`)
+      - traefik.http.services.dockge-svc.loadBalancer.server.port=5001

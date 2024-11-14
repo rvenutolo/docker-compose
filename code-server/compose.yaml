@@ -62,6 +62,6 @@ services:
         | yzhang.markdown-all-in-one
     labels:
       - traefik.enable=true
-      - traefik.http.routers.code-server.entryPoints=websecure
-      - traefik.http.routers.code-server.rule=Host(`code-server.${DOMAIN_NAME:?}`)
-      - traefik.http.services.code-server.loadBalancer.server.port=8443
+      - traefik.http.routers.code-server-rtr.entryPoints=websecure
+      - traefik.http.routers.code-server-rtr.rule=Host(`code-server.${DOMAIN_NAME:?}`)
+      - traefik.http.services.code-server-svc.loadBalancer.server.port=8443

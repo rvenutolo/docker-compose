@@ -13,6 +13,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.hello-world.entryPoints=websecure
-      - traefik.http.routers.hello-world.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
-      - traefik.http.services.hello-world.loadBalancer.server.port=8000
+      - traefik.http.routers.hello-world-rtr.entryPoints=websecure
+      - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
+      - traefik.http.services.hello-world-svc.loadBalancer.server.port=8000

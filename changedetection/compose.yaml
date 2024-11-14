@@ -14,6 +14,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.changedetection.entryPoints=websecure
-      - traefik.http.routers.changedetection.rule=Host(`changedetection.${DOMAIN_NAME:?}`)
-      - traefik.http.services.changedetection.loadBalancer.server.port=5000
+      - traefik.http.routers.changedetection-rtr.entryPoints=websecure
+      - traefik.http.routers.changedetection-rtr.rule=Host(`changedetection.${DOMAIN_NAME:?}`)
+      - traefik.http.services.changedetection-svc.loadBalancer.server.port=5000

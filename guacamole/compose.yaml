@@ -51,6 +51,6 @@ services:
       - guacd
     labels:
       - traefik.enable=true
-      - traefik.http.routers.guacamole.entryPoints=websecure
-      - traefik.http.routers.guacamole.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
-      - traefik.http.services.guacamole.loadBalancer.server.port=8080
+      - traefik.http.routers.guacamole-rtr.entryPoints=websecure
+      - traefik.http.routers.guacamole-rtr.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
+      - traefik.http.services.guacamole-svc.loadBalancer.server.port=8080

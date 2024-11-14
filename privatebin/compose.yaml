@@ -17,6 +17,6 @@ services:
       TZ: ${DOCKER_TZ:?}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.privatebin.entryPoints=websecure
-      - traefik.http.routers.privatebin.rule=Host(`privatebin.${DOMAIN_NAME:?}`)
-      - traefik.http.services.privatebin.loadBalancer.server.port=8080
+      - traefik.http.routers.privatebin-rtr.entryPoints=websecure
+      - traefik.http.routers.privatebin-rtr.rule=Host(`privatebin.${DOMAIN_NAME:?}`)
+      - traefik.http.services.privatebin-svc.loadBalancer.server.port=8080

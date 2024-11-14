@@ -1,16 +1,16 @@
 http:
   routers:
-    webmin:
+    webmin-rtr:
       entryPoints:
         - websecure
       rule: 'Host(`webmin.{{ env "DOMAIN_NAME" }}`)'
       service: webmin
   services:
-    webmin:
+    webmin-svc:
       loadBalancer:
         servers:
           - url: 'https://{{ env "DOMAIN_NAME" }}:10000'
         serversTransport: webmin
   serversTransports:
-    webmin:
+    webmin-stx:
       insecureSkipVerify: true

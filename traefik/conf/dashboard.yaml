@@ -1,6 +1,6 @@
 http:
   routers:
-    traefik:
+    traefik-rtr:
       entryPoints:
         - websecure
       rule: 'Host(`traefik.{{ env "DOMAIN_NAME" }}`)'
