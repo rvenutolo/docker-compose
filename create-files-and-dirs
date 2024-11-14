@@ -18,7 +18,7 @@ for env_var in \
     fi
 done
 
-if [[ -z "${die}" ]]; then
+if [[ -n "${die}" ]]; then
   echo 'Fix the missing env vars and re-run this script'
   exit 1
 fi
