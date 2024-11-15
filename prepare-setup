@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -euo pipefail
 
 for env_var in \
   DOMAIN_NAME \
@@ -12,7 +12,7 @@ for env_var in \
   DOCKER_SOCKET \
   DATA_DIR \
   RESTIC_BACKUP_DIR; do
-    if [[ -z "${env_var}" ]]; then
+    if [[ -z "${env_var:-}" ]]; then
       die='DIE'
       echo "${env_var} is not set to a non-empty value"
     fi
@@ -22,8 +22,6 @@ if [[ -n "${die}" ]]; then
   echo 'Fix the missing env vars and re-run this script'
   exit 1
 fi
-
-set -u
 
 readonly traefik_network='traefik-proxy'
 if ! docker network inspect "${traefik_network}" &> '/dev/null'; then
