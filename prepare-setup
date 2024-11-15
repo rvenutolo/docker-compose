@@ -25,8 +25,9 @@ fi
 
 set -u
 
-if ! docker network inspect 'traefik-proxy' &> '/dev/null'; then
-  docker network create 'traefik-proxy'
+readonly traefik_network='traefik-proxy'
+if ! docker network inspect "${traefik_network}" &> '/dev/null'; then
+  docker network create "${traefik_network}"
 fi
 
 mkdir --parents "${DOCKER_APP_DATA_DIR}"
@@ -35,8 +36,9 @@ mkdir --parents "${DOCKER_APP_DATA_DIR}"
 mkdir --parents "${RESTIC_BACKUP_DIR}"
 
 # filebrowser
-mkdir --parents "${DOCKER_APP_DATA_DIR}/filebrowser"
-touch "${DOCKER_APP_DATA_DIR}/filebrowser/filebrowser.db"
+readonoy filebrowser_data_dir="${DOCKER_APP_DATA_DIR}/filebrowser"
+mkdir --parents "${filebrowser_data_dir}"
+touch "${filebrowser_data_dir}/filebrowser.db"
 
 # guacamole mysql
 mkdir --parents "${DOCKER_APP_DATA_DIR}/guacamole-mysql/init"
