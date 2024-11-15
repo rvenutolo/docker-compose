@@ -37,3 +37,7 @@ mkdir --parents "${RESTIC_BACKUP_DIR}"
 # filebrowser
 mkdir --parents "${DOCKER_APP_DATA_DIR}/filebrowser"
 touch "${DOCKER_APP_DATA_DIR}/filebrowser/filebrowser.db"
+
+# guacamole mysql
+mkdir --parents "${DOCKER_APP_DATA_DIR}/guacamole-mysql/init"
+docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --mysql > "${DOCKER_APP_DATA_DIR}/guacamole-mysql/init/initdb.sql"
