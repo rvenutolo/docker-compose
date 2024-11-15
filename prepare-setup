@@ -39,7 +39,7 @@ mkdir --parents "${filebrowser_data_dir}"
 touch "${filebrowser_data_dir}/filebrowser.db"
 
 # guacamole postgres
-readonly guacamole_postgres_init_dir="${DOCKER_APP_DATA_DIR}/guacamole-postgres/init"
+readonly guacamole_postgres_init_dir="${DOCKER_APP_DATA_DIR}/guacamole/postgres/init"
 readonly guacamole_postgres_init_file="${guacamole_postgres_init_dir}/init-db.sql"
 mkdir --parents "${guacamole_postgres_init_dir}"
 if [[ ! -f "${guacamole_postgres_init_file}" ]]; then
