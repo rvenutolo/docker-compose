@@ -19,9 +19,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
+      TZ: ${DOCKER_TZ:?}
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
-      TZ: ${DOCKER_TZ:?}
     command:
       ## TODO check on access logging - check on stdout
       # TODO figure out which statuses to keep in logging

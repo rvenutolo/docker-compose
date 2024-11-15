@@ -13,13 +13,13 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
+      TZ: ${DOCKER_TZ:?}
       APP_KEY: ${APP_KEY:?}
       APP_URL: http://speedtest-tracker.${DOMAIN_NAME:?}
       DB_CONNECTION: sqlite
       PRUNE_RESULTS_OLDER_THAN: 30
       SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}
       SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS:-35058,23094,51330}
-      TZ: ${DOCKER_TZ:?}
     labels:
       - traefik.enable=true
       - traefik.http.routers.speedtest-tracker-rtr.entryPoints=websecure

@@ -15,10 +15,10 @@ services:
       - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
+      TZ: ${DOCKER_TZ:?}
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
       PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
-      TZ: ${DOCKER_TZ:?}
       VSCODE_EXTENSION_IDS: >
         | alefragnani.Bookmarks
         | alefragnani.project-manager
