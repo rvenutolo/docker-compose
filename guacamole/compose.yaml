@@ -2,6 +2,7 @@ networks:
   proxy:
     external: true
   guacamole:
+    name: guacamole
 
 services:
 
