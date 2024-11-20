@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   traefik:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
     hostname: traefik
+    restart: unless-stopped
+    networks:
+      - proxy
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"

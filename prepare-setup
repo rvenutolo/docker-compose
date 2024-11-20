@@ -23,9 +23,9 @@ if [[ -n "${die:-}" ]]; then
   exit 1
 fi
 
-readonly traefik_network='traefik-proxy'
-if ! docker network inspect "${traefik_network}" &> '/dev/null'; then
-  docker network create "${traefik_network}"
+readonly proxy_network='proxy'
+if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
+  docker network create "${proxy_network}"
 fi
 
 mkdir --parents "${DOCKER_APP_DATA_DIR}"

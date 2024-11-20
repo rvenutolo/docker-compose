@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   speedtest-tracker:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
     container_name: speedtest-tracker
     hostname: speedtest-tracker
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker:/config
       - /etc/localtime:/etc/localtime:ro

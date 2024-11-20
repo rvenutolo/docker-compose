@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   code-server:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
     container_name: code-server
     hostname: code-server
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - ~/Code:/code
       - ${DOCKER_APP_DATA_DIR:?}/code-server:/config

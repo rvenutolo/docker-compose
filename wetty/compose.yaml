@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   wetty:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${WETTY_IMAGE:-wettyoss/wetty}:${WETTY_IMAGE_TAG:-latest}
     container_name: wetty
     hostname: wetty
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - ~/.keys/id_ed25519:/id_ed25519:ro
       - /etc/localtime:/etc/localtime:ro

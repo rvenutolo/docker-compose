@@ -1,14 +1,9 @@
-include:
-  - ../traefik-proxy-network.yaml
-
 services:
   watchtower:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
     container_name: watchtower
     hostname: watchtower
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock

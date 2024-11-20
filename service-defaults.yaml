@@ -1,5 +1,0 @@
-services:
-  service-defaults:
-    restart: unless-stopped
-    networks:
-      - traefik-proxy

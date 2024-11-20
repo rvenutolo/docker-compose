@@ -1,15 +1,15 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
 
   guacamole-postgres:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_IMAGE_TAG:-17}
     container_name: guacamole-postgres
     hostname: guacamole-postgres
+    restart: unless-stopped
+    networks:
+      - guacamole
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/data:/var/lib/postgresql/data
       - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/init:/docker-entrypoint-initdb.d:ro
@@ -21,22 +21,23 @@ services:
       POSTGRES_DB: guacamole_db
 
   guacd:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${GUACD_IMAGE:-guacamole/guacd}:${GUACD_IMAGE_TAG:-latest}
     container_name: guacd
     hostname: guacd
+    restart: unless-stopped
+    networks:
+      - guacamole
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
   guacamole:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${GUACAMOLE_IMAGE:-guacamole/guacamole}:${GUACAMOLE_IMAGE_TAG:-latest}
     container_name: guacamole
     hostname: guacamole
+    restart: unless-stopped
+    networks:
+      - proxy
+      - guacamole
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

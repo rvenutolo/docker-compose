@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   openspeedtest:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
     container_name: openspeedtest
     hostname: openspeedtest
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

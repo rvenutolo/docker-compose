@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   dozzle:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
     container_name: dozzle
     hostname: dozzle
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock

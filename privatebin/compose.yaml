@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   privatebin:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
     container_name: privatebin
     hostname: privatebin
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - ./conf.php:/srv/cfg/conf.php:ro
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/data:/srv/data

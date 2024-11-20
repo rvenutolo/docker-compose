@@ -1,15 +1,15 @@
 ## TODO autorestic?
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   backrest:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
     container_name: backrest
     hostname: backrest
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}:/to-backup
       - ${DOCKER_APP_DATA_DIR:?}/backrest/cache:/cache

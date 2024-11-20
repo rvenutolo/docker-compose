@@ -1,14 +1,14 @@
 include:
-  - ../traefik-proxy-network.yaml
+  - ../proxy-network.yaml
 
 services:
   hello-world:
-    extends:
-      file: ../service-defaults.yaml
-      service: service-defaults
     image: crccheck/hello-world:latest
     container_name: hello-world
     hostname: hello-world
+    restart: unless-stopped
+    networks:
+      - proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     labels:
