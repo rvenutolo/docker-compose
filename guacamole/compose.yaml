@@ -1,5 +1,7 @@
-include:
-  - ../proxy-network.yaml
+networks:
+  proxy:
+    external: true
+  guacamole:
 
 services:
 

@@ -1,6 +1,7 @@
 ## TODO autorestic?
-include:
-  - ../proxy-network.yaml
+networks:
+  proxy:
+    external: true
 
 services:
   backrest:

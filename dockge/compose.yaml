@@ -1,6 +1,7 @@
 ## TODO komodo?
-include:
-  - ../proxy-network.yaml
+networks:
+  proxy:
+    external: true
 
 services:
   dockge:
