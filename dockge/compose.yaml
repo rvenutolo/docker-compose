@@ -2,8 +2,45 @@
 networks:
   proxy:
     external: true
+  dockge-socket-proxy:
 
 services:
+
+  dockge-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: dockge-socket-proxy
+    hostname: dockge-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - dockge-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
+      ## TODO figure these out
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 1
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 1
+      INFO: 1
+      NETWORKS: 1
+      NODES: 0
+      PLUGINS: 0
+      POST: 0
+      SECRETS: 0
+      SERVICES: 1
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 1
+      VOLUMES: 1
+
   dockge:
     image: ${DOCKGE_IMAGE:-louislam/dockge}:${DOCKGE_IMAGE_TAG:-latest}
     container_name: dockge
@@ -11,12 +48,13 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - dockge-socket-proxy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/dockge:/app/data
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
+      DOCKER_HOST: tcp://dockge-socket-proxy:2375
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
     labels:
       - traefik.enable=true
