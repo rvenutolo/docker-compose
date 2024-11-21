@@ -29,3 +29,34 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
 fi
 
 mkdir --parents "${DOCKER_APP_DATA_DIR}"
+
+env_templates="$(find . -mindepth 2 -type f -name '.env.template')"
+for env_template in ${env_templates}; do
+  env_file="${env_template%%.template}"
+  if [[ ! -f "${env_file}" ]]; then
+    echo "Creating ${env_file:2}"
+    cp "${env_template}" "${env_file}"
+  fi
+done
+
+function prompt_yn() {
+  REPLY=''
+  while [[ "${REPLY}" != 'y' && "${REPLY}" != 'n' ]]; do
+    echo -e -n "\033[0;33m$1 [y/N]: \033[0m"
+    read -r
+    if [[ "${REPLY}" == [yY] ]]; then
+      REPLY='y'
+    elif [[ "${REPLY}" == '' || "${REPLY}" == [nN] ]]; then
+      REPLY='n'
+    fi
+  done
+  [[ "${REPLY}" == 'y' ]]
+}
+
+init_scripts="$(find . -mindepth 2 -type f -name 'init')"
+for init_script in ${init_scripts}; do
+  if prompt_yn "Run ${init_script:2}?"; then
+    echo "Running ${init_script:2}"
+    "${init_script}"
+  fi
+done
