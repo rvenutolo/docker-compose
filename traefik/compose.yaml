@@ -1,8 +1,25 @@
 networks:
   proxy:
     external: true
+  traefik-socket-proxy:
 
 services:
+
+  traefik-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: traefik-socket-proxy
+    hostname: traefik-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - traefik-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-DEBUG}
+      CONTAINERS: 1
+
   traefik:
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     container_name: traefik
@@ -10,6 +27,7 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - traefik-socket-proxy
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
@@ -18,7 +36,6 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       TZ: ${DOCKER_TZ:?}
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
@@ -48,7 +65,8 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
       ## TODO this is config necessary?
-      - --providers.docker.endpoint=unix:///var/run/docker.sock
+#      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
