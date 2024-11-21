@@ -1,13 +1,34 @@
+networks:
+  watchtower-socket-proxy:
+
 services:
+  
+  watchtower-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: watchtower-socket-proxy
+    hostname: watchtower-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - watchtower-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
+      POST: 1
+  
   watchtower:
     image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
     container_name: watchtower
     hostname: watchtower
     restart: unless-stopped
+    networks:
+      - watchtower-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
+      DOCKER_HOST: tcp://watchtower-socket-proxy:2375
       TZ: ${DOCKER_TZ:?}
       WATCHTOWER_CLEANUP: ${WATCHTOWER_CLEANUP:-true}
       WATCHTOWER_DISABLE_CONTAINERS: ${WATCHTOWER_DISABLE_CONTAINERS:-}
