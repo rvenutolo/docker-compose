@@ -1,8 +1,45 @@
 networks:
   proxy:
     external: true
+  dozzle-socket-proxy:
 
 services:
+
+  dozzle-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: dozzle-socket-proxy
+    hostname: dozzle-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - dozzle-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
+      ## TODO figure these out
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
+      NODES: 0
+      PLUGINS: 0
+      POST: 0
+      SECRETS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+
   dozzle:
     image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
     container_name: dozzle
@@ -10,10 +47,11 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - dozzle-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
+      DOCKER_HOST: tcp://dozzle-socket-proxy:2375
       DOZZLE_ENABLE_ACTIONS: true
     labels:
       - traefik.enable=true
