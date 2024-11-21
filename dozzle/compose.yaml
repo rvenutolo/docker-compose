@@ -53,6 +53,8 @@ services:
     environment:
       DOCKER_HOST: tcp://dozzle-socket-proxy:2375
       DOZZLE_ENABLE_ACTIONS: true
+      DOZZLE_HOSTNAME: dozzle.${DOMAIN_NAME:?}
+      DOZZLE_LEVEL: ${DOZZLE_LEVEL:-info}
     labels:
       - traefik.enable=true
       - traefik.http.routers.dozzle-rtr.entryPoints=websecure
