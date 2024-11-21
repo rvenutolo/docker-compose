@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly filebrowser_data_dir="${DOCKER_APP_DATA_DIR}/filebrowser"
+mkdir --parents "${filebrowser_data_dir}"
+touch "${filebrowser_data_dir}/filebrowser.db"

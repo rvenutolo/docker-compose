@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+for env_var in \
+  DOMAIN_NAME \
+  PUID \
+  PGID \
+  DOCKER_TZ \
+  DOCKER_COMPOSE_DIR \
+  DOCKER_APP_DATA_DIR \
+  DOCKER_SOCKET \
+  DATA_DIR \
+  RESTIC_BACKUP_DIR; do
+    if [[ -z "${env_var:-}" ]]; then
+      die='DIE'
+      echo "${env_var} is not set to a non-empty value"
+    fi
+done
+
+if [[ -n "${die:-}" ]]; then
+  echo 'Fix the missing env vars and re-run this script'
+  exit 1
+fi
+
+readonly proxy_network='proxy'
+if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
+  docker network create "${proxy_network}"
+fi
+
+mkdir --parents "${DOCKER_APP_DATA_DIR}"
