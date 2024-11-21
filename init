@@ -25,10 +25,16 @@ fi
 
 readonly proxy_network='proxy'
 if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
+  echo "Creating ${proxy_network} network"
   docker network create "${proxy_network}"
+  echo "Created ${proxy_network} network"
 fi
 
-mkdir --parents "${DOCKER_APP_DATA_DIR}"
+if [[ ! -d "${DOCKER_APP_DATA_DIR}" ]]; then
+  echo "Creating ${DOCKER_APP_DATA_DIR}"
+  mkdir --parents "${DOCKER_APP_DATA_DIR}"
+  echo "Created ${DOCKER_APP_DATA_DIR}"
+fi
 
 env_templates="$(find . -mindepth 2 -type f -name '.env.template')"
 for env_template in ${env_templates}; do
@@ -36,6 +42,7 @@ for env_template in ${env_templates}; do
   if [[ ! -f "${env_file}" ]]; then
     echo "Creating ${env_file:2}"
     cp "${env_template}" "${env_file}"
+    echo "Created ${env_file:2}"
   fi
 done
 
@@ -58,5 +65,6 @@ for init_script in ${init_scripts}; do
   if prompt_yn "Run ${init_script:2}?"; then
     echo "Running ${init_script:2}"
     "${init_script}"
+    echo "Ran ${init_script:2}"
   fi
 done

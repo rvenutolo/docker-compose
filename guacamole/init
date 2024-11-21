@@ -3,8 +3,15 @@
 set -euo pipefail
 
 readonly guacamole_postgres_init_dir="${DOCKER_APP_DATA_DIR}/guacamole/postgres/init"
+if [[ ! -d "${guacamole_postgres_init_dir}" ]]; then
+  echo "Creating ${guacamole_postgres_init_dir}"
+  mkdir --parents "${guacamole_postgres_init_dir}"
+  echo "Created ${guacamole_postgres_init_dir}"
+fi
+
 readonly guacamole_postgres_init_file="${guacamole_postgres_init_dir}/init-db.sql"
-mkdir --parents "${guacamole_postgres_init_dir}"
 if [[ ! -f "${guacamole_postgres_init_file}" ]]; then
+  echo "Creating ${guacamole_postgres_init_file}"
   docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql > "${guacamole_postgres_init_file}"
+  echo "Created ${guacamole_postgres_init_file}"
 fi

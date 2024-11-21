@@ -2,4 +2,8 @@
 
 set -euo pipefail
 
-mkdir --parents "${RESTIC_BACKUP_DIR}"
+if [[ ! -d "${RESTIC_BACKUP_DIR}" ]]; then
+  echo "Creating ${RESTIC_BACKUP_DIR}"
+  mkdir --parents "${RESTIC_BACKUP_DIR}"
+  echo "Created ${RESTIC_BACKUP_DIR}"
+fi
