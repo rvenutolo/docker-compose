@@ -1,8 +1,45 @@
 networks:
   proxy:
     external: true
+  glances-socket-proxy:
 
 services:
+
+  glances-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: glances-socket-proxy
+    hostname: glances-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - glances-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
+      ## TODO figure these out
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
+      NODES: 0
+      PLUGINS: 0
+      POST: 0
+      SECRETS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+
   glances:
     image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-latest-full}
     container_name: glances
@@ -10,9 +47,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - glances-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       GLANCES_OPT: --webserver
     labels:
