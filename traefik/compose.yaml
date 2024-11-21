@@ -17,7 +17,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-DEBUG}
+      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
       CONTAINERS: 1
 
   traefik:
