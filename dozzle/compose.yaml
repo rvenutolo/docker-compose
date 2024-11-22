@@ -34,6 +34,8 @@ services:
     networks:
       - proxy
       - dozzle-socket-proxy
+    depends_on:
+      - dozzle-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

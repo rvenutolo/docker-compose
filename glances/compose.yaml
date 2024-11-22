@@ -54,6 +54,8 @@ services:
     networks:
       - proxy
       - glances-socket-proxy
+    depends_on:
+      - glances-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

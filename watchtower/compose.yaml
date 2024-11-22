@@ -51,6 +51,8 @@ services:
     restart: unless-stopped
     networks:
       - watchtower-socket-proxy
+    depends_on:
+      - watchtower-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

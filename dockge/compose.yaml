@@ -55,6 +55,8 @@ services:
     networks:
       - proxy
       - dockge-socket-proxy
+    depends_on:
+      - dockge-socket-proxy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/dockge:/app/data
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
