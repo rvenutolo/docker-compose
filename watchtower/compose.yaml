@@ -4,10 +4,12 @@ networks:
 services:
   
   watchtower-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: watchtower-socket-proxy
     hostname: watchtower-socket-proxy
-    privileged: true
+    read_only: true
+    tmpfs:
+      - /run
     restart: unless-stopped
     networks:
       - watchtower-socket-proxy
@@ -15,7 +17,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
       POST: 1
   
   watchtower:

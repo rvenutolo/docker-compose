@@ -6,10 +6,12 @@ networks:
 services:
 
   glances-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: glances-socket-proxy
     hostname: glances-socket-proxy
-    privileged: true
+    read_only: true
+    tmpfs:
+      - /run
     restart: unless-stopped
     networks:
       - glances-socket-proxy
@@ -17,13 +19,16 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
       ## TODO figure these out
+      ALLOW_START: 0
+      ALLOW_STOP: 0
+      ALLOW_RESTARTS: 0
       AUTH: 0
       BUILD: 0
       COMMIT: 0
       CONFIGS: 0
       CONTAINERS: 0
+      DISABLE_IPV6: 0
       DISTRIBUTION: 0
       EXEC: 0
       IMAGES: 0

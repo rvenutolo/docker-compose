@@ -6,10 +6,12 @@ networks:
 services:
 
   traefik-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-socket-proxy
     hostname: traefik-socket-proxy
-    privileged: true
+    read_only: true
+    tmpfs:
+      - /run
     restart: unless-stopped
     networks:
       - traefik-socket-proxy
@@ -17,7 +19,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      LOG_LEVEL: ${SOCKET_PROXY_LOG_LEVEL:-debug}
       CONTAINERS: 1
 
   traefik:
