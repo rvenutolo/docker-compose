@@ -17,6 +17,7 @@ services:
     environment:
       TZ: ${DOCKER_TZ:?}
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.privatebin-rtr.entryPoints=websecure
       - traefik.http.routers.privatebin-rtr.rule=Host(`privatebin.${DOMAIN_NAME:?}`)

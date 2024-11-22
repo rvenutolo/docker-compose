@@ -16,6 +16,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.filebrowser-rtr.entryPoints=websecure
       - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)

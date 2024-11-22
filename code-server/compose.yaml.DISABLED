@@ -64,6 +64,7 @@ services:
         | wayou.vscode-todo-highlight
         | yzhang.markdown-all-in-one
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.code-server-rtr.entryPoints=websecure
       - traefik.http.routers.code-server-rtr.rule=Host(`code-server.${DOMAIN_NAME:?}`)

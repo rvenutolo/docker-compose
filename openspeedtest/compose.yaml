@@ -15,6 +15,7 @@ services:
     environment:
       SET_SERVER_NAME: openspeedtest.${DOMAIN_NAME:?}
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.openspeedtest-rtr.entryPoints=websecure
       - traefik.http.routers.openspeedtest-rtr.rule=Host(`openspeedtest.${DOMAIN_NAME:?}`)

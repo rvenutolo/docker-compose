@@ -14,6 +14,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/changedetection:/datastore
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.changedetection-rtr.entryPoints=websecure
       - traefik.http.routers.changedetection-rtr.rule=Host(`changedetection.${DOMAIN_NAME:?}`)

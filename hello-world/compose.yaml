@@ -13,6 +13,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.hello-world-rtr.entryPoints=websecure
       - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
