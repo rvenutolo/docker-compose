@@ -19,31 +19,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      ## TODO figure these out
       ALLOW_START: 1
       ALLOW_STOP: 1
       ALLOW_RESTARTS: 1
-      AUTH: 0
-      BUILD: 0
-      COMMIT: 0
-      CONFIGS: 0
-      CONTAINERS: 0
-      DISABLE_IPV6: 0
-      DISTRIBUTION: 0
-      EXEC: 0
-      IMAGES: 0
-      INFO: 0
-      NETWORKS: 0
-      NODES: 0
-      PLUGINS: 0
-      POST: 0
-      SECRETS: 0
-      SERVICES: 0
-      SESSION: 0
-      SWARM: 0
-      SYSTEM: 0
-      TASKS: 0
-      VOLUMES: 0
+      CONTAINERS: 1
+      INFO: 1
 
   dozzle:
     image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
@@ -56,10 +36,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
-      DOCKER_HOST: tcp://dozzle-socket-proxy:2375
       DOZZLE_ENABLE_ACTIONS: true
       DOZZLE_HOSTNAME: dozzle.${DOMAIN_NAME:?}
       DOZZLE_LEVEL: ${DOZZLE_LEVEL:-info}
+      DOZZLE_REMOTE_HOST: tcp://dozzle-socket-proxy:2375
     labels:
       - traefik.enable=true
       - traefik.http.routers.dozzle-rtr.entryPoints=websecure
