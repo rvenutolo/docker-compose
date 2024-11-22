@@ -2,6 +2,7 @@ networks:
   proxy:
     external: true
   dozzle-socket-proxy:
+    name: dozzle-socket-proxy
 
 services:
 

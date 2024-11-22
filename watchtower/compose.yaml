@@ -1,5 +1,6 @@
 networks:
   watchtower-socket-proxy:
+    name: watchtower-socket-proxy
 
 services:
   

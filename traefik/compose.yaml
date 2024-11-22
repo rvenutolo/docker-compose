@@ -2,6 +2,7 @@ networks:
   proxy:
     external: true
   traefik-socket-proxy:
+    name: traefik-socket-proxy
 
 services:
 

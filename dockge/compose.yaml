@@ -3,6 +3,7 @@ networks:
   proxy:
     external: true
   dockge-socket-proxy:
+    name: dockge-socket-proxy
 
 services:
 

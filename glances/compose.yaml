@@ -2,6 +2,7 @@ networks:
   proxy:
     external: true
   glances-socket-proxy:
+    name: glances-socket-proxy
 
 services:
 
