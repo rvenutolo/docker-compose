@@ -3,6 +3,6 @@ http:
     default-chain-mdw:
       chain:
         middlewares:
-          - tailnet-ip-allow-list-mdw
+          - ip-allow-list-mdw
           - rate-limit-mdw
           - secure-headers-mdw
