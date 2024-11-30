@@ -20,31 +20,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      ## TODO figure these out
-      ALLOW_START: 0
-      ALLOW_STOP: 0
-      ALLOW_RESTARTS: 0
-      AUTH: 0
-      BUILD: 0
-      COMMIT: 0
-      CONFIGS: 0
-      CONTAINERS: 0
-      DISABLE_IPV6: 0
-      DISTRIBUTION: 0
-      EXEC: 0
-      IMAGES: 0
-      INFO: 0
-      NETWORKS: 0
-      NODES: 0
-      PLUGINS: 0
-      POST: 0
-      SECRETS: 0
-      SERVICES: 0
-      SESSION: 0
-      SWARM: 0
-      SYSTEM: 0
-      TASKS: 0
-      VOLUMES: 0
+      CONTAINERS: 1
 
   glances:
     image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-latest-full}
@@ -59,6 +35,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
+      DOCKER_HOST: tcp://glances-socket-proxy:2375
       GLANCES_OPT: --webserver
     labels:
       - traefik.docker.network=proxy
