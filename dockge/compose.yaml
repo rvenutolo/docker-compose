@@ -45,6 +45,12 @@ services:
     environment:
       DOCKER_HOST: tcp://dockge-socket-proxy:2375
       DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
+      # The below env vars are to prevent issues when dockge evaluates a compose file.
+      DOCKER_APP_DATA_DIR: ${DOCKER_APP_DATA_DIR:?}
+      DOCKER_SOCKET: ${DOCKER_SOCKET:?}
+      DOCKER_TZ: ${DOCKER_TZ:?}
+      DOMAIN_NAME: ${DOMAIN_NAME:?}
+      TAILNET_IP: ${TAILNET_IP:?}
     labels:
       - traefik.docker.network=proxy
       - traefik.enable=true
