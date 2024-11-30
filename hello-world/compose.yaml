@@ -15,6 +15,11 @@ services:
     labels:
       - traefik.docker.network=proxy
       - traefik.enable=true
+      - traefik.http.middlewares.hello-redirect.redirectRegex.regex=^https://hello\.(.*)
+      - traefik.http.middlewares.hello-redirect.redirectRegex.replacement=https://hello-world.$${1}
+      - traefik.http.routers.hello-alias-rtr.entryPoints=websecure
+      - traefik.http.routers.hello-alias-rtr.rule=Host(`hello.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.hello-alias-rtr.middlewares=hello-redirect
       - traefik.http.routers.hello-world-rtr.entryPoints=websecure
       - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
       - traefik.http.services.hello-world-svc.loadBalancer.server.port=8000
