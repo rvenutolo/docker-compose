@@ -3,6 +3,8 @@ http:
     webmin-rtr:
       entryPoints:
         - websecure
+      middlewares:
+        - default-chain-mdw@file
       rule: 'Host(`webmin.{{ env "DOMAIN_NAME" }}`)'
       service: webmin-svc
   services:

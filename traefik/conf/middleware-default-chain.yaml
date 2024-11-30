@@ -1,6 +1,6 @@
 http:
   middlewares:
-    mdw-chain:
+    default-chain-mdw:
       chain:
         middlewares:
           - rate-limit-mdw
