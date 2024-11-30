@@ -18,5 +18,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.openspeedtest-rtr.entryPoints=websecure
+      - traefik.http.routers.openspeedtest-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.openspeedtest-rtr.rule=Host(`openspeedtest.${DOMAIN_NAME:?}`)
       - traefik.http.services.openspeedtest-svc.loadBalancer.server.port=3000

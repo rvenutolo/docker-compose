@@ -20,5 +20,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.privatebin-rtr.entryPoints=websecure
+      - traefik.http.routers.privatebin-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.privatebin-rtr.rule=Host(`privatebin.${DOMAIN_NAME:?}`)
       - traefik.http.services.privatebin-svc.loadBalancer.server.port=8080
