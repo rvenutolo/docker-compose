@@ -55,8 +55,8 @@ services:
     labels:
       - traefik.docker.network=proxy
       - traefik.enable=true
-      - traefik.http.middlewares.guacamole-mdw.addPrefix.prefix=/guacamole
+      - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole
       - traefik.http.routers.guacamole-rtr.entryPoints=websecure
-      - traefik.http.routers.guacamole-rtr.middlewares=default-chain-mdw@file,guacamole-mdw
+      - traefik.http.routers.guacamole-rtr.middlewares=default-chain-mdw@file,guacamole-add-prefix-mdw
       - traefik.http.routers.guacamole-rtr.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
       - traefik.http.services.guacamole-svc.loadBalancer.server.port=8080
