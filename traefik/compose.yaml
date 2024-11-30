@@ -55,6 +55,7 @@ services:
       - --api.dashboard=true
       - --api.disableDashboardAd=true
       - --global.sendAnonymousUsage=true
+      - --experimental.fastProxy
       - --log.level=${LOG_LEVEL:-INFO}
       ## TODO non-staging server -- see if removing caServer config uses prod url
       - --certificatesResolvers.dns-cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
