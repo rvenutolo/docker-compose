@@ -4,7 +4,7 @@ http:
       entryPoints:
         - websecure
       middlewares:
-        - default-chain-mdw@file
+        - default-chain-mdw
       rule: 'Host(`cockpit.{{ env "DOMAIN_NAME" }}`)'
       service: cockpit-svc
   services:

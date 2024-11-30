@@ -27,6 +27,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.speedtest-tracker-rtr.entryPoints=websecure
-      - traefik.http.routers.speedtest-tracker-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.speedtest-tracker-rtr.middlewares=default-chain-mdw
       - traefik.http.routers.speedtest-tracker-rtr.rule=Host(`speedtest-tracker.${DOMAIN_NAME:?}`)
       - traefik.http.services.speedtest-tracker-svc.loadBalancer.server.port=80
