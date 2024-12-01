@@ -8,6 +8,7 @@ networks:
 
 services:
 
+  ## TODO check written files ownership
   komodo-mongo:
     image: ${MONGO_IMAGE:-mongo}:${MONGO_IMAGE_TAG:-8}
     container_name: komodo-mongo
