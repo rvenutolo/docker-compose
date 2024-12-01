@@ -67,8 +67,6 @@ services:
       - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
-      ## TODO this is config necessary?
-#      - --providers.docker.endpoint=unix:///var/run/docker.sock
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.file.directory=/etc/traefik/conf
