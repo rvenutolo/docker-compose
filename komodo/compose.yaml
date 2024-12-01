@@ -101,37 +101,37 @@ services:
       SERVICES: 1
     labels:
       - komodo.skip
-#
-#  komodo-periphery:
-#    image: ${KOMODO_PERIPHERY_IMAGE:-ghcr.io/mbecker20/periphery}:${KOMODO_PERIPHERY_IMAGE_TAG:-latest}
-#    container_name: komodo-periphery
-#    hostname: komodo-periphery
-#    restart: unless-stopped
-#    security_opt:
-#      - no-new-privileges:true
-#    networks:
-#      - komodo
-#      - komodo-socket-proxy
-#    depends_on:
-#      - komodo-socket-proxy
-#    volumes:
-#      ## Mount external docker socket
-#      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
-#      ## Allow Periphery to see processes outside of container
-#      - /proc:/proc:ro
-#      ## use self signed certs in docker volume,
-#      ## or mount your own signed certs.
-#      #- ssl-certs:/etc/komodo/ssl
-#      ## manage repos in a docker volume,
-#      ## or change it to an accessible host directory.
-#      #- repos:/etc/komodo/repos
-#      ## manage stack files in a docker volume,
-#      ## or change it to an accessible host directory.
-#      - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
-#      ## Optionally mount a path to store compose files
-#      # - /path/to/compose:/host/compose
-#      - /etc/localtime:/etc/localtime:ro
-##    environment:
-##      DOCKER_HOST: tcp://komodo-socket-proxy:2375
-#    labels:
-#      - komodo.skip
+
+  komodo-periphery:
+    image: ${KOMODO_PERIPHERY_IMAGE:-ghcr.io/mbecker20/periphery}:${KOMODO_PERIPHERY_IMAGE_TAG:-latest}
+    container_name: komodo-periphery
+    hostname: komodo-periphery
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - komodo
+      - komodo-socket-proxy
+    depends_on:
+      - komodo-socket-proxy
+    volumes:
+      ## Mount external docker socket
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      ## Allow Periphery to see processes outside of container
+      - /proc:/proc:ro
+      ## use self signed certs in docker volume,
+      ## or mount your own signed certs.
+      #- ssl-certs:/etc/komodo/ssl
+      ## manage repos in a docker volume,
+      ## or change it to an accessible host directory.
+      #- repos:/etc/komodo/repos
+      ## manage stack files in a docker volume,
+      ## or change it to an accessible host directory.
+      - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
+      ## Optionally mount a path to store compose files
+      # - /path/to/compose:/host/compose
+      - /etc/localtime:/etc/localtime:ro
+#    environment:
+#      DOCKER_HOST: tcp://komodo-socket-proxy:2375
+    labels:
+      - komodo.skip
