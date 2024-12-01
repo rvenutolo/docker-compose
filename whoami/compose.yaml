@@ -8,6 +8,8 @@ services:
     container_name: whoami
     hostname: whoami
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     networks:
       - proxy
     volumes:

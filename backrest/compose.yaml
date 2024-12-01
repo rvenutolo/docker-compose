@@ -9,6 +9,8 @@ services:
     container_name: backrest
     hostname: backrest
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     networks:
       - proxy
     volumes:
