@@ -8,7 +8,7 @@ http:
           - PUT
         accessControlMaxAge: 100
         hostsProxyHeaders:
-          - "X-Forwarded-Host"
+          - X-Forwarded-Host
         stsSeconds: 63072000
         stsIncludeSubdomains: true
         stsPreload: true
@@ -16,8 +16,8 @@ http:
         customFrameOptionsValue: SAMEORIGIN
         contentTypeNosniff: true
         browserXssFilter: true
-        referrerPolicy: "same-origin"
-        permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()"
+        referrerPolicy: same-origin
+        permissionsPolicy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()
         customResponseHeaders:
-          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          X-Robots-Tag: none,noarchive,nosnippet,notranslate,noimageindex
           server: ""
