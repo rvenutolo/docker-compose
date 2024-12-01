@@ -29,7 +29,7 @@ services:
       - komodo.skip
 
   komodo:
-    image: ${KOMODO_IMAGE:-ghcr.io/mbecker20/komodo:${KOMODO_IMAGE_TAG:-latest}
+    image: ${KOMODO_IMAGE:-ghcr.io/mbecker20/komodo}:${KOMODO_IMAGE_TAG:-latest}
     container_name: komodo
     hostname: komodo
     restart: unless-stopped
