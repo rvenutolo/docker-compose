@@ -49,13 +49,7 @@ services:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
     command:
-      ## TODO check on access logging - check on stdout
-      # TODO figure out which statuses to keep in logging
-      # 2xx - successful
-      # 3xx - redirection
-      # 4xx - client error
-      # 5xx - server error
-      - --accessLog.filters.statusCodes=${ACCESS_LOG_STATUS_CODES:-200-299,300-399,400-499,500-599}
+      - --accessLog.filters.statusCodes=${ACCESS_LOG_STATUS_CODES:-400-499,500-599}
       - --api.dashboard=true
       - --api.disableDashboardAd=true
       - --global.sendAnonymousUsage=true
