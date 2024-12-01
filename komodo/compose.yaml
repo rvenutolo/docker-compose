@@ -77,30 +77,30 @@ services:
       - traefik.http.routers.komodo-rtr.rule=Host(`komodo.${DOMAIN_NAME:?}`)
       - traefik.http.services.komodo-svc.loadBalancer.server.port=9120
 
-#  komodo-socket-proxy:
-#    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
-#    container_name: komodo-socket-proxy
-#    hostname: komodo-socket-proxy
-#    security_opt:
-#      - no-new-privileges:true
-#    read_only: true
-#    tmpfs:
-#      - /run
-#    restart: unless-stopped
-#    networks:
-#      - komodo-socket-proxy
-#    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
-#    environment:
-#      CONTAINERS: 1
-#      EXEC: 1
-#      IMAGES: 1
-#      INFO: 1
-#      POST: 1
-#      SERVICES: 1
-#    labels:
-#      - komodo.skip
+  komodo-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: komodo-socket-proxy
+    hostname: komodo-socket-proxy
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /run
+    restart: unless-stopped
+    networks:
+      - komodo-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      CONTAINERS: 1
+      EXEC: 1
+      IMAGES: 1
+      INFO: 1
+      POST: 1
+      SERVICES: 1
+    labels:
+      - komodo.skip
 #
 #  komodo-periphery:
 #    image: ${KOMODO_PERIPHERY_IMAGE:-ghcr.io/mbecker20/periphery}:${KOMODO_PERIPHERY_IMAGE_TAG:-latest}
