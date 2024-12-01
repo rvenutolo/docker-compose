@@ -3,7 +3,7 @@ networks:
     name: watchtower-socket-proxy
 
 services:
-  
+
   watchtower-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: watchtower-socket-proxy
@@ -22,7 +22,7 @@ services:
       NETWORKS: 1
       POST: 1
       VOLUMES: 1
-  
+
   watchtower:
     image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
     container_name: watchtower
