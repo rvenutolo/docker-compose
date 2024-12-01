@@ -48,7 +48,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       DOCKER_HOST: tcp://dockge-socket-proxy:2375
-      DOCKGE_STACKS_DIR: /opt/stacks/ # TODO necessary?
       # The below env vars are to prevent issues when dockge evaluates a compose file.
       DATA_DIR: ${DATA_DIR:?}
       DOCKER_APP_DATA_DIR: ${DOCKER_APP_DATA_DIR:?}
