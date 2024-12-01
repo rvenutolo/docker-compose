@@ -69,6 +69,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.code-server-rtr.entryPoints=websecure
-      - traefik.http.routers.code-server-rtr.middlewares=default-chain-mdw
+      - traefik.http.routers.code-server-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.code-server-rtr.rule=Host(`code-server.${DOMAIN_NAME:?}`)
       - traefik.http.services.code-server-svc.loadBalancer.server.port=8443

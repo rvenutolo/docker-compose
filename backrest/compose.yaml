@@ -30,6 +30,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.backrest-rtr.entryPoints=websecure
-      - traefik.http.routers.backrest-rtr.middlewares=default-chain-mdw
+      - traefik.http.routers.backrest-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.backrest-rtr.rule=Host(`backrest.${DOMAIN_NAME:?}`)
       - traefik.http.services.backrest-svc.loadBalancer.server.port=9898

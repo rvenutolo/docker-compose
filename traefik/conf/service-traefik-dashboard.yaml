@@ -4,6 +4,6 @@ http:
       entryPoints:
         - websecure
       middlewares:
-        - default-chain-mdw
+        - default-chain-mdw@file
       rule: 'Host(`traefik.{{ env "DOMAIN_NAME" }}`)'
       service: api@internal
