@@ -41,9 +41,9 @@ services:
     depends_on:
       - komodo-mongo
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}/komodo/repo-cache:/repo-cache
-      - ${DOCKER_APP_DATA_DIR:?}/komodo/syncs:/syncs
-      - ${DOCKER_APP_DATA_DIR:?}/komodo/action-cache:/action-cache
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/repo-cache:/repo-cache
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/syncs:/syncs
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/action-cache:/action-cache
       - /etc/localtime:/etc/localtime:ro
     environment:
       KOMODO_DATABASE_ADDRESS: komodo-mongo:27017
