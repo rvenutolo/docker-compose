@@ -13,6 +13,9 @@ services:
     read_only: true
     tmpfs:
       - /run
+    restart: unless-stopped
+    networks:
+      - watchtower-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
