@@ -12,7 +12,7 @@ http:
         stsSeconds: 63072000
         stsIncludeSubdomains: true
         stsPreload: true
-        # forceSTSHeader: true # This is a good thing, but it can be tricky. Enable after everything works.
+        # forceSTSHeader: true # TODO This is a good thing, but it can be tricky. Enable after everything works.
         customFrameOptionsValue: SAMEORIGIN
         contentTypeNosniff: true
         browserXssFilter: true
