@@ -118,7 +118,7 @@ services:
       ## Mount external docker socket
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
       ## Allow Periphery to see processes outside of container
-      - /proc:/proc:ro
+      - /proc:/proc
       ## use self signed certs in docker volume,
       ## or mount your own signed certs.
       #- ssl-certs:/etc/komodo/ssl
