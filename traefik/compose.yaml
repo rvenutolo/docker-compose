@@ -36,11 +36,10 @@ services:
       - traefik-socket-proxy
     depends_on:
       - traefik-socket-proxy
-    network_mode: host
-#    ports:
-#      - "${TAILNET_IP:?}:80:80"
-#      - "${TAILNET_IP:?}:443:443"
-#      - "${TAILNET_IP:?}:${DASHBOARD_PORT:-8080}:8080"
+    ports:
+      - "${TAILNET_IP:?}:80:80"
+      - "${TAILNET_IP:?}:443:443"
+      - "${TAILNET_IP:?}:${DASHBOARD_PORT:-8080}:8080"
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/traefik:/etc/traefik/certs
       - ./conf:/etc/traefik/conf:ro
