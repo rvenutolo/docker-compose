@@ -4,7 +4,7 @@ networks:
 
 volumes:
   ## TODO check on this
-  filebrowser-db:
+  db:
 
 services:
   filebrowser:
@@ -19,7 +19,7 @@ services:
     volumes:
       - ~:/srv
       - ./config.json:/.filebrowser.json
-      - filebrowser-db:/database.db
+      - db:/database.db
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.docker.network=proxy

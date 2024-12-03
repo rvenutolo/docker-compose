@@ -3,7 +3,7 @@ networks:
     external: true
 
 volumes:
-  changedetection-datastore:
+  datastore:
 
 services:
   changedetection:
@@ -16,7 +16,7 @@ services:
     networks:
       - proxy
     volumes:
-      - changedetection-datastore:/datastore
+      - datastore:/datastore
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.docker.network=proxy

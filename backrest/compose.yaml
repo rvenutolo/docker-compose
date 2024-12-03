@@ -4,10 +4,10 @@ networks:
     external: true
 
 volumes:
-  backrest-cache:
-  backrest-config:
-  backrest-data:
-  backrest-ssh:
+  cache:
+  config:
+  data:
+  ssh:
 
 services:
   backrest:
@@ -22,10 +22,10 @@ services:
     volumes:
       - ${DOCKER_DIR:?}:/to-backup
       - ${RESTIC_BACKUP_DIR:?}:/repos
-      - backrest-cache:/cache
-      - backrest-config:/config
-      - backrest-data:/data
-      - backrest-ssh:/root/.ssh
+      - cache:/cache
+      - config:/config
+      - data:/data
+      - ssh:/root/.ssh
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${DOCKER_TZ:?}

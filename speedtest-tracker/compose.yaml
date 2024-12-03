@@ -3,7 +3,7 @@ networks:
     external: true
 
 volumes:
-  speedtest-tracker-config:
+  config:
 
 services:
   speedtest-tracker:
@@ -16,7 +16,7 @@ services:
     networks:
       - proxy
     volumes:
-      - speedtest-tracker-config:/config
+      - config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
       PUID: ${PUID:?}

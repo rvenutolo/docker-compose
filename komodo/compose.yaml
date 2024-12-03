@@ -7,11 +7,11 @@ networks:
     name: komodo
 
 volumes:
-  komodo-mongo-data:
-  komodo-mongo-config:
-  komodo-repo-cache:
-  komodo-syncs:
-  komodo-action-cache:
+  action-cache:
+  mongo-config:
+  mongo-data:
+  repo-cache:
+  syncs:
 
 services:
 
@@ -26,8 +26,8 @@ services:
     networks:
       - komodo
     volumes:
-      - komodo-mongo-data:/data/db
-      - komodo-mongo-config:/data/configdb
+      - mongo-config:/data/configdb
+      - mongo-data:/data/db
       - /etc/localtime:/etc/localtime:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: komodo
@@ -49,9 +49,9 @@ services:
     depends_on:
       - komodo-mongo
     volumes:
-      - komodo-action-cache:/action-cache
-      - komodo-repo-cache:/repo-cache
-      - komodo-syncs:/syncs
+      - action-cache:/action-cache
+      - repo-cache:/repo-cache
+      - syncs:/syncs
       - /etc/localtime:/etc/localtime:ro
     environment:
       KOMODO_DATABASE_ADDRESS: komodo-mongo:27017

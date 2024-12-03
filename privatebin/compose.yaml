@@ -3,7 +3,7 @@ networks:
     external: true
 
 volumes:
-  privatebin-data:
+  data:
 
 services:
   privatebin:
@@ -17,7 +17,7 @@ services:
       - proxy
     volumes:
       - ./conf.php:/srv/cfg/conf.php:ro
-      - privatebin-data:/srv/data
+      - data:/srv/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${DOCKER_TZ:?}

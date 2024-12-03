@@ -5,7 +5,7 @@ networks:
     name: guacamole
 
 volumes:
-  guacamole-postgres-data:
+  postgres-data:
 
 services:
 
@@ -20,7 +20,7 @@ services:
       - guacamole
     volumes:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
-      - guacamole-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
