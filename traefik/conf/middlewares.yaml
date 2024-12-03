@@ -25,7 +25,7 @@ http:
         stsSeconds: 63072000
         stsIncludeSubdomains: true
         stsPreload: true
-        forceSTSHeader: true
+        #forceSTSHeader: true
         customFrameOptionsValue: SAMEORIGIN
         contentTypeNosniff: true
         browserXssFilter: true
