@@ -1,6 +1,0 @@
-http:
-  middlewares:
-    rate-limit-mdw:
-      rateLimit:
-        average: 100
-        burst: 50

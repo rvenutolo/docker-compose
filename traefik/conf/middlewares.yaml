@@ -1,5 +1,18 @@
 http:
   middlewares:
+
+    ip-allow-list-mdw:
+      ipAllowList:
+        sourceRange:
+          - 127.0.0.1/32
+          - 172.16.0.0/12
+          - 100.64.0.0/10
+
+    rate-limit-mdw:
+      rateLimit:
+        average: 100
+        burst: 50
+
     secure-headers-mdw:
       headers:
         accessControlAllowMethods:
@@ -21,3 +34,10 @@ http:
         customResponseHeaders:
           X-Robots-Tag: none,noarchive,nosnippet,notranslate,noimageindex
           server: ""
+
+    default-chain-mdw:
+      chain:
+        middlewares:
+          - ip-allow-list-mdw@file
+          - rate-limit-mdw@file
+          - secure-headers-mdw@file

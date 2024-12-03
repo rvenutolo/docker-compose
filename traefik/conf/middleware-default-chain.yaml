@@ -1,8 +1,0 @@
-http:
-  middlewares:
-    default-chain-mdw:
-      chain:
-        middlewares:
-          - ip-allow-list-mdw@file
-          - rate-limit-mdw@file
-          - secure-headers-mdw@file
