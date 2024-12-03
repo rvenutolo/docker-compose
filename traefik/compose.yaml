@@ -70,3 +70,10 @@ services:
       - --providers.docker.exposedByDefault=${DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
+    labels:
+      - traefik.docker.network=proxy
+      - traefik.enable=true
+      - traefik.http.routers.traefik-rtr.entryPoints=websecure
+      - traefik.http.routers.traefik-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.traefik-rtr.service=api@internal
