@@ -131,6 +131,6 @@ function set_env_file_var() {
 # $3 = info (optional)
 function set_env_file_var_if_not_defined() {
   if ! env_file_var_defined "$1" "$2"; then
-    set_env_file_var "$1" "$2" "$3"
+    set_env_file_var "$1" "$2" "${3:-}"
   fi
 }
