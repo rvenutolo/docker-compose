@@ -4,6 +4,9 @@ networks:
   guacamole:
     name: guacamole
 
+volumes:
+  guacamole-postgres-data:
+
 services:
 
   guacamole-postgres:
@@ -11,14 +14,13 @@ services:
     container_name: guacamole-postgres
     hostname: guacamole-postgres
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
       - guacamole
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/data:/var/lib/postgresql/data
-      - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+      - guacamole-postgres-data:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata

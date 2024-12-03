@@ -2,6 +2,9 @@ networks:
   proxy:
     external: true
 
+volumes:
+  speedtest-tracker-config:
+
 services:
   speedtest-tracker:
     image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
@@ -13,14 +16,14 @@ services:
     networks:
       - proxy
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker:/config
+      - speedtest-tracker-config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
       PUID: ${PUID:?}
       PGID: ${PGID:?}
       TZ: ${DOCKER_TZ:?}
       APP_KEY: ${APP_KEY:?}
-      APP_URL: http://speedtest-tracker.${DOMAIN_NAME:?}
+      APP_URL: https://speedtest-tracker.${DOMAIN_NAME:?}
       DB_CONNECTION: sqlite
       PRUNE_RESULTS_OLDER_THAN: 30
       SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}

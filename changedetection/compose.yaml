@@ -2,19 +2,21 @@ networks:
   proxy:
     external: true
 
+volumes:
+  changedetection-datastore:
+
 services:
   changedetection:
     image: ${CHANGEDETECTION_IMAGE:-dgtlmoon/changedetection.io}:${CHANGEDETECTION_IMAGE_TAG:-latest}
     container_name: changedetection
     hostname: changedetection
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
       - proxy
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}/changedetection:/datastore
+      - changedetection-datastore:/datastore
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.docker.network=proxy

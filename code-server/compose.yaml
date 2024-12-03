@@ -2,6 +2,9 @@ networks:
   proxy:
     external: true
 
+volumes:
+  code-server-config:
+
 services:
   code-server:
     image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
@@ -14,8 +17,8 @@ services:
       - proxy
     volumes:
       - ~/Code:/code
-      - ${DOCKER_APP_DATA_DIR:?}/code-server:/config
       - ./run-override:/etc/s6-overlay/s6-rc.d/init-mod-code-server-extension-arguments/run:ro
+      - code-server-config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
       PUID: ${PUID:?}

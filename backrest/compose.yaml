@@ -3,24 +3,29 @@ networks:
   proxy:
     external: true
 
+volumes:
+  backrest-cache:
+  backrest-config:
+  backrest-data:
+  backrest-ssh:
+
 services:
   backrest:
     image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
     container_name: backrest
     hostname: backrest
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
       - proxy
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}:/to-backup
-      - ${DOCKER_APP_DATA_DIR:?}/backrest/cache:/cache
-      - ${DOCKER_APP_DATA_DIR:?}/backrest/config:/config
-      - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
-      - ${DOCKER_APP_DATA_DIR:?}/backrest/ssh:/root/.ssh
+      - ${DOCKER_DIR:?}:/to-backup
       - ${RESTIC_BACKUP_DIR:?}:/repos
+      - backrest-cache:/cache
+      - backrest-config:/config
+      - backrest-data:/data
+      - backrest-ssh:/root/.ssh
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${DOCKER_TZ:?}

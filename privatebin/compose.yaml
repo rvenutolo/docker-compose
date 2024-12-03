@@ -2,20 +2,22 @@ networks:
   proxy:
     external: true
 
+volumes:
+  privatebin-data:
+
 services:
   privatebin:
     image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
     container_name: privatebin
     hostname: privatebin
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
       - proxy
     volumes:
       - ./conf.php:/srv/cfg/conf.php:ro
-      - ${DOCKER_APP_DATA_DIR:?}/privatebin:/srv/data
+      - privatebin-data:/srv/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: ${DOCKER_TZ:?}

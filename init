@@ -11,7 +11,6 @@ for env_var in \
   PGID \
   DOCKER_TZ \
   DOCKER_COMPOSE_DIR \
-  DOCKER_APP_DATA_DIR \
   DOCKER_SOCKET \
   DATA_DIR \
   RESTIC_BACKUP_DIR; do
@@ -31,8 +30,6 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   docker network create "${proxy_network}"
   log "Created ${proxy_network} network"
 fi
-
-create_dir_or_change_ownership "${DOCKER_APP_DATA_DIR}"
 
 env_templates="$(find . -mindepth 2 -type f -name '.env.template' | sort)"
 for env_template in ${env_templates}; do

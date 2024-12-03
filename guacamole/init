@@ -5,12 +5,7 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-readonly app_data_dir="${DOCKER_APP_DATA_DIR}/guacamole"
-create_dir_or_change_ownership "${app_data_dir}" \
-  "${app_data_dir}/postgres/init" \
-  "${app_data_dir}/postgres/data"
-
-readonly postgres_init_file="${app_data_dir}/postgres/init/init-db.sql"
+readonly postgres_init_file="$(this-script-dir)/init-db.sql"
 readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
 create_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
 

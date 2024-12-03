@@ -2,13 +2,16 @@ networks:
   proxy:
     external: true
 
+volumes:
+  ## TODO check on this
+  filebrowser-db:
+
 services:
   filebrowser:
     image: ${FILEBROWSER_IMAGE:-filebrowser/filebrowser}:${FILEBROWSER_IMAGE_TAG:-latest}
     container_name: filebrowser
     hostname: filebrowser
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
@@ -16,7 +19,7 @@ services:
     volumes:
       - ~:/srv
       - ./config.json:/.filebrowser.json
-      - ${DOCKER_APP_DATA_DIR:?}/filebrowser/filebrowser.db:/database.db
+      - filebrowser-db:/database.db
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.docker.network=proxy
