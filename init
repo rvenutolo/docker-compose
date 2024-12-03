@@ -17,20 +17,19 @@ for env_var in \
   RESTIC_BACKUP_DIR; do
     if [[ -z "${env_var:-}" ]]; then
       die='DIE'
-      echo "${env_var} is not set to a non-empty value"
+      log "${env_var} is not set to a non-empty value"
     fi
 done
 
 if [[ -n "${die:-}" ]]; then
-  echo 'Fix the missing env vars and re-run this script'
-  exit 1
+  die 'Fix the missing env vars and re-run this script'
 fi
 
 readonly proxy_network='proxy'
 if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
-  echo "Creating ${proxy_network} network"
+  log "Creating ${proxy_network} network"
   docker network create "${proxy_network}"
-  echo "Created ${proxy_network} network"
+  log "Created ${proxy_network} network"
 fi
 
 create_dir_or_change_ownership "${DOCKER_APP_DATA_DIR}"
@@ -39,17 +38,17 @@ env_templates="$(find . -mindepth 2 -type f -name '.env.template' | sort)"
 for env_template in ${env_templates}; do
   env_file="${env_template%%.template}"
   if [[ ! -f "${env_file}" ]]; then
-    echo "Creating ${env_file:2}"
+    log "Creating ${env_file:2}"
     cp "${env_template}" "${env_file}"
-    echo "Created ${env_file:2}"
+    log "Created ${env_file:2}"
   fi
 done
 
 init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
 for init_script in ${init_scripts}; do
   if prompt_yn "Run ${init_script:2}?"; then
-    echo "Running ${init_script:2}"
+    log "Running ${init_script:2}"
     "${init_script}"
-    echo "Ran ${init_script:2}"
+    log "Ran ${init_script:2}"
   fi
 done
