@@ -9,6 +9,7 @@ services:
     container_name: backrest
     hostname: backrest
     restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:

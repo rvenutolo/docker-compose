@@ -11,6 +11,7 @@ services:
     container_name: guacamole-postgres
     hostname: guacamole-postgres
     restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:

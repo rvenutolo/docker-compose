@@ -35,6 +35,7 @@ services:
     container_name: dockge
     hostname: dockge
     restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:

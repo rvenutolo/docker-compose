@@ -14,6 +14,7 @@ services:
     container_name: komodo-mongo
     hostname: komodo-mongo
     restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
@@ -34,6 +35,7 @@ services:
     container_name: komodo
     hostname: komodo
     restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
     security_opt:
       - no-new-privileges:true
     networks:
