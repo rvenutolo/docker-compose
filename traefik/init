@@ -5,4 +5,5 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-create_dir_or_change_ownership "${RESTIC_BACKUP_DIR}"
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/traefik"
+create_dir_or_change_ownership "${app_data_dir}"

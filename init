@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
 for env_var in \
   DOMAIN_NAME \
   PUID \
@@ -30,11 +33,7 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   echo "Created ${proxy_network} network"
 fi
 
-if [[ ! -d "${DOCKER_APP_DATA_DIR}" ]]; then
-  echo "Creating ${DOCKER_APP_DATA_DIR}"
-  mkdir --parents "${DOCKER_APP_DATA_DIR}"
-  echo "Created ${DOCKER_APP_DATA_DIR}"
-fi
+create_dir_or_change_ownership "${DOCKER_APP_DATA_DIR}"
 
 env_templates="$(find . -mindepth 2 -type f -name '.env.template')"
 for env_template in ${env_templates}; do
@@ -45,20 +44,6 @@ for env_template in ${env_templates}; do
     echo "Created ${env_file:2}"
   fi
 done
-
-function prompt_yn() {
-  REPLY=''
-  while [[ "${REPLY}" != 'y' && "${REPLY}" != 'n' ]]; do
-    echo -e -n "\033[0;33m$1 [y/N]: \033[0m"
-    read -r
-    if [[ "${REPLY}" == [yY] ]]; then
-      REPLY='y'
-    elif [[ "${REPLY}" == '' || "${REPLY}" == [nN] ]]; then
-      REPLY='n'
-    fi
-  done
-  [[ "${REPLY}" == 'y' ]]
-}
 
 init_scripts="$(find . -mindepth 2 -type f -name 'init')"
 for init_script in ${init_scripts}; do

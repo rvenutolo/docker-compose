@@ -2,16 +2,15 @@
 
 set -euo pipefail
 
-readonly guacamole_postgres_init_dir="${DOCKER_APP_DATA_DIR}/guacamole/postgres/init"
-if [[ ! -d "${guacamole_postgres_init_dir}" ]]; then
-  echo "Creating ${guacamole_postgres_init_dir}"
-  mkdir --parents "${guacamole_postgres_init_dir}"
-  echo "Created ${guacamole_postgres_init_dir}"
-fi
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-readonly guacamole_postgres_init_file="${guacamole_postgres_init_dir}/init-db.sql"
-if [[ ! -f "${guacamole_postgres_init_file}" ]]; then
-  echo "Creating ${guacamole_postgres_init_file}"
-  docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql > "${guacamole_postgres_init_file}"
-  echo "Created ${guacamole_postgres_init_file}"
-fi
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/guacamole"
+create_dir_or_change_ownership "${app_data_dir}"
+
+readonly postgres_init_dir="${app_data_dir}/postgres/init"
+create_dir_or_change_ownership "${postgres_init_dir}"
+
+readonly postgres_init_file="${postgres_init_dir}/init-db.sql"
+readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
+create_or_overwrite_file "${postgres_init_file}" "${postgres_init_file_content}"

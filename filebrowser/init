@@ -2,16 +2,11 @@
 
 set -euo pipefail
 
-readonly filebrowser_data_dir="${DOCKER_APP_DATA_DIR}/filebrowser"
-if [[ ! -d "${filebrowser_data_dir}" ]]; then
-  echo "Creating ${filebrowser_data_dir}"
-  mkdir --parents "${filebrowser_data_dir}"
-  echo "Created ${filebrowser_data_dir}"
-fi
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-readonly filebrowser_db="${filebrowser_data_dir}/filebrowser.db"
-if [[ ! -f "${filebrowser_db}" ]]; then
-  echo "Creating ${filebrowser_db}"
-  touch "${filebrowser_db}"
-  echo "Created ${filebrowser_db}"
-fi
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/filebrowser"
+create_dir_or_change_ownership "${app_data_dir}"
+
+readonly filebrowser_db="${app_data_dir}/filebrowser.db"
+create_or_overwrite_file "${filebrowser_db}" ''
