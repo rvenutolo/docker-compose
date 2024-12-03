@@ -8,12 +8,12 @@ services:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: watchtower-socket-proxy
     hostname: watchtower-socket-proxy
+    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     read_only: true
     tmpfs:
       - /run
-    restart: unless-stopped
     networks:
       - watchtower-socket-proxy
     volumes:
