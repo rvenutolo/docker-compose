@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function log() {
+  echo -e "\033[0;32m[$(date +%T) ${0##*/}] $*\033[0m" >&2
+}
+
+function die() {
+  echo -e "\033[0;31mDIE: $* (at ${BASH_SOURCE[1]}:${FUNCNAME[1]} line ${BASH_LINENO[0]})\033[0m" >&2
+  exit 1
+}
+
 # $1 = question
 function prompt_ny() {
   REPLY=''
@@ -33,32 +42,95 @@ function prompt_yn() {
 # $1 = question
 function prompt_for_value() {
   REPLY=''
-  echo -e -n "\033[0;33m$1: \033[0m"
-  read -r
+  read -rp "$1 : "
   echo "${REPLY}"
 }
 
-# $1 = target
-function create_dir_or_change_ownership() {
-  local target="$1"
-  if [[ -d "${target}" ]]; then
+function change_ownership() {
+  for target in "$@"; do
     sudo chown -R "${USER}:" "${target}"
-  else
-    echo "Creating ${target}"
-    mkdir --parents "${target}"
-    echo "Created ${target}"
-  fi
+  done
+}
+
+# $@ = targets
+function create_dir_or_change_ownership() {
+  for target in "$@"; do
+    if [[ -d "${target}" ]]; then
+      change_ownership "${target}"
+    else
+      log "Creating ${target}"
+      mkdir --parents "${target}"
+      log "Created ${target}"
+    fi
+  done
 }
 
 # $1 = file
 # $2 = content
 function create_or_overwrite_file() {
-  local file="$1"
-  local content="$2"
-  if [[ -f "${file}" ]]; then
-    change_ownership "${file}"
+  if [[ -f "$1" ]]; then
+    change_ownership "$1"
   fi
-  echo "Writing ${file}"
-  echo "${content}" > "${file}"
-  echo "Wrote ${file}"
+  log "Writing $1"
+  echo "$2" > "$1"
+  log "Wrote $1"
+}
+
+# $1 = file
+# $2 = content
+function create_file_if_not_exists() {
+  if [[ -f "$1" ]]; then
+    change_ownership "$1"
+  else
+    log "Writing $1"
+    echo "$2" > "$1"
+    log "Wrote $1"
+  fi
+}
+
+function this_script_dir() {
+  cd -- "$(dirname -- "${BASH_SOURCE[1]}")" &> '/dev/null' && pwd
+}
+
+function env_file() {
+  echo "$(cd -- "$(dirname -- "${BASH_SOURCE[1]}")" &> '/dev/null' && pwd)/.env"
+}
+
+# $1 = file
+function check_for_file() {
+  if ! [[ -f "$1" ]]; then
+    die "$1 does not exist"
+  fi
+}
+
+# $1 = env file
+# $2 = var
+function env_file_var_defined() {
+  check_for_file "$1"
+  if ! grep --quiet "^$2=" "$1"; then
+    die "$2 does not exist in $1"
+  fi
+  [[ -n "$(grep "^$2=" "$1" | cut --delimiter='=' --fields='2')" ]]
+}
+
+# $1 = env file
+# $2 = var
+# $3 = info (optional)
+function set_env_file_var() {
+  check_for_file "$1"
+  if [[ -n "$3" ]]; then
+    local var_value="$(prompt_for_value "Enter value for $2 ($3)")"
+  else
+    local var_value="$(prompt_for_value "Enter value for $2")"
+  fi
+  sed --in-place "s|^$2=.*$|$2=${var_value}|" "$1"
+}
+
+# $1 = env file
+# $2 = var
+# $3 = info (optional)
+function set_env_file_var_if_not_defined() {
+  if ! env_file_var_defined "$1" "$2"; then
+    set_env_file_var "$1" "$2" "$3"
+  fi
 }

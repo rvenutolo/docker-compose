@@ -7,3 +7,6 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 readonly app_data_dir="${DOCKER_APP_DATA_DIR}/traefik"
 create_dir_or_change_ownership "${app_data_dir}"
+
+readonly env_file="$(env_file)"
+set_env_file_var_if_not_defined "${env_file}" 'CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'

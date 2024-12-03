@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/privatebin"
+create_dir_or_change_ownership "${app_data_dir}"

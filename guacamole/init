@@ -6,11 +6,13 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 readonly app_data_dir="${DOCKER_APP_DATA_DIR}/guacamole"
-create_dir_or_change_ownership "${app_data_dir}"
+create_dir_or_change_ownership "${app_data_dir}" \
+  "${app_data_dir}/postgres/init" \
+  "${app_data_dir}/postgres/data"
 
-readonly postgres_init_dir="${app_data_dir}/postgres/init"
-create_dir_or_change_ownership "${postgres_init_dir}"
-
-readonly postgres_init_file="${postgres_init_dir}/init-db.sql"
+readonly postgres_init_file="${app_data_dir}/postgres/init/init-db.sql"
 readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
-create_or_overwrite_file "${postgres_init_file}" "${postgres_init_file_content}"
+create_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
+
+readonly env_file="$(env_file)"
+set_env_file_var_if_not_defined "${env_file}" 'POSTGRES_PASSWORD'

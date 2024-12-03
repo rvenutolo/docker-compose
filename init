@@ -35,7 +35,7 @@ fi
 
 create_dir_or_change_ownership "${DOCKER_APP_DATA_DIR}"
 
-env_templates="$(find . -mindepth 2 -type f -name '.env.template')"
+env_templates="$(find . -mindepth 2 -type f -name '.env.template' | sort)"
 for env_template in ${env_templates}; do
   env_file="${env_template%%.template}"
   if [[ ! -f "${env_file}" ]]; then
@@ -45,7 +45,7 @@ for env_template in ${env_templates}; do
   fi
 done
 
-init_scripts="$(find . -mindepth 2 -type f -name 'init')"
+init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
 for init_script in ${init_scripts}; do
   if prompt_yn "Run ${init_script:2}?"; then
     echo "Running ${init_script:2}"

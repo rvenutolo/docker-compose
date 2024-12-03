@@ -6,3 +6,10 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 create_dir_or_change_ownership "${RESTIC_BACKUP_DIR}"
+
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/backrest"
+create_dir_or_change_ownership "${app_data_dir}" \
+  "${app_data_dir}/cache" \
+  "${app_data_dir}/config" \
+  "${app_data_dir}/data" \
+  "${app_data_dir}/ssh"
