@@ -39,30 +39,15 @@ function prompt_for_value() {
 }
 
 # $1 = target
-function create_dir() {
+function create_dir_or_change_ownership() {
   local target="$1"
-  if [[ ! -d "${target}" ]]; then
+  if [[ -d "${target}" ]]; then
+    sudo chown -R "${USER}:" "${target}"
+  else
     echo "Creating ${target}"
     mkdir --parents "${target}"
     echo "Created ${target}"
   fi
-}
-
-# $1 = target
-function change_ownership() {
-  local target="$1"
-  if [[ ! -O "${target}" ]]; then
-    echo "Changing ownership of ${target}"
-    sudo chown -R "${USER}:" "${target}"
-    echo "Changed ownership of ${target}"
-  fi
-}
-
-# $1 = target
-function create_dir_or_change_ownership() {
-  local target="$1"
-  create_dir "${target}"
-  change_ownership "${target}"
 }
 
 # $1 = file
