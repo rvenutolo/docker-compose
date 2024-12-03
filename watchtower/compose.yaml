@@ -1,6 +1,5 @@
 networks:
-  watchtower-socket-proxy:
-    name: watchtower-socket-proxy
+  socket-proxy:
 
 services:
 
@@ -15,7 +14,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - watchtower-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
@@ -34,7 +33,7 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - watchtower-socket-proxy
+      - socket-proxy
     depends_on:
       - watchtower-socket-proxy
     volumes:

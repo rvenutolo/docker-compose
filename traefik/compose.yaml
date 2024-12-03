@@ -1,8 +1,7 @@
 networks:
   proxy:
     external: true
-  traefik-socket-proxy:
-    name: traefik-socket-proxy
+  socket-proxy:
 
 volumes:
   certs:
@@ -12,7 +11,7 @@ services:
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-socket-proxy
-    hostname: traefik-socket-proxy
+    hostname: socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -36,7 +35,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - traefik-socket-proxy
+      - socket-proxy
     depends_on:
       - traefik-socket-proxy
     ports:

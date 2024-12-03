@@ -1,10 +1,8 @@
 networks:
   proxy:
     external: true
-  komodo-socket-proxy:
-    name: komodo-socket-proxy
-  komodo:
-    name: komodo
+  socket-proxy:
+  default:
 
 volumes:
   action-cache:
@@ -24,7 +22,7 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - komodo
+      - default
     volumes:
       - mongo-config:/data/configdb
       - mongo-data:/data/db
@@ -45,7 +43,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - komodo
+      - default
     depends_on:
       - komodo-mongo
     volumes:
@@ -95,7 +93,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - komodo-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
@@ -117,7 +115,7 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - komodo
+      - default
       - komodo-socket-proxy
     depends_on:
       - komodo-socket-proxy

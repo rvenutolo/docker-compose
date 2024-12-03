@@ -2,8 +2,7 @@
 networks:
   proxy:
     external: true
-  dockge-socket-proxy:
-    name: dockge-socket-proxy
+  socket-proxy:
 
 volumes:
   data:
@@ -21,7 +20,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - dockge-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
@@ -42,7 +41,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - dockge-socket-proxy
+      - socket-proxy
     depends_on:
       - dockge-socket-proxy
     volumes:

@@ -1,8 +1,7 @@
 networks:
   proxy:
     external: true
-  dozzle-socket-proxy:
-    name: dozzle-socket-proxy
+  socket-proxy:
 
 services:
 
@@ -17,7 +16,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - dozzle-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
@@ -37,7 +36,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - dozzle-socket-proxy
+      - socket-proxy
     depends_on:
       - dozzle-socket-proxy
     volumes:

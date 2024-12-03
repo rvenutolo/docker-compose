@@ -1,8 +1,7 @@
 networks:
   proxy:
     external: true
-  glances-socket-proxy:
-    name: glances-socket-proxy
+  socket-proxy:
 
 services:
 
@@ -17,7 +16,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - glances-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
@@ -33,7 +32,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - glances-socket-proxy
+      - socket-proxy
     depends_on:
       - glances-socket-proxy
     volumes:
