@@ -7,6 +7,9 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 readonly app_data_dir="${DOCKER_APP_DATA_DIR}/komodo"
 create_dir_or_change_ownership "${app_data_dir}" \
+  "${app_data_dir}/komodo/repo-cache" \
+  "${app_data_dir}/komodo/syncs" \
+  "${app_data_dir}/komodo/action-cache" \
   "${app_data_dir}/mongo/data" \
   "${app_data_dir}/mongo/config"
 
