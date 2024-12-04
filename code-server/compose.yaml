@@ -21,7 +21,6 @@ services:
       - config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
-      TZ: ${DOCKER_TZ:?}
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
       PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}

@@ -40,7 +40,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       DOCKER_HOST: tcp://watchtower-socket-proxy:2375
-      TZ: ${DOCKER_TZ:?}
       WATCHTOWER_CLEANUP: ${WATCHTOWER_CLEANUP:-true}
       WATCHTOWER_DISABLE_CONTAINERS: ${WATCHTOWER_DISABLE_CONTAINERS:-}
       WATCHTOWER_INCLUDE_RESTARTING: ${WATCHTOWER_INCLUDE_RESTARTING:-true}

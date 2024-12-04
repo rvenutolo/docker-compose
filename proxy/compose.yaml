@@ -47,7 +47,6 @@ services:
       - certs:/etc/traefik/certs
       - /etc/localtime:/etc/localtime:ro
     environment:
-      TZ: ${DOCKER_TZ:?}
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
     command:
