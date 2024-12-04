@@ -5,13 +5,13 @@ http:
         - websecure
       middlewares:
         - default-chain-mdw@file
-      rule: 'Host(`webmin.{{ env "DOMAIN_NAME" }}`)'
+      rule: Host(`webmin.{{ env "DOMAIN_NAME" }}`)
       service: webmin-svc
   services:
     webmin-svc:
       loadBalancer:
         servers:
-          - url: 'https://{{ env "DOMAIN_NAME" }}:10000'
+          - url: https://{{ env "DOMAIN_NAME" }}:10000
         serversTransport: webmin-stx
   serversTransports:
     webmin-stx:
