@@ -61,7 +61,6 @@ services:
       - guacamole-postgres
       - guacd
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole
       - traefik.http.routers.guacamole-rtr.entryPoints=websecure

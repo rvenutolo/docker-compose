@@ -32,7 +32,6 @@ services:
       BACKREST_DATA: /data
       XDG_CACHE_HOME: /cache
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.backrest-rtr.entryPoints=websecure
       - traefik.http.routers.backrest-rtr.middlewares=default-chain-mdw@file

@@ -23,7 +23,6 @@ services:
       SSHKEY: /id_ed25519
       TITLE: WeTTY - ${DOMAIN_NAME:?}
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.wetty-rtr.entryPoints=websecure
       - traefik.http.routers.wetty-rtr.middlewares=default-chain-mdw@file

@@ -75,7 +75,6 @@ services:
       KOMODO_RESOURCE_POLL_INTERVAL: ${KOMODO_RESOURCE_POLL_INTERVAL:-5-min}
     labels:
       - komodo.skip
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.komodo-rtr.entryPoints=websecure
       - traefik.http.routers.komodo-rtr.middlewares=default-chain-mdw@file

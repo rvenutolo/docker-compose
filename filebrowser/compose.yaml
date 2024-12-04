@@ -21,7 +21,6 @@ services:
       - database:/database/
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.filebrowser-rtr.entryPoints=websecure
       - traefik.http.routers.filebrowser-rtr.middlewares=default-chain-mdw@file

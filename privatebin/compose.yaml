@@ -20,7 +20,6 @@ services:
       - data:/srv/data
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.privatebin-rtr.entryPoints=websecure
       - traefik.http.routers.privatebin-rtr.middlewares=default-chain-mdw@file

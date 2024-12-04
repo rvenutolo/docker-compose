@@ -41,7 +41,6 @@ services:
       DOCKER_HOST: tcp://glances-socket-proxy:2375
       GLANCES_OPT: --webserver
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.glances-rtr.entryPoints=websecure
       - traefik.http.routers.glances-rtr.middlewares=default-chain-mdw@file

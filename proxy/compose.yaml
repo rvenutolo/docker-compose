@@ -70,10 +70,10 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${DOCKER_EXPOSED_BY_DEFAULT:-false}
+      - --providers.docker.network=proxy
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.traefik-rtr.entryPoints=websecure
       - traefik.http.routers.traefik-rtr.middlewares=default-chain-mdw@file

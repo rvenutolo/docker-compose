@@ -17,7 +17,6 @@ services:
     environment:
       WHOAMI_NAME: whoami.${DOMAIN_NAME:?}
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.whoami-rtr.entryPoints=websecure
       - traefik.http.routers.whoami-rtr.middlewares=default-chain-mdw@file

@@ -15,7 +15,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.regex=^https://hello\.(.*)
       - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.replacement=https://hello-world.$${1}

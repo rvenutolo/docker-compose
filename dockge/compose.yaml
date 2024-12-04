@@ -63,7 +63,6 @@ services:
       TAILNET_IP: ${TAILNET_IP:?}
       USER: ${USER:?}
     labels:
-      - traefik.docker.network=proxy
       - traefik.enable=true
       - traefik.http.routers.dockge-rtr.entryPoints=websecure
       - traefik.http.routers.dockge-rtr.middlewares=default-chain-mdw@file
