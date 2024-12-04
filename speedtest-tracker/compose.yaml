@@ -19,8 +19,6 @@ services:
       - config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
-      PUID: ${PUID:?}
-      PGID: ${PGID:?}
       TZ: ${DOCKER_TZ:?}
       APP_KEY: ${APP_KEY:?}
       APP_URL: https://speedtest-tracker.${DOMAIN_NAME:?}
