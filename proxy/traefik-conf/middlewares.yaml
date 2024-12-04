@@ -20,40 +20,40 @@ http:
           - OPTIONS
           - PUT
         accessControlMaxAge: 100
-        hostsProxyHeaders:
-          - X-Forwarded-Host
-        stsSeconds: 63072000
-        stsIncludeSubdomains: true
-        stsPreload: true
-        #forceSTSHeader: true
-        customFrameOptionsValue: SAMEORIGIN
-        contentTypeNosniff: true
         browserXssFilter: true
-        referrerPolicy: same-origin
-        permissionsPolicy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()
+        contentTypeNosniff: true
+        customFrameOptionsValue: SAMEORIGIN
         customResponseHeaders:
           X-Robots-Tag: none,noarchive,nosnippet,notranslate,noimageindex
           server: ""
+        #forceSTSHeader: true
+        hostsProxyHeaders:
+          - X-Forwarded-Host
+        permissionsPolicy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()
+        referrerPolicy: same-origin
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 63072000
 
     auth-mdw:
       forwardauth:
         address: http://authelia:9091/api/verify?rd=https://authelia.{{ env "DOMAIN_NAME" }}/
-        trustForwardHeader: true
         authResponseHeaders:
           - Remote-User
           - Remote-Groups
           - Remote-Name
           - Remote-Email
-          -
+        trustForwardHeader: true
+
     auth-basic-mdw:
       forwardauth:
         address: http://auth:9091/api/verify?auth=basic
-        trustForwardHeader: true
         authResponseHeaders:
           - Remote-User
           - Remote-Groups
           - Remote-Name
           - Remote-Email
+        trustForwardHeader: true
 
     default-chain-mdw:
       chain:
