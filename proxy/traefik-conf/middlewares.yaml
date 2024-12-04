@@ -35,6 +35,26 @@ http:
           X-Robots-Tag: none,noarchive,nosnippet,notranslate,noimageindex
           server: ""
 
+    auth-mdw:
+      forwardauth:
+        address: http://authelia:9091/api/verify?rd=https://authelia.{{ env "DOMAIN_NAME" }}/
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Remote-User
+          - Remote-Groups
+          - Remote-Name
+          - Remote-Email
+          -
+    auth-basic-mdw:
+      forwardauth:
+        address: http://auth:9091/api/verify?auth=basic
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Remote-User
+          - Remote-Groups
+          - Remote-Name
+          - Remote-Email
+
     default-chain-mdw:
       chain:
         middlewares:
