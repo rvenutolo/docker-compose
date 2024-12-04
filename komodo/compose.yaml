@@ -116,7 +116,7 @@ services:
       - no-new-privileges:true
     networks:
       - default
-      - komodo-socket-proxy
+      - socket-proxy
     depends_on:
       - komodo-socket-proxy
     volumes:
