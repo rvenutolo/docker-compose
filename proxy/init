@@ -7,3 +7,6 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 readonly env_file="$(env_file)"
 set_env_file_var_if_not_defined "${env_file}" 'CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
+
+readonly authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
+create_file_if_not_exists "${authelia_notifications_file}"

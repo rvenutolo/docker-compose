@@ -1,1 +1,3 @@
+.env
 guacamole/init-db.sql
+proxy/authelia-notifications.txt

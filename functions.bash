@@ -83,7 +83,7 @@ function create_file_if_not_exists() {
     change_ownership "$1"
   else
     log "Writing $1"
-    echo "$2" > "$1"
+    echo "${2:-}" > "$1"
     log "Wrote $1"
   fi
 }
