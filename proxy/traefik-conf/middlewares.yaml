@@ -44,20 +44,20 @@ http:
       forwardauth:
         address: http://authelia:9091/api/verify?rd=https://authelia.{{ env "DOMAIN_NAME" }}/
         authResponseHeaders:
-          - Remote-User
+          - Remote-Email
           - Remote-Groups
           - Remote-Name
-          - Remote-Email
+          - Remote-User
         trustForwardHeader: true
 
     auth-basic-mdw:
       forwardauth:
         address: http://auth:9091/api/verify?auth=basic
         authResponseHeaders:
-          - Remote-User
+          - Remote-Email
           - Remote-Groups
           - Remote-Name
-          - Remote-Email
+          - Remote-User
         trustForwardHeader: true
 
     default-chain-mdw:
