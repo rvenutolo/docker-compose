@@ -3,8 +3,7 @@ networks:
     external: true
 
 volumes:
-  ## TODO check on this
-  db:
+  database:
 
 services:
   filebrowser:
@@ -19,7 +18,7 @@ services:
     volumes:
       - ~:/srv
       - ./config.json:/.filebrowser.json
-      - db:/database.db
+      - database:/database/
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.docker.network=proxy
