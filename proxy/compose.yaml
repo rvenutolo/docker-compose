@@ -76,7 +76,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-rtr.entryPoints=websecure
-      - traefik.http.routers.traefik-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.traefik-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
       - traefik.http.routers.traefik-rtr.tls=true
       - traefik.http.routers.traefik-rtr.service=api@internal

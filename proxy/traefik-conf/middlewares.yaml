@@ -50,19 +50,17 @@ http:
           - Remote-User
         trustForwardHeader: true
 
-    auth-basic-mdw:
-      forwardauth:
-        address: http://auth:9091/api/verify?auth=basic
-        authResponseHeaders:
-          - Remote-Email
-          - Remote-Groups
-          - Remote-Name
-          - Remote-User
-        trustForwardHeader: true
-
-    default-chain-mdw:
+    default-chain-no-auth-mdw:
       chain:
         middlewares:
           - ip-allow-list-mdw@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
+
+    default-chain-with-auth-mdw:
+      chain:
+        middlewares:
+          - ip-allow-list-mdw@file
+          - rate-limit-mdw@file
+          - secure-headers-mdw@file
+          - auth-mdw@file

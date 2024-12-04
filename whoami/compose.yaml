@@ -19,7 +19,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami-rtr.entryPoints=websecure
-      - traefik.http.routers.whoami-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.whoami-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.whoami-rtr.rule=Host(`whoami.${DOMAIN_NAME:?}`)
       - traefik.http.routers.whoami-rtr.tls=true
       - traefik.http.services.whoami-svc.loadBalancer.server.port=80

@@ -23,7 +23,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.filebrowser-rtr.entryPoints=websecure
-      - traefik.http.routers.filebrowser-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.filebrowser-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
       - traefik.http.routers.filebrowser-rtr.tls=true
       - traefik.http.services.filebrowser-svc.loadBalancer.server.port=80

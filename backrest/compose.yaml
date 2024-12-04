@@ -34,7 +34,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.backrest-rtr.entryPoints=websecure
-      - traefik.http.routers.backrest-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.backrest-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.backrest-rtr.rule=Host(`backrest.${DOMAIN_NAME:?}`)
       - traefik.http.routers.backrest-rtr.tls=true
       - traefik.http.services.backrest-svc.loadBalancer.server.port=9898

@@ -43,7 +43,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.glances-rtr.entryPoints=websecure
-      - traefik.http.routers.glances-rtr.middlewares=default-chain-mdw@file
+      - traefik.http.routers.glances-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.glances-rtr.rule=Host(`glances.${DOMAIN_NAME:?}`)
       - traefik.http.routers.glances-rtr.tls=true
       - traefik.http.services.glances-svc.loadBalancer.server.port=61208
