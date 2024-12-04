@@ -67,4 +67,5 @@ services:
       - traefik.http.routers.dockge-rtr.entryPoints=websecure
       - traefik.http.routers.dockge-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.dockge-rtr.rule=Host(`dockge.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.dockge-rtr.tls=true
       - traefik.http.services.dockge-svc.loadBalancer.server.port=5001

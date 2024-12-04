@@ -51,4 +51,5 @@ services:
       - traefik.http.routers.dozzle-rtr.entryPoints=websecure
       - traefik.http.routers.dozzle-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.dozzle-rtr.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.dozzle-rtr.tls=true
       - traefik.http.services.dozzle-svc.loadBalancer.server.port=8080

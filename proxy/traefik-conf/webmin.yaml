@@ -7,6 +7,7 @@ http:
         - default-chain-mdw@file
       rule: Host(`webmin.{{ env "DOMAIN_NAME" }}`)
       service: webmin-svc
+      tls: true
   services:
     webmin-svc:
       loadBalancer:

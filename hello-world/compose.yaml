@@ -24,4 +24,5 @@ services:
       - traefik.http.routers.hello-world-rtr.entryPoints=websecure
       - traefik.http.routers.hello-world-rtr.middlewares=default-chain-mdw@file
       - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.hello-world-rtr.tls=true
       - traefik.http.services.hello-world-svc.loadBalancer.server.port=8000

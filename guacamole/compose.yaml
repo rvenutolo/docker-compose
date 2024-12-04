@@ -66,4 +66,5 @@ services:
       - traefik.http.routers.guacamole-rtr.entryPoints=websecure
       - traefik.http.routers.guacamole-rtr.middlewares=default-chain-mdw@file,guacamole-add-prefix-mdw
       - traefik.http.routers.guacamole-rtr.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
+      - traefik.http.routers.guacamole-rtr.tls=true
       - traefik.http.services.guacamole-svc.loadBalancer.server.port=8080
