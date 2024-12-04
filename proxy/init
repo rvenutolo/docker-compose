@@ -6,7 +6,8 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 readonly env_file="$(env_file)"
-set_env_file_var_if_not_defined "${env_file}" 'CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
+set_env_file_var_if_not_defined "${env_file}" 'TRAEFIK_CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
+set_env_file_var_if_not_defined "${env_file}" 'AUTHELIA_STORAGE_ENCRYPTION_KEY' 'docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
 
 readonly authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
 create_file_if_not_exists "${authelia_notifications_file}"
