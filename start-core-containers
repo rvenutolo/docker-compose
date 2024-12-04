@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
+for stack in 'proxy' 'dozzle' 'glances' 'hello-world' 'wetty' 'whoami'; do
+  docker compose --file "${stack}/compose.yaml" up --detach
+done
