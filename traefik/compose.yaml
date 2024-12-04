@@ -19,7 +19,7 @@ services:
     tmpfs:
       - /run
     networks:
-      - traefik-socket-proxy
+      - socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
