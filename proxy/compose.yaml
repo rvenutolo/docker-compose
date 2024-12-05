@@ -68,6 +68,7 @@ services:
       - socket-proxy
     depends_on:
       - traefik-socket-proxy
+      - authelia
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
