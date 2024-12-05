@@ -51,6 +51,7 @@ regulation:
 
 session:
   cookies:
+    # TODO figure out expiration/inactivity/remember_me
     - authelia_url: https://authelia.{{ env "DOMAIN_NAME" }}
       expiration: 1h
       domain: {{ env "DOMAIN_NAME" }}
