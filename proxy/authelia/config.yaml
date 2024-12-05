@@ -11,8 +11,7 @@ access_control:
       - 192.168.0.0/16
   - name: tailnet
     networks: 100.64.0.0/10
-  ## TODO?
-  # rules:
+  rules:
     
 authentication_backend:
   file:
