@@ -44,8 +44,8 @@ log:
   # json, text.
   format: text
   keep_stdout: true
-  # info, debug, trace.
-  level: debug
+  # info, debug, trace
+  level: {{ env "LOG_LEVEL" }}
 
 notifier:
   filesystem:

@@ -27,6 +27,7 @@ services:
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME:?}
       STORAGE_ENCRYPTION_KEY: ${AUTHELIA_STORAGE_ENCRYPTION_KEY:?}
+      LOG_LEVEL: ${AUTHELIA_LOG_LEVEL:-info}
       X_AUTHELIA_CONFIG: /config.yaml
       X_AUTHELIA_CONFIG_FILTERS: template
     labels:
