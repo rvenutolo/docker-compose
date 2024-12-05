@@ -5,7 +5,6 @@ http:
       ipAllowList:
         sourceRange:
           - 127.0.0.1/32
-          - 172.16.0.0/12
           - 100.64.0.0/10
 
     rate-limit-mdw:
