@@ -54,7 +54,6 @@ session:
       remember_me: 1d
 
 storage:
-  ## docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric
   encryption_key: {{ env "STORAGE_ENCRYPTION_KEY" }}
   local:
     path: /config/db.sqlite3
@@ -62,7 +61,6 @@ storage:
 theme: dark
 
 totp:
-  disable: false
   issuer: {{ env "DOMAIN_NAME" }}
 
 webauthn:
