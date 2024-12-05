@@ -33,8 +33,7 @@ default_2fa_method: totp
   # enable_self_enrollment: false
 
 log:
-  ## TODO - for crowdsec?
-  file_path: /config/authelia.log
+  file_path: /var/log/authelia.log
   # json, text.
   format: text
   keep_stdout: true
