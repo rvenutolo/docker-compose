@@ -1,3 +1,11 @@
+*.bak
+*.orig
+*.tmp
+*.private
+*.old
+*.log
+*.patch
+*.diff
 .env
 guacamole/init-db.sql
 proxy/authelia-notifications.txt
