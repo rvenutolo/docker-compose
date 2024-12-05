@@ -59,8 +59,6 @@ session:
   cookies:
     - authelia_url: https://authelia.{{ env "DOMAIN_NAME" }}
       expiration: 1h
-      ## TODO?
-      # default_redirection_url: 'https://www.example.com'
       domain: {{ env "DOMAIN_NAME" }}
       inactivity: 5m
       name: {{ env "DOMAIN_NAME" }}-authelia-session
