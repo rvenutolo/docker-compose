@@ -104,3 +104,6 @@ theme: dark
 totp:
   disable: false
   issuer: {{ env "DOMAIN_NAME" }}
+
+webauthn:
+  disable: true
