@@ -46,18 +46,10 @@ function prompt_for_value() {
   echo "${REPLY}"
 }
 
-function change_ownership() {
-  for target in "$@"; do
-    sudo chown -R "${USER}:" "${target}"
-  done
-}
-
 # $@ = targets
-function create_dir_or_change_ownership() {
+function create_dir() {
   for target in "$@"; do
-    if [[ -d "${target}" ]]; then
-      change_ownership "${target}"
-    else
+    if [[ ! -d "${target}" ]]; then
       log "Creating ${target}"
       mkdir --parents "${target}"
       log "Created ${target}"
@@ -68,9 +60,6 @@ function create_dir_or_change_ownership() {
 # $1 = file
 # $2 = content
 function create_or_overwrite_file() {
-  if [[ -f "$1" ]]; then
-    change_ownership "$1"
-  fi
   log "Writing $1"
   echo "$2" > "$1"
   log "Wrote $1"
@@ -79,9 +68,7 @@ function create_or_overwrite_file() {
 # $1 = file
 # $2 = content
 function create_file_if_not_exists() {
-  if [[ -f "$1" ]]; then
-    change_ownership "$1"
-  else
+  if [[ ! -f "$1" ]]; then
     log "Writing $1"
     echo "${2:-}" > "$1"
     log "Wrote $1"
