@@ -25,7 +25,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.wetty-rtr.entryPoints=websecure
-      - traefik.http.routers.wetty-rtr.middlewares=default-chain-no-auth-mdw@file
+      - traefik.http.routers.wetty-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.wetty-rtr.rule=Host(`wetty.${DOMAIN_NAME:?}`)
       - traefik.http.routers.wetty-rtr.tls=true
       - traefik.http.services.wetty-svc.loadBalancer.server.port=3000

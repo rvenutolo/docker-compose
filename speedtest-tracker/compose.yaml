@@ -28,7 +28,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.speedtest-tracker-rtr.entryPoints=websecure
-      - traefik.http.routers.speedtest-tracker-rtr.middlewares=default-chain-no-auth-mdw@file
+      - traefik.http.routers.speedtest-tracker-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.speedtest-tracker-rtr.rule=Host(`speedtest-tracker.${DOMAIN_NAME:?}`)
       - traefik.http.routers.speedtest-tracker-rtr.tls=true
       - traefik.http.services.speedtest-tracker-svc.loadBalancer.server.port=80
