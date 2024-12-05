@@ -4,8 +4,7 @@
 users:
   rvenutolo:
     disabled: false
-    displayname: "Rick"
-    password: {{ env "RVENUTOLO_PASSWORD_HASH" }}
-    email: {{ env "RVENUTOLO_EMAIL" }}
+    displayname: Rick Venutolo
+    password: $argon2id$v=19$m=65536,t=3,p=4$1J7Rep68Fn/8FehxWxFIVA$AiL3tFC80EP3WTtRSmheyNUX/hnfYOlTKsBAmJx6WSQ
     groups:
       - admin

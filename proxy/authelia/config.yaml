@@ -33,7 +33,6 @@ log:
   # info, debug, trace
   level: {{ env "LOG_LEVEL" }}
 
-## TODO email notifications
 notifier:
   filesystem:
     filename: /notifications.txt
