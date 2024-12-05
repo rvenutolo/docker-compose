@@ -18,7 +18,6 @@ authentication_backend:
 # totp, webauthn, or mobile_push
 default_2fa_method: totp
 
-## TODO test this
 duo_api:
   hostname: {{ env "DUO_API_HOSTNAME" }}
   integration_key: {{ env "DUO_INTEGRATION_KEY" }}
