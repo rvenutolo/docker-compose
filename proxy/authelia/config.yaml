@@ -7,7 +7,7 @@ access_control:
   - name: tailnet
     networks: 100.64.0.0/10
   rules:
-    
+
 authentication_backend:
   file:
     path: /users.yaml
@@ -15,6 +15,7 @@ authentication_backend:
   password_reset:
     disable: true
 
+## TODO use webauthn
 # totp, webauthn, or mobile_push
 default_2fa_method: totp
 
