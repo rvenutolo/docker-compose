@@ -1,4 +1,4 @@
 filenames:
-  - /var/log/authelia/*
+  - /var/log/authelia/*.log
 labels:
   type: authelia
