@@ -56,10 +56,9 @@ services:
     networks:
       - proxy
     volumes:
-      ## TODO see if the ordering of things that mount to /etc/crowdsec matter
-      ## TODO config file?
-#      - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
       - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+      - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
       - crowdsec-config:/etc/crowdsec
       - crowdsec-data:/var/lib/crowdsec/data/
       - authelia-logs:/var/log/authelia:ro

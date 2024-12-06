@@ -1,0 +1,2 @@
+## This file is bound to /etc/crowdsec/config.yaml.local
+## and any configuration within overrides the default configuration.
