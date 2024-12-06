@@ -60,7 +60,7 @@ services:
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
       - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
       - crowdsec-config:/etc/crowdsec
-      - crowdsec-data:/var/lib/crowdsec/data/
+      - crowdsec-data:/var/lib/crowdsec/data
       - authelia-logs:/var/log/authelia:ro
       - traefik-logs:/var/log/traefik:ro
       - /etc/localtime:/etc/localtime:ro
