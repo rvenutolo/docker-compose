@@ -5,6 +5,6 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-readonly env_file="$(env_file)"
+env_file="$(env_file)"
 set_env_file_var_if_not_defined "${env_file}" 'DISCORD_WEBHOOK_ID'
 set_env_file_var_if_not_defined "${env_file}" 'DISCORD_TOKEN'

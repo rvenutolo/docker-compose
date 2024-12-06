@@ -5,7 +5,7 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-readonly env_file="$(env_file)"
+env_file="$(env_file)"
 set_env_file_var_if_not_defined "${env_file}" 'MONGO_PASSWORD'
 set_env_file_var_if_not_defined "${env_file}" 'KOMODO_PASSKEY'
 set_env_file_var_if_not_defined "${env_file}" 'KOMODO_JWT_SECRET'

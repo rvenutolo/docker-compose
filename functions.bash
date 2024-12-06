@@ -105,10 +105,11 @@ function env_file_var_defined() {
 # $3 = info (optional)
 function set_env_file_var() {
   check_for_file "$1"
+  local var_value
   if [[ -n "$3" ]]; then
-    local var_value="$(prompt_for_value "Enter value for $2 ($3)")"
+    var_value="$(prompt_for_value "Enter value for $2 ($3)")"
   else
-    local var_value="$(prompt_for_value "Enter value for $2")"
+    var_value="$(prompt_for_value "Enter value for $2")"
   fi
   sed --in-place "s|^$2=.*$|$2=${var_value}|" "$1"
 }

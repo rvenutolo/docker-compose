@@ -24,7 +24,7 @@ if [[ -n "${die:-}" ]]; then
   die 'Fix the missing env vars and re-run this script'
 fi
 
-readonly proxy_network='proxy'
+proxy_network='proxy'
 if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Creating ${proxy_network} network"
   docker network create "${proxy_network}"
