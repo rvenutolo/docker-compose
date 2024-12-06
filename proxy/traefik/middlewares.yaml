@@ -58,7 +58,8 @@ http:
       chain:
         middlewares:
           - ip-allow-list-mdw@file
-          - crowdsec-bouncer@file
+          ## TODO figure out why this gives 403
+          #- crowdsec-bouncer@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
 
@@ -66,7 +67,7 @@ http:
       chain:
         middlewares:
           - ip-allow-list-mdw@file
-          - crowdsec-bouncer@file
+          #- crowdsec-bouncer@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
           - auth-mdw@file
