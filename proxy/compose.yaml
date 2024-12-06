@@ -116,9 +116,9 @@ services:
       - proxy
       - socket-proxy
     depends_on:
-      - traefik-socket-proxy
       - authelia
-      - crowdsec-bouncer
+      - traefik-crowdsec-bouncer
+      - traefik-socket-proxy
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
