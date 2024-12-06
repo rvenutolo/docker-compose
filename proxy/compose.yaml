@@ -4,8 +4,12 @@ networks:
   socket-proxy:
 
 volumes:
-  traefik-certs:
   authelia-config:
+  authelia-logs:
+  crowdsec-config:
+  crowdsec-data:
+  traefik-certs:
+  traefik-logs:
 
 services:
 
@@ -22,6 +26,7 @@ services:
       - ./authelia-notifications.txt:/notifications.txt
       - ./authelia/config.yaml:/config.yaml:ro
       - ./authelia/users.yaml:/users.yaml:ro
+      - authelia-logs:/var/log/authelia
       - authelia-config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -40,6 +45,47 @@ services:
       - traefik.http.routers.authelia-rtr.rule=Host(`authelia.${DOMAIN_NAME:?}`)
       - traefik.http.routers.authelia-rtr.tls=true
       - traefik.http.services.authelia-svc.loadBalancer.server.port=9091
+
+  crowdsec:
+    image: ${CROWDSEC_IMAGE:-crowdsecurity/crowdsec}:${CROWDSEC_IMAGE_TAG:-latest}
+    container_name: crowdsec
+    hostname: crowdsec
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      ## TODO see if the ordering of things that mount to /etc/crowdsec matter
+      ## TODO config file?
+#      - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
+      - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
+      - crowdsec-config:/etc/crowdsec
+      - crowdsec-data:/var/lib/crowdsec/data/
+      - authelia-logs:/var/log/authelia:ro
+      - traefik-logs:/var/log/traefik:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      COLLECTIONS: ${CROWDSEC_COLLECTIONS:-crowdsecurity/linux crowdsecurity/traefik LePresidente/authelia}
+
+  ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
+
+  traefik-crowdsec-bouncer:
+    image: ${TRAEFIK_CROWDSEC_BOUNCER_IMAGE:-docker.io/fbonalair/traefik-crowdsec-bouncer}:${TRAEFIK_CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
+    container_name: traefik-crowdsec-bouncer
+    hostname: traefik-crowdsec-bouncer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    depends_on:
+      - crowdsec
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      CROWDSEC_BOUNCER_API_KEY: ${TRAEFIK_CROWDSEC_BOUNCER_API_KEY:?}
+      CROWDSEC_AGENT_HOST: crowdsec:8080
 
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
@@ -72,6 +118,7 @@ services:
     depends_on:
       - traefik-socket-proxy
       - authelia
+      - crowdsec-bouncer
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
@@ -79,16 +126,19 @@ services:
     volumes:
       - ./traefik:/etc/traefik/conf:ro
       - traefik-certs:/etc/traefik/certs
+      - traefik-logs:/var/log/traefik
       - /etc/localtime:/etc/localtime:ro
     environment:
       CF_DNS_API_TOKEN: ${TRAEFIK_CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
     command:
+      - --accessLog.filePath=/var/log/traefik/access.log
       - --accessLog.filters.statusCodes=${TRAEFIK_ACCESS_LOG_STATUS_CODES:-400-499,500-599}
       - --api.dashboard=true
       - --api.disableDashboardAd=true
       - --global.sendAnonymousUsage=true
       - --experimental.fastProxy
+      - --log.filePath=/var/log/traefik/traefik.log
       - --log.level=${TRAEFIK_LOG_LEVEL:-INFO}
       - --certificatesResolvers.dns-cloudflare.acme.caServer=${TRAEFIK_ACME_CA_SERVER:-https://acme-v02.api.letsencrypt.org/directory}
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
