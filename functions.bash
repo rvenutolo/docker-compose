@@ -109,13 +109,14 @@ function get_env_file_var() {
 # $1 = env file
 # $2 = var
 function env_file_var_defined() {
-  [[ -n "$(get_env_file_var "$1" "$2")" ]]
+  local var_value
+  var_value="$(get_env_file_var "$1" "$2")" || exit 1
+  [[ -n "${var_value}" ]]
 }
 
 # $1 = env file
 # $2 = var
 function get_env_file_defined_var() {
-  var_value=$(get_env_file_var "$1" "$2")
   if ! env_file_var_defined "$1" "$2"; then
     die "$2 is not defined in $1"
   fi
@@ -129,9 +130,9 @@ function set_env_file_var() {
   check_for_file "$1"
   local var_value
   if [[ -n "$3" ]]; then
-    var_value="$(prompt_for_value "Enter value for $2 ($3)")"
+    var_value="$(prompt_for_value "Enter value for $2 ($3)")" || exit 1
   else
-    var_value="$(prompt_for_value "Enter value for $2")"
+    var_value="$(prompt_for_value "Enter value for $2")" || exit 1
   fi
   sed --in-place "s|^$2=.*$|$2=${var_value}|" "$1"
 }
