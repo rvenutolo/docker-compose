@@ -59,20 +59,26 @@ function create_dir() {
 
 # $1 = file
 # $2 = content
-function create_or_overwrite_file() {
+function write_file() {
   log "Writing $1"
-  echo "$2" > "$1"
+  echo "${2:-}" > "$1"
   log "Wrote $1"
 }
 
 # $1 = file
 # $2 = content
-function create_file_if_not_exists() {
-  if [[ ! -f "$1" ]]; then
-    log "Writing $1"
-    echo "${2:-}" > "$1"
-    log "Wrote $1"
+function write_file_if_not_exists() {
+  if [[ ! -f "${1}" ]]; then
+    write_file "$1" "${2:-}"
   fi
+}
+
+# $1 = file
+# $2 = content
+function root_write_file() {
+  log "Writing $1"
+  echo "$2" | sudo tee "$1" > '/dev/null'
+  log "Wrote $1"
 }
 
 function this_script_dir() {
@@ -92,12 +98,28 @@ function check_for_file() {
 
 # $1 = env file
 # $2 = var
-function env_file_var_defined() {
+function get_env_file_var() {
   check_for_file "$1"
   if ! grep --quiet "^$2=" "$1"; then
     die "$2 does not exist in $1"
   fi
-  [[ -n "$(grep "^$2=" "$1" | cut --delimiter='=' --fields='2')" ]]
+  grep "^$2=" "$1" | cut --delimiter='=' --fields='2'
+}
+
+# $1 = env file
+# $2 = var
+function env_file_var_defined() {
+  [[ -n "$(get_env_file_var "$2" "$1")" ]]
+}
+
+# $1 = env file
+# $2 = var
+function get_env_file_defined_var() {
+  var_value=$(get_env_file_var "$1" "$2")
+  if ! env_file_var_defined "$1" "$2"; then
+    die "$2 is not defined in $1"
+  fi
+  get_env_file_var "$1" "$2"
 }
 
 # $1 = env file
