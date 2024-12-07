@@ -30,4 +30,4 @@ if docker exec 'crowdsec' cscli console status --output 'raw' | grep --quiet '^c
 fi
 docker stop 'crowdsec' > '/dev/null'
 
-root_write_file '/etc/cron.d/crowdsec-hub-update-upgrade'  '0 5 * * * docker exec crowdsec cscli hub update && docker exec crowdsec cscli hub upgrade'
+root_copy_file "$(this_script_dir)/crowdsec/cron-crowdsec-hub-update-upgrade" '/etc/cron.d/crowdsec-hub-update-upgrade'
