@@ -17,7 +17,7 @@ set_env_file_var_if_not_defined "${env_file}" 'TRAEFIK_CF_DNS_API_TOKEN' 'https:
 authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
 write_file_if_not_exists "${authelia_notifications_file}"
 
-docker run --name 'crowdsec-temp' --rm --detach -- volume 'crowdsec-config:/etc/crowdsec' --volume 'proxy_crowdsec-data:/var/lib/crowdsec/data' 'crowdsecurity/crowdsec' > '/dev/null'
+docker run --name 'crowdsec-temp' --rm --detach --volume 'proxy_crowdsec-data:/var/lib/crowdsec/data' 'crowdsecurity/crowdsec' > '/dev/null'
 # sleep for a few seconds to let crowdsec start up and create config file
 sleep 5
 if ! docker exec crowdsec-temp cscli bouncers list --output raw | grep --quiet '^traefik-crowdsec-bouncer,'; then
