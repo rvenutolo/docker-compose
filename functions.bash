@@ -109,7 +109,7 @@ function get_env_file_var() {
 # $1 = env file
 # $2 = var
 function env_file_var_defined() {
-  [[ -n "$(get_env_file_var "$2" "$1")" ]]
+  [[ -n "$(get_env_file_var "$1" "$2")" ]]
 }
 
 # $1 = env file
