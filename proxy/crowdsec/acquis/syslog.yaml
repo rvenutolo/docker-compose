@@ -1,0 +1,5 @@
+filenames:
+  - /var/log/external/auth.log
+  - /var/log/external/syslog
+labels:
+  type: syslog

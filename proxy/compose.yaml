@@ -56,16 +56,19 @@ services:
     networks:
       - proxy
     volumes:
+      ## TODO do any of these need to be readonly?
       - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
       - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
       - crowdsec-config:/etc/crowdsec
       - crowdsec-data:/var/lib/crowdsec/data
-      - authelia-logs:/var/log/authelia:ro
-      - traefik-logs:/var/log/traefik:ro
+      - authelia-logs:/var/log/external/authelia:ro
+      - traefik-logs:/var/log/external/traefik:ro
+      - /var/log/auth.log:/var/log/external/auth.log:ro
+      - /var/log/syslog:/var/log/external/syslog:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      COLLECTIONS: ${CROWDSEC_COLLECTIONS:-crowdsecurity/linux crowdsecurity/traefik LePresidente/authelia}
+      COLLECTIONS: ${CROWDSEC_COLLECTIONS:-crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/base-http-scenarios crowdsecurity/sshd crowdsecurity/linux crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs LePresidente/authelia}
 
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
