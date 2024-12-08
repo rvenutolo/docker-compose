@@ -69,6 +69,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       COLLECTIONS: ${CROWDSEC_COLLECTIONS:-crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/base-http-scenarios crowdsecurity/sshd crowdsecurity/linux crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs LePresidente/authelia}
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.crowdsec-redirect-mdw.redirectRegex.regex=^https://crowdsec\.${DOMAIN_NAME_REGEX}/(.*)
+      - traefik.http.middlewares.crowdsec-redirect-mdw.redirectRegex.replacement=https://app.crowdsec.net/security-engines/$${1}
+      - traefik.http.routers.crowdsec-redirect-rtr.entryPoints=websecure
+      - traefik.http.routers.crowdsec-redirect-rtr.middlewares=crowdsec-redirect-mdw
+      - traefik.http.routers.crowdsec-redirect-rtr.rule=Host(`crowdsec.${DOMAIN_NAME:?}`)
 
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
