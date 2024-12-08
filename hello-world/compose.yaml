@@ -16,8 +16,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.regex=^https://hello\.${DOMAIN_NAME_REGEX}/(.*)
-      - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.replacement=https://hello-world.${DOMAIN_NAME}/$${1}
+      - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.regex=^https://hello\.${DOMAIN_NAME_REGEX:?}/(.*)
+      - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.replacement=https://hello-world.${DOMAIN_NAME:?}/$${1}
       - traefik.http.routers.hello-redirect-rtr.entryPoints=websecure
       - traefik.http.routers.hello-redirect-rtr.middlewares=hello-redirect-mdw
       - traefik.http.routers.hello-redirect-rtr.rule=Host(`hello.${DOMAIN_NAME:?}`)
