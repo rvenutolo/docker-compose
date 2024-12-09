@@ -113,7 +113,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - /var/log/traefik:/var/log/traefik
+      - /var/log/traefik:/var/log/traefik:ro
       - /etc/localtime:/etc/localtime:ro
     command: tail -q -F /var/log/traefik/traefik.log /var/log/traefik/access.log
 
