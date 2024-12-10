@@ -21,5 +21,5 @@ root_copy_file "$(this_script_dir)/crowdsec/cron-crowdsec-hub-update-upgrade" '/
 
 traefik_crowdsec_bouncer_api_key="$(get_env_file_defined_var "${env_file}" 'TRAEFIK_CROWDSEC_BOUNCER_API_KEY')"
 crowdsec_engine_enroll_key="$(get_env_file_defined_var "${env_file}" 'CROWDSEC_ENGINE_ENROLL_KEY')"
-log "Run this after starting proxy stack:
+log "Run this after starting proxy stack (if not already run):
 > docker exec 'crowdsec' cscli bouncers add 'traefik-crowdsec-bouncer' --key '${traefik_crowdsec_bouncer_api_key}' && docker exec 'crowdsec' cscli console enroll -e context --name '${DOMAIN_NAME}' '${crowdsec_engine_enroll_key}'"
