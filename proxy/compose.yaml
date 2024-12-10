@@ -115,7 +115,7 @@ services:
     volumes:
       - /var/log/traefik:/var/log/traefik:ro
       - /etc/localtime:/etc/localtime:ro
-    command: tail -q -F /var/log/traefik/traefik.log /var/log/traefik/access.log
+    command: tail -q -n 0 -F /var/log/traefik/traefik.log /var/log/traefik/access.log
 
   traefik:
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
