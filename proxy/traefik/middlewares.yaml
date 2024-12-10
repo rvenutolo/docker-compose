@@ -57,17 +57,16 @@ http:
     default-chain-no-auth-mdw:
       chain:
         middlewares:
+          - crowdsec-bouncer@file
           - ip-allow-list-mdw@file
-          ## TODO figure out why this gives 403
-          #- crowdsec-bouncer@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
 
     default-chain-with-auth-mdw:
       chain:
         middlewares:
+          - crowdsec-bouncer@file
           - ip-allow-list-mdw@file
-          #- crowdsec-bouncer@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
           - auth-mdw@file
