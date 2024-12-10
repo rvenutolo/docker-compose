@@ -63,6 +63,7 @@ services:
       - /var/log/authelia:/var/log/external/authelia:ro
       - /var/log/traefik:/var/log/external/traefik:ro
       - /var/log/auth.log:/var/log/external/auth.log:ro
+      - /var/log/kern.log:/var/log/external/kern.log:ro
       - /var/log/syslog:/var/log/external/syslog:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
