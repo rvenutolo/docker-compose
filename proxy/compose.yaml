@@ -67,7 +67,21 @@ services:
       - /var/log/syslog:/var/log/external/syslog:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      COLLECTIONS: ${CROWDSEC_COLLECTIONS:-crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/base-http-scenarios crowdsecurity/sshd crowdsecurity/linux crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs LePresidente/authelia}
+      COLLECTIONS: >
+        ${CROWDSEC_COLLECTIONS:-
+        crowdsecurity/appsec-crs
+        crowdsecurity/appsec-generic-rules
+        crowdsecurity/appsec-virtual-patching
+        crowdsecurity/base-http-scenarios
+        crowdsecurity/http-cve
+        crowdsecurity/http-dos
+        crowdsecurity/iptables
+        crowdsecurity/linux
+        crowdsecurity/linux-lpe
+        crowdsecurity/sshd
+        crowdsecurity/traefik
+        LePresidente/authelia
+        }
 
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
