@@ -1,1 +1,1 @@
-0 12 * * * docker exec crowdsec cscli hub update && docker exec crowdsec cscli hub upgrade
+0 12 * * * root docker exec crowdsec cscli hub update && docker exec crowdsec cscli hub upgrade
