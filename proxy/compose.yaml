@@ -68,7 +68,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       COLLECTIONS: >
-        ${CROWDSEC_COLLECTIONS:-
         crowdsecurity/appsec-crs
         crowdsecurity/appsec-generic-rules
         crowdsecurity/appsec-virtual-patching
@@ -81,7 +80,7 @@ services:
         crowdsecurity/sshd
         crowdsecurity/traefik
         LePresidente/authelia
-        }
+        ${CROWDSEC_EXTRA_COLLECTIONS:-}
 
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
