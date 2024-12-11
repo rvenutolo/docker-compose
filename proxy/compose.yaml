@@ -84,10 +84,10 @@ services:
 
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
-  traefik-crowdsec-bouncer:
-    image: ${TRAEFIK_CROWDSEC_BOUNCER_IMAGE:-docker.io/fbonalair/traefik-crowdsec-bouncer}:${TRAEFIK_CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
-    container_name: traefik-crowdsec-bouncer
-    hostname: traefik-crowdsec-bouncer
+  crowdsec-bouncer:
+    image: ${CROWDSEC_BOUNCER_IMAGE:-docker.io/fbonalair/traefik-crowdsec-bouncer}:${CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
+    container_name: crowdsec-bouncer
+    hostname: crowdsec-bouncer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -98,8 +98,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
-      CROWDSEC_BOUNCER_API_KEY: ${TRAEFIK_CROWDSEC_BOUNCER_API_KEY:?}
       CROWDSEC_AGENT_HOST: crowdsec:8080
+      CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:?}
+      CROWDSEC_BOUNCER_LOG_LEVEL: ${CROWDSEC_BOUNCER_LOG_LEVEL:-info}
+      GIN_MODE: ${GIN_MODE:-release}
 
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
@@ -143,7 +145,7 @@ services:
       - socket-proxy
     depends_on:
       - authelia
-      - traefik-crowdsec-bouncer
+      - crowdsec-bouncer
       - traefik-socket-proxy
       - traefik-stdout-logger
     ports:

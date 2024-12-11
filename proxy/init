@@ -10,8 +10,8 @@ set_env_file_var_if_not_defined "${env_file}" 'AUTHELIA_DUO_API_HOSTNAME' 'https
 set_env_file_var_if_not_defined "${env_file}" 'AUTHELIA_DUO_INTEGRATION_KEY' 'https://admin-185050d5.duosecurity.com/applications'
 set_env_file_var_if_not_defined "${env_file}" 'AUTHELIA_DUO_SECRET_KEY' 'https://admin-185050d5.duosecurity.com/applications'
 set_env_file_var_if_not_defined "${env_file}" 'AUTHELIA_STORAGE_ENCRYPTION_KEY' 'docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
+set_env_file_var_if_not_defined "${env_file}" 'CROWDSEC_BOUNCER_API_KEY' 'docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
 set_env_file_var_if_not_defined "${env_file}" 'CROWDSEC_ENGINE_ENROLL_KEY' 'https://app.crowdsec.net/security-engines'
-set_env_file_var_if_not_defined "${env_file}" 'TRAEFIK_CROWDSEC_BOUNCER_API_KEY' 'docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
 set_env_file_var_if_not_defined "${env_file}" 'TRAEFIK_CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
 
 authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
@@ -19,7 +19,7 @@ write_file_if_not_exists "${authelia_notifications_file}"
 
 root_copy_file "$(this_script_dir)/crowdsec/cron-crowdsec-hub-update-upgrade" '/etc/cron.d/crowdsec-hub-update-upgrade'
 
-traefik_crowdsec_bouncer_api_key="$(get_env_file_defined_var "${env_file}" 'TRAEFIK_CROWDSEC_BOUNCER_API_KEY')"
+crowdsec_bouncer_api_key="$(get_env_file_defined_var "${env_file}" 'CROWDSEC_BOUNCER_API_KEY')"
 crowdsec_engine_enroll_key="$(get_env_file_defined_var "${env_file}" 'CROWDSEC_ENGINE_ENROLL_KEY')"
 log "Run this after starting proxy stack (if not already run):
-> docker exec 'crowdsec' cscli bouncers add 'traefik-crowdsec-bouncer' --key '${traefik_crowdsec_bouncer_api_key}' && docker exec 'crowdsec' cscli console enroll -e context --name '${DOMAIN_NAME}' '${crowdsec_engine_enroll_key}'"
+> docker exec 'crowdsec' cscli bouncers add 'traefik-crowdsec-bouncer' --key '${crowdsec_bouncer_api_key}' && docker exec 'crowdsec' cscli console enroll -e context --name '${DOMAIN_NAME}' '${crowdsec_engine_enroll_key}'"
