@@ -1,6 +1,11 @@
 http:
   middlewares:
 
+    crowdsec-bouncer:
+      forwardauth:
+        address: http://traefik-crowdsec-bouncer:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+
     ip-allow-list-mdw:
       ipAllowList:
         sourceRange:
@@ -39,11 +44,6 @@ http:
         stsPreload: true
         stsSeconds: 63072000
 
-    crowdsec-bouncer:
-      forwardauth:
-        address: http://traefik-crowdsec-bouncer:8080/api/v1/forwardAuth
-        trustForwardHeader: true
-
     auth-mdw:
       forwardauth:
         address: http://authelia:9091/api/verify?rd=https://authelia.{{ env "DOMAIN_NAME" }}/
@@ -54,6 +54,9 @@ http:
           - Remote-User
         trustForwardHeader: true
 
+    compress-mdw:
+      compress: {}
+
     default-chain-no-auth-mdw:
       chain:
         middlewares:
@@ -61,12 +64,10 @@ http:
           - ip-allow-list-mdw@file
           - rate-limit-mdw@file
           - secure-headers-mdw@file
+          - compress-mdw@file
 
     default-chain-with-auth-mdw:
       chain:
         middlewares:
-          - crowdsec-bouncer@file
-          - ip-allow-list-mdw@file
-          - rate-limit-mdw@file
-          - secure-headers-mdw@file
+          - default-chain-no-auth-mdw@file
           - auth-mdw@file
