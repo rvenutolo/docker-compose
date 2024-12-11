@@ -178,10 +178,10 @@ services:
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.asDefault=true
       - --entryPoints.websecure.forwardedHeaders.trustedIPs=${TRAEFIK_TRUSTED_IPS:-127.0.0.1/32,100.64.0.0/10}
-      - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare@docker
+      - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
-      - --entrypoints.websecure.http.tls.options=default@file
+      - --entrypoints.websecure.http.tls.options=default
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${TRAEFIK_DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.docker.network=proxy
