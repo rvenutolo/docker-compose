@@ -18,7 +18,6 @@ services:
       WHOAMI_NAME: whoami.${DOMAIN_NAME:?}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami-rtr.entryPoints=websecure
       - traefik.http.routers.whoami-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.whoami-rtr.rule=Host(`whoami.${DOMAIN_NAME:?}`)
       - traefik.http.routers.whoami-rtr.tls=true

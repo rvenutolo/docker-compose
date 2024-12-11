@@ -22,7 +22,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.filebrowser-rtr.entryPoints=websecure
       - traefik.http.routers.filebrowser-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
       - traefik.http.routers.filebrowser-rtr.tls=true

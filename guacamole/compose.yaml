@@ -63,7 +63,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole
-      - traefik.http.routers.guacamole-rtr.entryPoints=websecure
       - traefik.http.routers.guacamole-rtr.middlewares=default-chain-with-auth-mdw@file,guacamole-add-prefix-mdw
       - traefik.http.routers.guacamole-rtr.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
       - traefik.http.routers.guacamole-rtr.tls=true
