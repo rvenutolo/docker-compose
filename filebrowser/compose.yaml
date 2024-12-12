@@ -2,9 +2,6 @@ networks:
   proxy:
     external: true
 
-volumes:
-  database:
-
 services:
   filebrowser:
     image: ${FILEBROWSER_IMAGE:-filebrowser/filebrowser}:${FILEBROWSER_IMAGE_TAG:-latest}
@@ -18,7 +15,7 @@ services:
     volumes:
       - ~:/srv
       - ./config.json:/.filebrowser.json
-      - database:/database/
+      - ${DOCKER_APP_DATA_DIR:?}/filebrowser/database:/database
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true

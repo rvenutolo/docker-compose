@@ -2,9 +2,6 @@ networks:
   proxy:
     external: true
 
-volumes:
-  config:
-
 services:
   speedtest-tracker:
     image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
@@ -16,7 +13,7 @@ services:
     networks:
       - proxy
     volumes:
-      - config:/config
+      - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker/config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
       APP_KEY: ${APP_KEY:?}

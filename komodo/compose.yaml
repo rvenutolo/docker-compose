@@ -4,13 +4,6 @@ networks:
   socket-proxy:
   default:
 
-volumes:
-  action-cache:
-  mongo-config:
-  mongo-data:
-  repo-cache:
-  syncs:
-
 services:
 
   ## TODO check written files ownership
@@ -24,8 +17,7 @@ services:
     networks:
       - default
     volumes:
-      - mongo-config:/data/configdb
-      - mongo-data:/data/db
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data:/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: komodo
@@ -47,9 +39,9 @@ services:
     depends_on:
       - komodo-mongo
     volumes:
-      - action-cache:/action-cache
-      - repo-cache:/repo-cache
-      - syncs:/syncs
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/action-cache:/action-cache
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/repo-cache:/repo-cache
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/syncs:/syncs
       - /etc/localtime:/etc/localtime:ro
     environment:
       KOMODO_DATABASE_ADDRESS: komodo-mongo:27017

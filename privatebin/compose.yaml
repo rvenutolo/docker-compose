@@ -2,9 +2,6 @@ networks:
   proxy:
     external: true
 
-volumes:
-  data:
-
 services:
   privatebin:
     image: ${PRIVATEBIN_IMAGE:-privatebin/fs}:${PRIVATEBIN_IMAGE_TAG:-latest}
@@ -17,7 +14,7 @@ services:
       - proxy
     volumes:
       - ./conf.php:/srv/cfg/conf.php:ro
-      - data:/srv/data
+      - ${DOCKER_APP_DATA_DIR:?}/privatebin/srv/data:/srv/data
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true

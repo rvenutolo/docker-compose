@@ -2,9 +2,6 @@ networks:
   proxy:
     external: true
 
-volumes:
-  datastore:
-
 services:
   changedetection:
     image: ${CHANGEDETECTION_IMAGE:-dgtlmoon/changedetection.io}:${CHANGEDETECTION_IMAGE_TAG:-latest}
@@ -16,7 +13,7 @@ services:
     networks:
       - proxy
     volumes:
-      - datastore:/datastore
+      - ${DOCKER_APP_DATA_DIR:?}/changedetection/datastore:/datastore
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
