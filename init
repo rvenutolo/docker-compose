@@ -22,12 +22,12 @@ for env_var in \
     fi
 done
 
-mkdir --parents "${DOCKER_APP_DATA_DIR}"
-mkdir --parents "${DOCKER_LOGS_DIR}"
-
 if [[ -n "${die:-}" ]]; then
   die 'Fix the missing env vars and re-run this script'
 fi
+
+mkdir --parents "${DOCKER_APP_DATA_DIR}"
+mkdir --parents "${DOCKER_LOGS_DIR}"
 
 proxy_network='proxy'
 if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
