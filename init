@@ -11,6 +11,8 @@ for env_var in \
   PGID \
   DOCKER_TZ \
   DOCKER_COMPOSE_DIR \
+  DOCKER_APP_DATA_DIR \
+  DOCKER_LOGS_DIR \
   DOCKER_SOCKET \
   DATA_DIR \
   RESTIC_BACKUP_DIR; do
@@ -19,6 +21,9 @@ for env_var in \
       log "${env_var} is not set to a non-empty value"
     fi
 done
+
+mkdir --parents "${DOCKER_APP_DATA_DIR}"
+mkdir --parents "${DOCKER_LOGS_DIR}"
 
 if [[ -n "${die:-}" ]]; then
   die 'Fix the missing env vars and re-run this script'
