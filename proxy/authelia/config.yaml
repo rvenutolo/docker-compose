@@ -50,6 +50,12 @@ session:
       inactivity: 5m
       name: {{ env "DOMAIN_NAME" }}-authelia-session
       remember_me: 1d
+  redis:
+    host: authelia-redis
+    ## TODO check if necessary
+#    username: 'authelia'
+#    password: 'authelia'
+  secret: {{ env "SESSION_ENCRYPTION_KEY" }}
 
 storage:
   encryption_key: {{ env "STORAGE_ENCRYPTION_KEY" }}
