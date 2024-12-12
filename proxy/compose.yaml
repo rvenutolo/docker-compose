@@ -100,7 +100,7 @@ services:
       CROWDSEC_AGENT_HOST: crowdsec:8080
       CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:?}
       CROWDSEC_BOUNCER_LOG_LEVEL: ${CROWDSEC_BOUNCER_LOG_LEVEL:-info}
-      GIN_MODE: ${GIN_MODE:-release}
+      GIN_MODE: ${CROWDSEC_BOUNCER_GIN_MODE:-release}
 
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
