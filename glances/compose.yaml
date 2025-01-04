@@ -44,5 +44,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.glances-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.glances-rtr.rule=Host(`glances.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.glances-rtr.tls=true
       - traefik.http.services.glances-svc.loadBalancer.server.port=61208

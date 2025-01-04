@@ -20,5 +20,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.openspeedtest-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.openspeedtest-rtr.rule=Host(`openspeedtest.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.openspeedtest-rtr.tls=true
       - traefik.http.services.openspeedtest-svc.loadBalancer.server.port=3000

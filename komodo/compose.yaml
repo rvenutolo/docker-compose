@@ -70,7 +70,6 @@ services:
       - traefik.enable=true
       - traefik.http.routers.komodo-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.komodo-rtr.rule=Host(`komodo.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.komodo-rtr.tls=true
       - traefik.http.services.komodo-svc.loadBalancer.server.port=9120
 
   komodo-socket-proxy:

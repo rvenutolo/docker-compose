@@ -19,5 +19,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.changedetection-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.changedetection-rtr.rule=Host(`changedetection.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.changedetection-rtr.tls=true
       - traefik.http.services.changedetection-svc.loadBalancer.server.port=5000

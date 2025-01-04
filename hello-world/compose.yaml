@@ -22,5 +22,4 @@ services:
       - traefik.http.routers.hello-redirect-rtr.rule=Host(`hello.${DOMAIN_NAME:?}`)
       - traefik.http.routers.hello-world-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.hello-world-rtr.tls=true
       - traefik.http.services.hello-world-svc.loadBalancer.server.port=8000
