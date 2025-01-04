@@ -1,6 +1,6 @@
 tls:
   options:
-    default:
+    default-tls-opts:
       minVersion: VersionTLS13
       sniStrict: true
       curvePreferences:

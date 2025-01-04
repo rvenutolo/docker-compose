@@ -191,7 +191,7 @@ services:
       - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
-      - --entrypoints.websecure.http.tls.options=default@file
+      - --entrypoints.websecure.http.tls.options=default-tls-opts@file
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${TRAEFIK_DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.docker.network=proxy
