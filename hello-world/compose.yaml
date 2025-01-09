@@ -20,6 +20,5 @@ services:
       - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.replacement=https://hello-world.${DOMAIN_NAME:?}/$${1}
       - traefik.http.routers.hello-redirect-rtr.middlewares=hello-redirect-mdw
       - traefik.http.routers.hello-redirect-rtr.rule=Host(`hello.${DOMAIN_NAME:?}`)
-      - traefik.http.routers.hello-world-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.hello-world-rtr.rule=Host(`hello-world.${DOMAIN_NAME:?}`)
       - traefik.http.services.hello-world-svc.loadBalancer.server.port=8000

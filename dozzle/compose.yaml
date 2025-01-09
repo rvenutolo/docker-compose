@@ -48,6 +48,5 @@ services:
       DOZZLE_REMOTE_HOST: tcp://dozzle-socket-proxy:2375
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dozzle-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.dozzle-rtr.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
       - traefik.http.services.dozzle-svc.loadBalancer.server.port=8080

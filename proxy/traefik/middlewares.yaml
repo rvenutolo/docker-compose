@@ -57,7 +57,7 @@ http:
     compress-mdw:
       compress: {}
 
-    default-chain-no-auth-mdw:
+    default-chain:
       chain:
         middlewares:
           - crowdsec-bouncer@file
@@ -65,9 +65,4 @@ http:
           - rate-limit-mdw@file
           - secure-headers-mdw@file
           - compress-mdw@file
-
-    default-chain-with-auth-mdw:
-      chain:
-        middlewares:
-          - default-chain-no-auth-mdw@file
           - auth-mdw@file

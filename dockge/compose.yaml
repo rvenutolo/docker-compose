@@ -62,6 +62,5 @@ services:
       USER: ${USER:?}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dockge-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.dockge-rtr.rule=Host(`dockge.${DOMAIN_NAME:?}`)
       - traefik.http.services.dockge-svc.loadBalancer.server.port=5001

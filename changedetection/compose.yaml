@@ -17,6 +17,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.changedetection-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.changedetection-rtr.rule=Host(`changedetection.${DOMAIN_NAME:?}`)
       - traefik.http.services.changedetection-svc.loadBalancer.server.port=5000

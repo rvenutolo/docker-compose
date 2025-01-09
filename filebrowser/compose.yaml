@@ -19,6 +19,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.filebrowser-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
       - traefik.http.services.filebrowser-svc.loadBalancer.server.port=80

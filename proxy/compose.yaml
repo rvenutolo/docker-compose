@@ -48,7 +48,6 @@ services:
       X_AUTHELIA_CONFIG_FILTERS: template
     labels:
       - traefik.enable=true
-      - traefik.http.routers.authelia-rtr.middlewares=default-chain-no-auth-mdw@file
       - traefik.http.routers.authelia-rtr.rule=Host(`authelia.${DOMAIN_NAME:?}`)
       - traefik.http.services.authelia-svc.loadBalancer.server.port=9091
 
@@ -187,6 +186,7 @@ services:
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.asDefault=true
       - --entryPoints.websecure.forwardedHeaders.trustedIPs=${TRAEFIK_TRUSTED_IPS:-127.0.0.1/32,100.64.0.0/10}
+      - --entryPoints.websecure.http.middlewares=default-chain@file
       - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
@@ -198,6 +198,5 @@ services:
       - --providers.file.watch=true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.traefik-rtr.middlewares=default-chain-with-auth-mdw@file
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
       - traefik.http.routers.traefik-rtr.service=api@internal
