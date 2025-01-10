@@ -3,11 +3,8 @@ http:
     cockpit-rtr:
       entryPoints:
         - websecure
-      middlewares:
-        - default-chain-with-auth-mdw@file
       rule: Host(`cockpit.{{ env "DOMAIN_NAME" }}`)
       service: cockpit-svc
-      tls: true
   services:
     cockpit-svc:
       loadBalancer:
