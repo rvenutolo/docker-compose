@@ -7,6 +7,10 @@ access_control:
   - name: tailnet
     networks: 100.64.0.0/10
   rules:
+    - domain:
+      - authelia
+      - authelia.{{ env "DOMAIN_NAME" }}
+      policy: bypass
 
 authentication_backend:
   file:
