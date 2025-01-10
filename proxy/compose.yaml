@@ -110,6 +110,25 @@ services:
       CROWDSEC_BOUNCER_LOG_LEVEL: ${CROWDSEC_BOUNCER_LOG_LEVEL:-info}
       GIN_MODE: ${CROWDSEC_BOUNCER_GIN_MODE:-release}
 
+  traefik-geoip-filter:
+    image: ${GEOIP_FILTER_IMAGE:-mpdcampbell/traefik-geoip-filter}:${GEOIP_FILTER_IMAGE_TAG:-latest}
+    container_name: traefik-geoip-filter
+    hostname: traefik-geoip-filter
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/proxy/traefik-geoip-filter/geoip:/geoip
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      COUNTRY_CODES: US
+      EXTRA_IPS: 100.64.0.0/10
+      FILTER_TYPE: allow
+      MAXMIND_ID: ${MAXMIND_ID:?}
+      MAXMIND_KEY: ${MAXMIND_KEY:?}
+
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-socket-proxy
@@ -153,6 +172,7 @@ services:
     depends_on:
       - authelia
       - crowdsec-bouncer
+      - traefik-geoip-filter
       - traefik-socket-proxy
       - traefik-stdout-logger
     ports:
