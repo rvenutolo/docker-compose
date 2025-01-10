@@ -206,7 +206,7 @@ services:
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.asDefault=true
       - --entryPoints.websecure.forwardedHeaders.trustedIPs=${TRAEFIK_TRUSTED_IPS:-127.0.0.1/32,100.64.0.0/10}
-      - --entryPoints.websecure.http.middlewares=default-chain@file
+      - --entryPoints.websecure.http.middlewares=default-chain-mdw@file
       - --entrypoints.websecure.http.tls.certresolver=dns-cloudflare
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}

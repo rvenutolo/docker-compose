@@ -1,7 +1,7 @@
 http:
   middlewares:
 
-    crowdsec-bouncer:
+    crowdsec-bouncer-mdw:
       forwardauth:
         address: http://crowdsec-bouncer:8080/api/v1/forwardAuth
         trustForwardHeader: true
@@ -61,10 +61,10 @@ http:
     compress-mdw:
       compress: {}
 
-    default-chain:
+    default-chain-mdw:
       chain:
         middlewares:
-          - crowdsec-bouncer@file
+          - crowdsec-bouncer-mdw@file
           - geolocation-filter-mdw@file
           - ip-allow-list-mdw@file
           - rate-limit-mdw@file
