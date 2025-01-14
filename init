@@ -54,3 +54,5 @@ for init_script in ${init_scripts}; do
     log "Ran ${init_script:2}"
   fi
 done
+
+root_copy_file "$(this_script_dir)/cron-daily-tasks" '/etc/cron.d/docker-daily-tasks'

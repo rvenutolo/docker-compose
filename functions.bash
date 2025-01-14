@@ -179,3 +179,8 @@ function set_env_file_var_if_not_defined() {
     set_env_file_var "$1" "$2" "${3:-}"
   fi
 }
+
+# $1 = container name
+function container_is_running() {
+  [[ "$(docker container inspect -f '{{.State.Status}}' $1)" == 'running' ]]
+}
