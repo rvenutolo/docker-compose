@@ -66,7 +66,7 @@ function root_copy_file() {
   if [[ "$1" == "$2" ]]; then
     die "File paths are the same"
   fi
-  if [[ -f "$2" ]] && ! cmp --silent "$1" "$2"; then
+  if [[ ! -f "$2" ]] || ! cmp --silent "$1" "$2"; then
     log "Copying: $1 -> $2"
     sudo mkdir --parents "$(dirname "$2")"
     sudo cp "$1" "$2"
@@ -83,7 +83,7 @@ function copy_file() {
   if [[ "$1" == "$2" ]]; then
     die "File paths are the same"
   fi
-  if [[ -f "$2" ]] && ! cmp --silent "$1" "$2"; then
+  if [[ ! -f "$2" ]] && ! cmp --silent "$1" "$2"; then
     log "Copying: $1 -> $2"
     mkdir --parents "$(dirname "$2")"
     cp "$1" "$2"
