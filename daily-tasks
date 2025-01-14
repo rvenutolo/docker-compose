@@ -14,4 +14,4 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
     docker exec 'crowdsec' cscli hub update
     docker exec 'crowdsec' cscli hub upgrade
   fi
-) | tee -a "${DOCKER_COMPOSE_DIR}/daily-tasks.log"
+) 2>&1 | tee -a "${DOCKER_COMPOSE_DIR}/daily-tasks.log"
