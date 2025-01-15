@@ -1,7 +1,8 @@
 networks:
   proxy:
     external: true
-  socket-proxy:
+  traefik-socket-proxy:
+  traefik-logger-socket-proxy:
 
 services:
 
@@ -132,7 +133,7 @@ services:
   traefik-socket-proxy:
     image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-socket-proxy
-    hostname: socket-proxy
+    hostname: traefik-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -140,24 +141,12 @@ services:
     tmpfs:
       - /run
     networks:
-      - socket-proxy
+      - traefik-socket-proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       CONTAINERS: 1
-
-  traefik-stdout-logger:
-    image: ${TRAEFIK_STDOUT_LOGGER_IMAGE:-alpine}:${TRAEFIK_STDOUT_LOGGER_IMAGE_TAG:-latest}
-    container_name: traefik-stdout-logger
-    hostname: traefik-stdout-logger
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - ${DOCKER_LOGS_DIR:?}/traefik:/var/log/traefik:ro
-      - /etc/localtime:/etc/localtime:ro
-    command: tail -q -n 0 -F /var/log/traefik/traefik.log /var/log/traefik/access.log
 
   traefik:
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
@@ -168,33 +157,29 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-      - socket-proxy
+      - traefik-socket-proxy
     depends_on:
       - authelia
       - crowdsec-bouncer
       - traefik-geoip-filter
       - traefik-socket-proxy
-      - traefik-stdout-logger
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
       - "${TAILNET_IP:?}:${TRAEFIK_DASHBOARD_PORT:-8080}:8080"
     volumes:
       - ./traefik:/etc/traefik/conf:ro
-      - ${DOCKER_LOGS_DIR:?}/traefik:/var/log/traefik
       - ${DOCKER_APP_DATA_DIR:?}/proxy/traefik/etc/traefik/certs:/etc/traefik/certs
       - /etc/localtime:/etc/localtime:ro
     environment:
       CF_DNS_API_TOKEN: ${TRAEFIK_CF_DNS_API_TOKEN:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
     command:
-      - --accessLog.filePath=/var/log/traefik/access.log
       - --accessLog.filters.statusCodes=${TRAEFIK_ACCESS_LOG_STATUS_CODES:-400-499,500-599}
       - --api.dashboard=true
       - --api.disableDashboardAd=true
       - --global.sendAnonymousUsage=true
       - --experimental.fastProxy
-      - --log.filePath=/var/log/traefik/traefik.log
       - --log.level=${TRAEFIK_LOG_LEVEL:-INFO}
       - --certificatesResolvers.dns-cloudflare.acme.caServer=${TRAEFIK_ACME_CA_SERVER:-https://acme-v02.api.letsencrypt.org/directory}
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
@@ -220,3 +205,40 @@ services:
       - traefik.enable=true
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
       - traefik.http.routers.traefik-rtr.service=api@internal
+
+  traefik-logger-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: traefik-logger-socket-proxy
+    hostname: traefik-logger-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - traefik-logger-socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      CONTAINERS: 1
+
+  traefik-logger:
+    image: ${TRAEFIK_LOGGER_IMAGE:-docker}:${TRAEFIK_LOGGER_IMAGE_TAG:-dind}
+    container_name: traefik-logger
+    hostname: traefik-logger
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik-logger-socket-proxy
+    depends_on:
+      - traefik
+      - traefik-socket-proxy
+    volumes:
+      - ${DOCKER_LOGS_DIR:?}/traefik:/var/log/traefik
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DOCKER_HOST: tcp://traefik-logger-socket-proxy:2375
+    command: sh -c 'docker logs --follow traefik > /var/log/traefik/traefik.log'
