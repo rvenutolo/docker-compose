@@ -131,7 +131,7 @@ services:
       MAXMIND_KEY: ${MAXMIND_KEY:?}
 
   traefik-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-socket-proxy
     hostname: traefik-socket-proxy
     restart: unless-stopped
@@ -207,7 +207,7 @@ services:
       - traefik.http.routers.traefik-rtr.service=api@internal
 
   traefik-logger-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: traefik-logger-socket-proxy
     hostname: traefik-logger-socket-proxy
     restart: unless-stopped

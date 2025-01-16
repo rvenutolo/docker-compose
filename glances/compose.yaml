@@ -6,7 +6,7 @@ networks:
 services:
 
   glances-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: glances-socket-proxy
     hostname: glances-socket-proxy
     restart: unless-stopped
