@@ -13,8 +13,7 @@ services:
     networks:
       - proxy
     volumes:
-      - ${DOCKER_LOGS_DIR:?}/memos:/var/log/memos
-      - ${DOCKER_APP_DATA_DIR:?}/memos:/data
+      - ${DOCKER_APP_DATA_DIR:?}/memos/var/opt/memos:/var/opt/memos
       - /etc/localtime:/etc/localtime:ro
     labels:
       - traefik.enable=true
