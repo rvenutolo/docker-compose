@@ -46,13 +46,15 @@ for env_template in ${env_templates}; do
   fi
 done
 
-init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
-for init_script in ${init_scripts}; do
-  if prompt_yn "Run ${init_script:2}?"; then
-    log "Running ${init_script:2}"
-    "${init_script}"
-    log "Ran ${init_script:2}"
-  fi
-done
+if prompt_yn "Run init scripts?"; then
+  init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
+  for init_script in ${init_scripts}; do
+    if prompt_yn "Run ${init_script:2}?"; then
+      log "Running ${init_script:2}"
+      "${init_script}"
+      log "Ran ${init_script:2}"
+    fi
+  done
+fi
 
 root_copy_file "$(this_script_dir)/cron-daily-tasks" '/etc/cron.d/docker-daily-tasks'
