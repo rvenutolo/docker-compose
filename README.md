@@ -18,3 +18,9 @@ My Docker Compose files.
 - PUID
 - TAILNET_IP
 - USER
+
+## Initialize
+
+```shell
+${DOCKER_COMPOSE_DIR}/init
+```
