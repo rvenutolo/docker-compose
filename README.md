@@ -1,1 +1,20 @@
 # docker-compose
+
+My Docker Compose files.
+
+## Expected Environment Variables
+
+- BACKUP_DIR
+- DATA_DIR
+- DOCKER_APP_DATA_DIR
+- DOCKER_COMPOSE_DIR
+- DOCKER_DIR
+- DOCKER_LOGS_DIR
+- DOCKER_SOCKET
+- DOCKER_TZ
+- DOMAIN_NAME
+- DOMAIN_NAME_REGEX
+- PGID
+- PUID
+- TAILNET_IP
+- USER
