@@ -87,6 +87,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
+      ## TODO figure out
       CONTAINERS: 1
       EXEC: 1
       IMAGES: 1
