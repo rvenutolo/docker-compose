@@ -50,8 +50,10 @@ services:
       # The below env vars are to prevent issues when dockge evaluates a compose file.
       BACKUP_DIR: ${BACKUP_DIR:?}
       DATA_DIR: ${DATA_DIR:?}
+      DOCKER_APP_DATA_DIR: ${DOCKER_APP_DATA_DIR:?}
       DOCKER_COMPOSE_DIR: ${DOCKER_COMPOSE_DIR:?}
       DOCKER_DIR: ${DOCKER_DIR:?}
+      DOCKER_LOGS_DIR: ${DOCKER_LOGS_DIR:?}
       DOCKER_SOCKET: ${DOCKER_SOCKET:?}
       DOCKER_TZ: ${DOCKER_TZ:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}

@@ -6,16 +6,20 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 for env_var in \
-  DOMAIN_NAME \
-  PUID \
-  PGID \
-  DOCKER_TZ \
-  DOCKER_COMPOSE_DIR \
+  BACKUP_DIR \
+  DATA_DIR \
   DOCKER_APP_DATA_DIR \
+  DOCKER_COMPOSE_DIR \
+  DOCKER_DIR \
   DOCKER_LOGS_DIR \
   DOCKER_SOCKET \
-  DATA_DIR \
-  RESTIC_BACKUP_DIR; do
+  DOCKER_TZ \
+  DOMAIN_NAME \
+  DOMAIN_NAME_REGEX \
+  PGID \
+  PUID \
+  TAILNET_IP \
+  USER; do
     if [[ -z "${env_var:-}" ]]; then
       die='DIE'
       log "${env_var} is not set to a non-empty value"
