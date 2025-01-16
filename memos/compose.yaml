@@ -1,0 +1,22 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  memos:
+    image: ${MEMOS_IMAGE:-neosmemo/memos}:${MEMOS_IMAGE_TAG:-latest}
+    container_name: memos
+    hostname: memos
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - ${DOCKER_LOGS_DIR:?}/memos:/var/log/memos
+      - ${DOCKER_APP_DATA_DIR:?}/memos:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.memos-rtr.rule=Host(`memos.${DOMAIN_NAME:?}`)
+      - traefik.http.services.memos-svc.loadBalancer.server.port=5230
