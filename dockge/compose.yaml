@@ -48,6 +48,7 @@ services:
     environment:
       DOCKER_HOST: tcp://dockge-socket-proxy:2375
       # The below env vars are to prevent issues when dockge evaluates a compose file.
+      BACKUP_DIR: ${BACKUP_DIR:?}
       DATA_DIR: ${DATA_DIR:?}
       DOCKER_COMPOSE_DIR: ${DOCKER_COMPOSE_DIR:?}
       DOCKER_DIR: ${DOCKER_DIR:?}
@@ -57,7 +58,6 @@ services:
       DOMAIN_NAME_REGEX: ${DOMAIN_NAME_REGEX:?}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
-      RESTIC_BACKUP_DIR: ${RESTIC_BACKUP_DIR:?}
       TAILNET_IP: ${TAILNET_IP:?}
       USER: ${USER:?}
     labels:

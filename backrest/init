@@ -5,4 +5,4 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-create_dir "${RESTIC_BACKUP_DIR}"
+create_dir "${BACKUP_DIR}"

@@ -15,7 +15,7 @@ services:
       - proxy
     volumes:
       - ${DOCKER_DIR:?}:/to-backup
-      - ${RESTIC_BACKUP_DIR:?}:/repos
+      - ${BACKUP_DIR:?}:/repos
       - ${DOCKER_APP_DATA_DIR:?}/backrest/cache:/cache
       - ${DOCKER_APP_DATA_DIR:?}/backrest/config:/config
       - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
