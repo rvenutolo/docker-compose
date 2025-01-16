@@ -8,9 +8,9 @@ services:
     container_name: watchtower-socket-proxy
     hostname: watchtower-socket-proxy
     restart: unless-stopped
+    privileged: true
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /run
     networks:

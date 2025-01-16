@@ -135,9 +135,9 @@ services:
     container_name: traefik-socket-proxy
     hostname: traefik-socket-proxy
     restart: unless-stopped
+    privileged: true
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /run
     networks:
@@ -211,9 +211,9 @@ services:
     container_name: traefik-logger-socket-proxy
     hostname: traefik-logger-socket-proxy
     restart: unless-stopped
+    privileged: true
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /run
     networks:

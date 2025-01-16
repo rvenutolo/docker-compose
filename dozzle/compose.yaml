@@ -10,9 +10,9 @@ services:
     container_name: dozzle-socket-proxy
     hostname: dozzle-socket-proxy
     restart: unless-stopped
+    privileged: true
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /run
     networks:
