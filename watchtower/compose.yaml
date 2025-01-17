@@ -4,13 +4,13 @@ networks:
 services:
 
   watchtower-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-tecnativa/docker-socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
     container_name: watchtower-socket-proxy
     hostname: watchtower-socket-proxy
     restart: unless-stopped
-    privileged: true
     security_opt:
       - no-new-privileges:true
+    read_only: true
     tmpfs:
       - /run
     networks:
