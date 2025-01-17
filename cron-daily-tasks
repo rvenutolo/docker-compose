@@ -1,1 +1,1 @@
-0 4 * * * rvenutolo bash -l -c '${DOCKER_COMPOSE_DIR}/daily-tasks'
+0 4 * * * rvenutolo bash -l -c '${DOCKER_COMPOSE_DIR}/daily-tasks | tee -a ${DOCKER_COMPOSE_DIR}/daily-tasks.log'
