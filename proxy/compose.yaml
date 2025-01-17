@@ -223,6 +223,7 @@ services:
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       CONTAINERS: 1
+      PROXY_READ_TIMEOUT: 999d
 
   traefik-logger:
     image: ${TRAEFIK_LOGGER_IMAGE:-docker}:${TRAEFIK_LOGGER_IMAGE_TAG:-dind}
