@@ -93,7 +93,7 @@ services:
   ## TODO dashboard? -- https://github.com/crowdsecurity/example-docker-compose/blob/main/basic/docker-compose.yml
 
   crowdsec-bouncer:
-    image: ${CROWDSEC_BOUNCER_IMAGE:-docker.io/fbonalair/traefik-crowdsec-bouncer}:${CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
+    image: ${CROWDSEC_BOUNCER_IMAGE:-fbonalair/traefik-crowdsec-bouncer}:${CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
     container_name: crowdsec-bouncer
     hostname: crowdsec-bouncer
     restart: unless-stopped
