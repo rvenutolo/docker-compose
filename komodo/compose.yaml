@@ -16,7 +16,8 @@ services:
     networks:
       - default
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data:/data
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data/configdb:/data/configdb
+      - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data/db:/data/db
       - /etc/localtime:/etc/localtime:ro
     environment:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?}
