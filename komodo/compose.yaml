@@ -20,8 +20,8 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data:/data
       - /etc/localtime:/etc/localtime:ro
     environment:
-      MONGO_INITDB_ROOT_USERNAME: komodo
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?}
+      MONGO_INITDB_ROOT_USERNAME: komodo
     command: --quiet --wiredTigerCacheSizeGB 0.25
     labels:
       - komodo.skip
@@ -45,8 +45,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       KOMODO_DATABASE_ADDRESS: komodo-mongo:27017
-      KOMODO_DATABASE_USERNAME: komodo
       KOMODO_DATABASE_PASSWORD: ${MONGO_PASSWORD:?}
+      KOMODO_DATABASE_USERNAME: komodo
       KOMODO_DISABLE_CONFIRM_DIALOG: ${KOMODO_DISABLE_CONFIRM_DIALOG:-false}
       KOMODO_DISABLE_NON_ADMIN_CREATE: ${KOMODO_DISABLE_NON_ADMIN_CREATE:-false}
       KOMODO_DISABLE_USER_REGISTRATION: ${KOMODO_DISABLE_USER_REGISTRATION:-false}
@@ -56,7 +56,7 @@ services:
       KOMODO_JWT_SECRET: ${KOMODO_JWT_SECRET:?}
       KOMODO_KEEP_ALERTS_FOR_DAYS: ${KOMODO_KEEP_ALERTS_FOR_DAYS:-28}
       KOMODO_KEEP_STATS_FOR_DAYS: ${KOMODO_KEEP_STATS_FOR_DAYS:-28}
-      KOMODO_LOCAL_AUTH: ${KOMODO_LOCAL_AUTH:-false}
+      KOMODO_LOCAL_AUTH: ${KOMODO_LOCAL_AUTH:-true}
       KOMODO_LOGGING_LEVEL: ${KOMODO_LOGGING_LEVEL:-info}
       KOMODO_MONITORING_INTERVAL: ${KOMODO_MONITORING_INTERVAL:-15-sec}
       KOMODO_PASSKEY: ${KOMODO_PASSKEY:?}
