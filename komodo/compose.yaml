@@ -1,12 +1,11 @@
 networks:
   proxy:
     external: true
-#  socket-proxy:
+  socket-proxy:
   default:
 
 services:
 
-  ## TODO check written files ownership
   komodo-mongo:
     image: ${MONGO_IMAGE:-mongo}:${MONGO_IMAGE_TAG:-8}
     container_name: komodo-mongo
@@ -70,30 +69,33 @@ services:
       - traefik.http.routers.komodo-rtr.rule=Host(`komodo.${DOMAIN_NAME:?}`)
       - traefik.http.services.komodo-svc.loadBalancer.server.port=9120
 
-#  komodo-socket-proxy:
-#    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
-#    container_name: komodo-socket-proxy
-#    hostname: komodo-socket-proxy
-#    restart: unless-stopped
-#    security_opt:
-#      - no-new-privileges:true
-#    tmpfs:
-#      - /run
-#    networks:
-#      - socket-proxy
-#    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
-#    environment:
-#      ## TODO figure out
-#      CONTAINERS: 1
-#      EXEC: 1
-#      IMAGES: 1
-#      INFO: 1
-#      POST: 1
-#      SERVICES: 1
-#    labels:
-#      - komodo.skip
+  komodo-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: komodo-socket-proxy
+    hostname: komodo-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /run
+    networks:
+      - socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      ALLOW_RESTARTS: 1
+      ALLOW_START: 1
+      ALLOW_STOP: 1
+      CONTAINERS: 1
+      EXEC: 1
+      IMAGES: 1
+      INFO: 1
+      NETWORKS: 1
+      POST: 1
+      SERVICES: 1
+    labels:
+      - komodo.skip
 
   komodo-periphery:
     image: ${KOMODO_PERIPHERY_IMAGE:-ghcr.io/mbecker20/periphery}:${KOMODO_PERIPHERY_IMAGE_TAG:-latest}
@@ -104,16 +106,15 @@ services:
       - no-new-privileges:true
     networks:
       - default
-#      - socket-proxy
-#    depends_on:
-#      - komodo-socket-proxy
+      - socket-proxy
+    depends_on:
+      - komodo-socket-proxy
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
-      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
       - /proc:/proc
       - /etc/localtime:/etc/localtime:ro
     environment:
-#      DOCKER_HOST: tcp://komodo-socket-proxy:2375
+      DOCKER_HOST: tcp://komodo-socket-proxy:2375
       PERIPHERY_PASSKEYS: ${KOMODO_PASSKEY:?}
     labels:
       - komodo.skip
