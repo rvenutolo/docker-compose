@@ -110,7 +110,7 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
-      - /proc:/proc:ro
+      - /proc:/proc
       - /etc/localtime:/etc/localtime:ro
     environment:
 #      DOCKER_HOST: tcp://komodo-socket-proxy:2375
