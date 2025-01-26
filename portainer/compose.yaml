@@ -1,0 +1,71 @@
+networks:
+  proxy:
+    external: true
+  socket-proxy:
+
+services:
+
+  portainer-socket-proxy:
+    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    container_name: portainer-socket-proxy
+    hostname: portainer-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      ## TODO figure these out
+      ALLOW_START: 0
+      ALLOW_STOP: 0
+      ALLOW_RESTARTS: 0
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 0
+      DISABLE_IPV6: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
+      NODES: 0
+      POST: 0
+      PLUGINS: 0
+      SECRETS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+
+  portainer:
+    image: ${PORTAINER_IMAGE:-portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-latest}
+    container_name: portainer
+    hostname: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - socket-proxy
+    depends_on:
+      - portainer-socket-proxy
+    volumes:
+#      - ${DOCKER_LOGS_DIR:?}/portainer:/var/log/portainer
+      - ${DOCKER_APP_DATA_DIR:?}/portainer/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DOCKER_HOST: tcp://portainer-socket-proxy:2375
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portainer-rtr.rule=Host(`portainer.${DOMAIN_NAME:?}`)
+      - traefik.http.services.portainer-svc.loadBalancer.server.port=9443
