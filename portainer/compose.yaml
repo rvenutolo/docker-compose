@@ -21,31 +21,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
-      ## TODO figure these out
-      ALLOW_START: 0
-      ALLOW_STOP: 0
-      ALLOW_RESTARTS: 0
-      AUTH: 0
-      BUILD: 0
-      COMMIT: 0
-      CONFIGS: 0
-      CONTAINERS: 0
-      DISABLE_IPV6: 0
-      DISTRIBUTION: 0
-      EXEC: 0
-      IMAGES: 0
-      INFO: 0
-      NETWORKS: 0
-      NODES: 0
-      POST: 0
-      PLUGINS: 0
-      SECRETS: 0
-      SERVICES: 0
-      SESSION: 0
-      SWARM: 0
-      SYSTEM: 0
-      TASKS: 0
-      VOLUMES: 0
+      ALLOW_START: 1
+      ALLOW_STOP: 1
+      ALLOW_RESTARTS: 1
+      CONTAINERS: 1
+      EXEC: 1
+      IMAGES: 1
+      INFO: 1
+      NETWORKS: 1
+      VOLUMES: 1
 
   portainer:
     image: ${PORTAINER_IMAGE:-portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-latest}
@@ -60,12 +44,10 @@ services:
     depends_on:
       - portainer-socket-proxy
     volumes:
-#      - ${DOCKER_LOGS_DIR:?}/portainer:/var/log/portainer
       - ${DOCKER_APP_DATA_DIR:?}/portainer/data:/data
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      DOCKER_HOST: tcp://portainer-socket-proxy:2375
+    command: --host tcp://portainer-socket-proxy:2375
     labels:
       - traefik.enable=true
       - traefik.http.routers.portainer-rtr.rule=Host(`portainer.${DOMAIN_NAME:?}`)
-      - traefik.http.services.portainer-svc.loadBalancer.server.port=9443
+      - traefik.http.services.portainer-svc.loadBalancer.server.port=9000
