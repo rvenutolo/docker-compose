@@ -1,0 +1,30 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  freshrss:
+    image: ${FRESHRSS_IMAGE:-freshrss/freshrss}:${FRESHRSS_IMAGE_TAG:-latest}
+    container_name: freshrss
+    hostname: freshrss
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/freshrss/var/www/FreshRSS/data:/var/www/FreshRSS/data
+      - ${DOCKER_APP_DATA_DIR:?}/freshrss/var/www/FreshRSS/extensions:/var/www/FreshRSS/extensions
+#      - ./config.custom.php:/var/www/FreshRSS/data/config.custom.php
+#      - ./config-user.custom.php:/var/www/FreshRSS/data/config-user.custom.php
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      CRON_MIN: '3,33'
+#      BASE_URL: https://freshrss.${DOMAIN_NAME:?}
+#      ADMIN_EMAIL:
+#      ADMIN_PASSWORD:
+#      ADMIN_API_PASSWORD:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.freshrss-rtr.rule=Host(`freshrss.${DOMAIN_NAME:?}`)
+      - traefik.http.services.freshrss-svc.loadBalancer.server.port=8000
