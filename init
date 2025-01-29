@@ -36,7 +36,7 @@ mkdir --parents "${DOCKER_LOGS_DIR}"
 proxy_network='proxy'
 if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Creating ${proxy_network} network"
-  docker network create "${proxy_network}"
+  docker network create "${proxy_network}" --subnet "${DOCKER_PROXY_NETWORK_SUBNET_CIDR}" --gateway "${DOCKER_PROXY_NETWORK_GATEWAY}"
   log "Created ${proxy_network} network"
 fi
 
