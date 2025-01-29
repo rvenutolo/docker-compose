@@ -5,7 +5,7 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-if [[ "$#" -ne 0 ]]; then
+if [[ "$#" -eq 0 ]]; then
   images_to_scan=$(docker ps --format '{{.Image}}' | sort | uniq)
 else
   images_to_scan=("$@")
