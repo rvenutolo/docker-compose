@@ -21,7 +21,7 @@ for image in ${images_to_scan}; do
     --rm \
     --volume "${DOCKER_SOCKET}:/var/run/docker.sock" \
     --volume "${tmp_cache_dir}:/.cache/grype" \
-    --name "grype-scan-${image}" \
+    --name "grype-scan-${image%:*}" \
     'anchore/grype:latest' \
     "${image}"
   log "Scanned: ${image}"
