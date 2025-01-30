@@ -40,16 +40,6 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Created ${proxy_network} network"
 fi
 
-env_templates="$(find . -mindepth 2 -type f -name '.env.template' | sort)"
-for env_template in ${env_templates}; do
-  env_file="${env_template%%.template}"
-  if [[ ! -f "${env_file}" ]]; then
-    log "Creating ${env_file:2}"
-    cp "${env_template}" "${env_file}"
-    log "Created ${env_file:2}"
-  fi
-done
-
 if prompt_yn "Run init scripts?"; then
   init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
   for init_script in ${init_scripts}; do

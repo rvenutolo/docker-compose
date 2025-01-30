@@ -10,4 +10,8 @@ postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/gu
 write_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
 
 env_file="$(env_file)"
+if ! file_exists "${env_file}"; then
+  cp "${env_file}.template" "${env_file}"
+fi
+
 set_env_file_var_if_not_defined "${env_file}" 'POSTGRES_PASSWORD'
