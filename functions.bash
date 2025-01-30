@@ -124,6 +124,11 @@ function env_file() {
 }
 
 # $1 = file
+function file_exists() {
+  [[ -f "$1" ]]
+}
+
+# $1 = file
 function check_for_file() {
   if ! [[ -f "$1" ]]; then
     die "$1 does not exist"
