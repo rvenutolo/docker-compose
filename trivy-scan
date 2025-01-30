@@ -6,7 +6,7 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 if [[ "$#" -eq 0 ]]; then
-  images_to_scan=$(docker ps --format '{{.Image}}' | sort | uniq)
+  mapfile -t images_to_scan < <(docker ps --format '{{.Image}}' | sort | uniq)
 else
   images_to_scan=("$@")
 fi
@@ -15,13 +15,14 @@ readonly images_to_scan
 readonly tmp_cache_dir='/tmp/trivy/cache'
 mkdir --parents "${tmp_cache_dir}"
 
-for image in ${images_to_scan}; do
+for image in "${images_to_scan[@]}"; do
   log "Scanning: ${image}"
   docker run \
     --rm \
     --volume "${DOCKER_SOCKET}:/var/run/docker.sock" \
     --volume "${tmp_cache_dir}:/root/.cache" \
-    --name 'trivy' \
+    --name "trivy-${image//[:\/]/-}" \
+    '--quiet' \
     'aquasec/trivy:latest' \
     'image' \
     "${image}"
