@@ -17,6 +17,5 @@ services:
     environment:
       WHOAMI_NAME: whoami.${DOMAIN_NAME:?}
     labels:
-      - traefik.enable=true
       - traefik.http.routers.whoami-rtr.rule=Host(`whoami.${DOMAIN_NAME:?}`)
       - traefik.http.services.whoami-svc.loadBalancer.server.port=80

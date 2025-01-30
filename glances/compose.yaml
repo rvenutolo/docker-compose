@@ -42,6 +42,5 @@ services:
       DOCKER_HOST: tcp://glances-socket-proxy:2375
       GLANCES_OPT: --webserver
     labels:
-      - traefik.enable=true
       - traefik.http.routers.glances-rtr.rule=Host(`glances.${DOMAIN_NAME:?}`)
       - traefik.http.services.glances-svc.loadBalancer.server.port=61208

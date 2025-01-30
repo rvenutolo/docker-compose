@@ -48,6 +48,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
     command: --host tcp://portainer-socket-proxy:2375
     labels:
-      - traefik.enable=true
       - traefik.http.routers.portainer-rtr.rule=Host(`portainer.${DOMAIN_NAME:?}`)
       - traefik.http.services.portainer-svc.loadBalancer.server.port=9000

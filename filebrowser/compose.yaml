@@ -18,6 +18,5 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/filebrowser/database:/database
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.enable=true
       - traefik.http.routers.filebrowser-rtr.rule=Host(`filebrowser.${DOMAIN_NAME:?}`)
       - traefik.http.services.filebrowser-svc.loadBalancer.server.port=80
