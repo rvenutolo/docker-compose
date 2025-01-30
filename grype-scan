@@ -6,9 +6,9 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 if [[ "$#" -eq 0 ]]; then
-  mapfile -t images_to_scan < <(docker ps --format '{{.Image}}' | sort | uniq | sed 's|docker:|docker.io/docker:|g')
+  mapfile -t images_to_scan < <(docker ps --format '{{.Image}}' | sort | uniq)
 else
-  images_to_scan=( "$@" )
+  images_to_scan=("$@")
 fi
 readonly images_to_scan
 
@@ -23,6 +23,6 @@ for image in "${images_to_scan[@]}"; do
     --volume "${tmp_cache_dir}:/.cache/grype" \
     --name "grype-${image//[:\/]/-}" \
     'anchore/grype:latest' \
-    "${image}"
+    "docker:${image}"
   log "Scanned: ${image}"
 done
