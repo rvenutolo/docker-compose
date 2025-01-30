@@ -16,6 +16,7 @@ My Docker Compose files.
 - DOCKER_TZ
 - DOMAIN_NAME
 - DOMAIN_NAME_REGEX
+- HOSTNAME
 - PGID
 - PUID
 - TAILNET_IP
