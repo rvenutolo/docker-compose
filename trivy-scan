@@ -22,8 +22,8 @@ for image in "${images_to_scan[@]}"; do
     --volume "${DOCKER_SOCKET}:/var/run/docker.sock" \
     --volume "${tmp_cache_dir}:/root/.cache" \
     --name "trivy-${image//[:\/]/-}" \
-    '--quiet' \
     'aquasec/trivy:latest' \
+    '--quiet' \
     'image' \
     "${image}"
   log "Scanned: ${image}"
