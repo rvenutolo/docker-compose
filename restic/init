@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
+env_file="$(env_file)"
+if ! file_exists "${env_file}"; then
+  cp "${env_file}.template" "${env_file}"
+fi
+
+set_env_file_var_if_not_defined "${env_file}" 'RESTIC_PASSWORD'
+set_env_file_var_if_not_defined "${env_file}" 'B2_KEY_ID'
+set_env_file_var_if_not_defined "${env_file}" 'B2_KEY'
+set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT'
+
+# $1 = repo desc
+# $2 = service
+function init_repo_if_not_exists() {
+  local compose_file
+  compose_file="$(this_script_dir)/compose.yaml"
+  set +e
+  docker compose --file "${compose_file}" run --rm "$2" cat config > '/dev/null' 2>&1
+  readonly exit_code="$?"
+  set -e
+  if [[ "${exit_code}" == '10' ]]; then
+    if prompt_yn "Initialize $1 repository?"; then
+      docker compose --file "${compose_file}" run --rm "$2" init
+    fi
+  else
+    exit "${exit_code}"
+  fi
+}
+
+init_repo_if_not_exists 'B2' 'app-data-b2'
