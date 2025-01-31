@@ -11,6 +11,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       ## Using S3-compatible API due to note here:
+      ## https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#backblaze-b2
       AWS_ACCESS_KEY_ID: ${B2_KEY_ID:?}
       AWS_SECRET_ACCESS_KEY: ${B2_KEY:?}
       RESTIC_HOST: ${HOSTNAME:?}
