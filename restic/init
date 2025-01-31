@@ -6,6 +6,7 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 env_file="$(env_file)"
+readonly env_file
 if ! file_exists "${env_file}"; then
   cp "${env_file}.template" "${env_file}"
 fi
@@ -25,7 +26,7 @@ if ! file_exists "${ssh_key_file}"; then
   ssh-keygen -t 'ed25519' -C "${HOSTNAME} SSH key" -N '' -f "${ssh_key_file}"
   log "Generated SSH key"
   log "Uploading SSH key to Hetzner storage box"
-  storage_box_username="$(get_env_file_defined_var STORAGE_BOX_USERNAME)"
+  storage_box_username="$(get_env_file_defined_var "${env_file}" 'STORAGE_BOX_USERNAME')"
   readonly storage_box_username
   ssh -p '23' "${storage_box_username}@${storage_box_username}.your-storagebox.de" 'install-ssh-key' < "${ssh_key_file}.pub"
   log "Uploaded SSH key to Hetzner storage box"
