@@ -14,23 +14,48 @@ set_env_file_var_if_not_defined "${env_file}" 'RESTIC_PASSWORD'
 set_env_file_var_if_not_defined "${env_file}" 'B2_KEY_ID'
 set_env_file_var_if_not_defined "${env_file}" 'B2_KEY'
 set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT'
+set_env_file_var_if_not_defined "${env_file}" 'STORAGE_BOX_USERNAME'
+
+ssh_key_dir="$(this_script_dir)/.ssh"
+readonly ssh_key_dir
+mkdir --parents "${ssh_key_dir}"
+readonly ssh_key_file="${ssh_key_dir}/id_ed25519"
+if ! file_exists "${ssh_key_file}"; then
+  log "Generating SSH key"
+  ssh-keygen -t 'ed25519' -C "${HOSTNAME} SSH key" -N '' -f "${ssh_key_file}"
+  log "Generated SSH key"
+  log "Uploading SSH key to Hetzner storage box"
+  local storage_box_username
+  storage_box_username="$(get_env_file_defined_var STORAGE_BOX_USERNAME)"
+  ssh -p '23' "${storage_box_username}@${storage_box_username}.your-storagebox.de" 'install-ssh-key' < "${ssh_key_file}.pub"
+  log "Uploaded SSH key to Hetzner storage box"
+  sudo chown -R 'root:' "${ssh_key_dir}"
+fi
 
 # $1 = repo desc
 # $2 = service
 function init_repo_if_not_exists() {
   local compose_file
   compose_file="$(this_script_dir)/compose.yaml"
+  log "Checking if $1 repository exists"
   set +e
   docker compose --file "${compose_file}" run --rm "$2" cat config > '/dev/null' 2>&1
-  readonly exit_code="$?"
+  local exit_code="$?"
   set -e
   if [[ "${exit_code}" == '10' ]]; then
+    log "$1 repository does not exist"
     if prompt_yn "Initialize $1 repository?"; then
+      log "Initializing $1 repository"
       docker compose --file "${compose_file}" run --rm "$2" init
+      log "Initialized $1 repository"
     fi
+  elif [[ "${exit_code}" != '0' ]]; then
+    # run command again to print failure info
+    docker compose --file "${compose_file}" run --rm "$2" cat config
   else
-    exit "${exit_code}"
+    log "$1 repository exists"
   fi
 }
 
-init_repo_if_not_exists 'B2' 'app-data-b2'
+init_repo_if_not_exists 'B2' 'backup-app-data-b2'
+init_repo_if_not_exists 'Hetzner Storage Box' 'backup-app-data-hetzner'

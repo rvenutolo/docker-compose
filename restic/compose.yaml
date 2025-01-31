@@ -1,9 +1,9 @@
 services:
 
-  app-data-b2:
+  backup-app-data-b2:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-app-data-b2
-    hostname: restic-app-data-b2
+    container_name: restic-backup-app-data-b2
+    hostname: restic-backup-app-data-b2
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -11,9 +11,25 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       ## Using S3-compatible API due to note here:
-      RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
-      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-      RESTIC_HOST: ${HOSTNAME:?}
       AWS_ACCESS_KEY_ID: ${B2_KEY_ID:?}
       AWS_SECRET_ACCESS_KEY: ${B2_KEY:?}
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+      RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT:?}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
+    command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
+
+  backup-app-data-hetzner:
+    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    container_name: restic-backup-app-data-hetzner
+    hostname: restic-backup-app-data-hetzner
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./.ssh:/root/.ssh
+      - ${DOCKER_APP_DATA_DIR:?}:/to-backup
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
     command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
