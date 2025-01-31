@@ -17,7 +17,7 @@ set_env_file_var_if_not_defined "${env_file}" 'B2_KEY' 'Backblaze B2 application
 set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint'
 set_env_file_var_if_not_defined "${env_file}" 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
-create_dir "${BACKUP_DIR}"
+create_dir "${BACKUP_DIR}/restic"
 
 ssh_key_dir="$(this_script_dir)/.ssh"
 readonly ssh_key_dir
