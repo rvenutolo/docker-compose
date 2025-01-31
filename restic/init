@@ -10,11 +10,11 @@ if ! file_exists "${env_file}"; then
   cp "${env_file}.template" "${env_file}"
 fi
 
-set_env_file_var_if_not_defined "${env_file}" 'RESTIC_PASSWORD'
-set_env_file_var_if_not_defined "${env_file}" 'B2_KEY_ID'
-set_env_file_var_if_not_defined "${env_file}" 'B2_KEY'
-set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT'
-set_env_file_var_if_not_defined "${env_file}" 'STORAGE_BOX_USERNAME'
+set_env_file_var_if_not_defined "${env_file}" 'RESTIC_PASSWORD' 'Restic encryption key --docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
+set_env_file_var_if_not_defined "${env_file}" 'B2_KEY_ID' 'Backblaze B2 application key ID'
+set_env_file_var_if_not_defined "${env_file}" 'B2_KEY' 'Backblaze B2 application key'
+set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint'
+set_env_file_var_if_not_defined "${env_file}" 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
 ssh_key_dir="$(this_script_dir)/.ssh"
 readonly ssh_key_dir
