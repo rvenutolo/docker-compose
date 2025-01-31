@@ -13,6 +13,6 @@ function run_backup() {
   log "Ran $1 backup"
 }
 
+run_backup 'local' 'backup-app-data-local'
 run_backup 'B2' 'backup-app-data-b2'
 run_backup 'Hetzner Storage Box' 'backup-app-data-hetzner'
-run_backup 'local' 'backup-app-data-local'

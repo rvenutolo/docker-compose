@@ -60,6 +60,6 @@ function init_repo_if_not_exists() {
   fi
 }
 
+init_repo_if_not_exists 'local' 'backup-app-data-local'
 init_repo_if_not_exists 'B2' 'backup-app-data-b2'
 init_repo_if_not_exists 'Hetzner Storage Box' 'backup-app-data-hetzner'
-init_repo_if_not_exists 'local' 'backup-app-data-local'
