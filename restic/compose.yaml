@@ -33,3 +33,19 @@ services:
       RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
     command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
+
+  backup-app-data-local:
+    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    container_name: restic-backup-app-data-local
+    hostname: restic-backup-app-data-local
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ${BACKUP_DIR:?}:/repo
+      - ${DOCKER_APP_DATA_DIR:?}:/to-backup
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_REPOSITORY: /repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+    command: backup --tag 'app-data' --group-by 'host,tags' /to-backup

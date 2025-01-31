@@ -17,9 +17,11 @@ set_env_file_var_if_not_defined "${env_file}" 'B2_KEY' 'Backblaze B2 application
 set_env_file_var_if_not_defined "${env_file}" 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint'
 set_env_file_var_if_not_defined "${env_file}" 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
+create_dir "${BACKUP_DIR}"
+
 ssh_key_dir="$(this_script_dir)/.ssh"
 readonly ssh_key_dir
-mkdir --parents "${ssh_key_dir}"
+create_dir "${ssh_key_dir}"
 readonly ssh_key_file="${ssh_key_dir}/id_ed25519"
 if ! file_exists "${ssh_key_file}"; then
   log "Generating SSH key"
@@ -60,3 +62,4 @@ function init_repo_if_not_exists() {
 
 init_repo_if_not_exists 'B2' 'backup-app-data-b2'
 init_repo_if_not_exists 'Hetzner Storage Box' 'backup-app-data-hetzner'
+init_repo_if_not_exists 'local' 'backup-app-data-local'
