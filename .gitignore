@@ -9,3 +9,4 @@
 .env
 guacamole/init-db.sql
 proxy/authelia-notifications.txt
+restic/.ssh
