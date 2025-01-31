@@ -6,10 +6,14 @@ set -euo pipefail
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 env_file="$(env_file)"
+readonly env_file
 if ! file_exists "${env_file}"; then
   cp "${env_file}.template" "${env_file}"
 fi
+function set_var() {
+  set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
+}
 
-set_env_file_var_if_not_defined "${env_file}" 'MONGO_PASSWORD'
-set_env_file_var_if_not_defined "${env_file}" 'KOMODO_PASSKEY'
-set_env_file_var_if_not_defined "${env_file}" 'KOMODO_JWT_SECRET'
+set_var 'MONGO_PASSWORD'
+set_var 'KOMODO_PASSKEY'
+set_var 'KOMODO_JWT_SECRET'
