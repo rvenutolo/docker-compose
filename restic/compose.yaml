@@ -1,3 +1,8 @@
+volumes:
+  local-cache:
+  b2-cache:
+  hetzner-cache:
+
 services:
 
   restic-local:
@@ -7,6 +12,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
+      - local-cache:/root/.cache
       - ${BACKUP_DIR:?}/restic:/repo
       - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
@@ -23,6 +29,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
+      - b2-cache:/root/.cache
       - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -42,6 +49,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
+      - hetzner-cache:/root/.cache
       - ${DOCKER_APP_DATA_DIR:?}/restic/root/ssh:/root/.ssh
       - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
