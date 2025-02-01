@@ -9,9 +9,6 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 ## TODO run security scans
 ## TODO run clamav
 
-log "Running CrowdSec hub update and upgrade"
-if container_is_running 'crowdsec'; then
-  docker exec 'crowdsec' cscli hub update
-  docker exec 'crowdsec' cscli hub upgrade
-fi
-log "Ran CrowdSec hub update and upgrade"
+this_dir="$(this_script_dir)"
+
+"${this_dir}/proxy/run-crowdsec-hub-update-upgrade"
