@@ -14,7 +14,7 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_REPOSITORY: /repo
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/to-backup'
 
   restic-b2:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
@@ -33,7 +33,7 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
       RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT:?}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
-    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/to-backup'
 
   restic-hetzner:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
@@ -49,4 +49,4 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/to-backup'
