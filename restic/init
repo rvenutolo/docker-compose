@@ -25,8 +25,7 @@ set_var 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
 create_dir "${BACKUP_DIR}/restic"
 
-ssh_key_dir="$(this_script_dir)/.ssh"
-readonly ssh_key_dir
+readonly ssh_key_dir="${DOCKER_APP_DATA_DIR}/restic/root/ssh"
 create_dir "${ssh_key_dir}"
 readonly ssh_key_file="${ssh_key_dir}/id_ed25519"
 if ! file_exists "${ssh_key_file}"; then
