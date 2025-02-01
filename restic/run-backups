@@ -9,10 +9,45 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 # $2 = service
 function run_backup() {
   log "Running $1 backup"
-  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "$2"
+  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2"
   log "Ran $1 backup"
 }
 
-run_backup 'local' 'backup-app-data-local'
-run_backup 'B2' 'backup-app-data-b2'
-run_backup 'Hetzner Storage Box' 'backup-app-data-hetzner'
+if [[ "$#" -eq 0 ]]; then
+  if prompt_yn 'Run local backup?'; then
+    readonly run_local=1
+  fi
+  if prompt_yn 'Run Backblaze B2 backup?'; then
+    readonly run_b2=1
+  fi
+  if prompt_yn 'Run Hetzner Storage Box backup?'; then
+    readonly run_hetzner=1
+  fi
+else
+  for arg in "$@"; do
+    case "${arg}" in
+      'local')
+        readonly run_local=1
+        ;;
+      'b2')
+        readonly run_b2=1
+        ;;
+      'hetzner')
+        readonly run_hetzner=1
+        ;;
+      *)
+        die "Unexpected backup type: ${arg}"
+        ;;
+    esac
+  done
+fi
+
+if [[ -n "${run_local:-}" ]]; then
+  run_backup 'local' 'local'
+fi
+if [[ -n "${run_b2:-}" ]]; then
+  run_backup 'Backblaze B2' 'b2'
+fi
+if [[ -n "${run_hetzner:-}" ]]; then
+  run_backup 'Hetzner Storage Box' 'hetzner'
+fi

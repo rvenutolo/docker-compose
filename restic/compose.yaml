@@ -1,29 +1,29 @@
 services:
 
-  backup-app-data-local:
+  restic-local:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-backup-app-data-local
-    hostname: restic-backup-app-data-local
+    container_name: restic-local
+    hostname: restic-local
     security_opt:
       - no-new-privileges:true
     volumes:
       - ${BACKUP_DIR:?}/restic:/repo
-      - ${DOCKER_APP_DATA_DIR:?}:/to-backup:ro
+      - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_REPOSITORY: /repo
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-    command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
+    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'
 
-  backup-app-data-b2:
+  restic-b2:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-backup-app-data-b2
-    hostname: restic-backup-app-data-b2
+    container_name: restic-b2
+    hostname: restic-b2
     security_opt:
       - no-new-privileges:true
     volumes:
-      - ${DOCKER_APP_DATA_DIR:?}:/to-backup:ro
+      - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       ## Using S3-compatible API due to note here:
@@ -33,20 +33,20 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
       RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT:?}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
-    command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
+    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'
 
-  backup-app-data-hetzner:
+  restic-hetzner:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-backup-app-data-hetzner
-    hostname: restic-backup-app-data-hetzner
+    container_name: restic-hetzner
+    hostname: restic-hetzner
     security_opt:
       - no-new-privileges:true
     volumes:
       - ./.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
-      - ${DOCKER_APP_DATA_DIR:?}:/to-backup:ro
+      - ${DOCKER_DIR:?}:/to-backup:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-    command: backup --tag 'app-data' --group-by 'host,tags' /to-backup
+    command: backup --tag 'app-data' --group-by 'host,tags' '/to-backup'

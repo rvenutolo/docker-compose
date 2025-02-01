@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
+# $1 = repo desc
+# $2 = service
+function run_maintenance() {
+  log "Running $1 backup maintenance"
+  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2" \
+    forget \
+    --prune \
+    --keep-daily 7 \
+    --keep-weekly 5 \
+    --keep-monthly 12
+  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2" \
+    check \
+    --read-data-subset '10%'
+  log "Ran $1 backup maintenance"
+}
+
+if [[ "$#" -eq 0 ]]; then
+  if prompt_yn 'Run local backup maintenance?'; then
+    readonly run_local=1
+  fi
+  if prompt_yn 'Run Backblaze B2 backup maintenance?'; then
+    readonly run_b2=1
+  fi
+  if prompt_yn 'Run Hetzner Storage Box backup maintenance?'; then
+    readonly run_hetzner=1
+  fi
+else
+  for arg in "$@"; do
+    case "${arg}" in
+      'local')
+        readonly run_local=1
+        ;;
+      'b2')
+        readonly run_b2=1
+        ;;
+      'hetzner')
+        readonly run_hetzner=1
+        ;;
+      *)
+        die "Unexpected backup type: ${arg}"
+        ;;
+    esac
+  done
+fi
+
+if [[ -n "${run_local:-}" ]]; then
+  run_maintenance 'local' 'local'
+fi
+if [[ -n "${run_b2:-}" ]]; then
+  run_maintenance 'Backblaze B2' 'b2'
+fi
+if [[ -n "${run_hetzner:-}" ]]; then
+  run_maintenance 'Hetzner Storage Box' 'hetzner'
+fi
