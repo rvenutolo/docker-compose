@@ -1,0 +1,7 @@
+[Unit]
+Description=Daily tasks
+
+[Service]
+Type=oneshot
+ExecStart=${DOCKER_COMPOSE_DIR}/daily-tasks
+

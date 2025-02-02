@@ -50,3 +50,12 @@ if prompt_yn "Run init scripts?"; then
     fi
   done
 fi
+
+readonly systemd_service_dir="${XDG_CONFIG_DIR}/systemd/user/"
+copy_file "$(this_script_dir)/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
+copy_file "$(this_script_dir)/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
+if ! systemctl is-enabled --user --quiet 'daily-tasks.timer'; then
+  log 'Enabling daily-tasks timer'
+  systemctl enable --now --user --quiet 'daily-tasks.timer'
+  log 'Enabled daily-tasks timer'
+fi
