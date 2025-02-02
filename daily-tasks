@@ -13,7 +13,7 @@ this_dir="$(this_script_dir)"
 
 log 'Stopping containers before backup'
 for dir in ${DOCKER_APP_DATA_DIR}/*; do
-  name="$(basename "$1")"
+  name="$(basename "${dir}")"
   log "Running docker compose down for: ${name}"
   docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" down
 done
@@ -24,10 +24,13 @@ log 'Running backups'
 log 'Ran backups'
 
 log 'Starting containers stopped for backup'
+readonly ignore_filename='.dc_ignore'
 for dir in ${DOCKER_APP_DATA_DIR}/*; do
-  name="$(basename "$1")"
-  log "Running docker compose up for: ${name}"
-  docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" up --detach
+  name="$(basename "${dir}")"
+  if ! file_exists "${dir}/${ignore_filename}"; then
+    log "Running docker compose up for: ${name}"
+    docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" up --detach
+  fi
 done
 log 'Started containers stopped for backup'
 
