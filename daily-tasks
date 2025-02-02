@@ -5,10 +5,32 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
-## TODO run restic backups
-## TODO run security scans
-## TODO run clamav
+## TODO run clamav?
 
 this_dir="$(this_script_dir)"
 
 "${this_dir}/proxy/run-crowdsec-hub-update-upgrade"
+
+log 'Stopping containers before backup'
+for dir in ${DOCKER_APP_DATA_DIR}/*; do
+  name="$(basename "$1")"
+  log "Running docker compose down for: ${name}"
+  docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" down
+done
+log 'Stopped containers before backup'
+
+log 'Running backups'
+"${this_dir}/restic/run-backups" 'local' 'b2' 'r2'
+log 'Ran backups'
+
+log 'Starting containers stopped for backup'
+for dir in ${DOCKER_APP_DATA_DIR}/*; do
+  name="$(basename "$1")"
+  log "Running docker compose up for: ${name}"
+  docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" up --detach
+done
+log 'Started containers stopped for backup'
+
+log 'Running backup maintenance'
+"${this_dir}/restic/run-backup-maintenance" 'local' 'b2' 'r2'
+log 'Ran backup maintenance'
