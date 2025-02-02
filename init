@@ -50,5 +50,3 @@ if prompt_yn "Run init scripts?"; then
     fi
   done
 fi
-
-root_copy_file "$(this_script_dir)/cron-daily-tasks" '/etc/cron.d/docker-daily-tasks'
