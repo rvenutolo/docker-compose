@@ -27,7 +27,7 @@ log 'Starting containers stopped for backup'
 readonly ignore_filename='.dc_ignore'
 for dir in ${DOCKER_APP_DATA_DIR}/*; do
   name="$(basename "${dir}")"
-  if ! file_exists "${dir}/${ignore_filename}"; then
+  if ! file_exists "${DOCKER_COMPOSE_DIR}/${name}/${ignore_filename}"; then
     log "Running docker compose up for: ${name}"
     docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" up --detach
   fi
