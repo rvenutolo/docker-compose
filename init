@@ -59,3 +59,4 @@ if ! systemctl is-enabled --user --quiet 'daily-tasks.timer'; then
   systemctl enable --now --user --quiet 'daily-tasks.timer'
   log 'Enabled daily-tasks timer'
 fi
+systemctl --user --quiet daemon-reload
