@@ -1,27 +1,10 @@
 volumes:
-  local-cache:
   b2-cache:
-  r2-cache:
   hetzner-cache:
+  local-cache:
+  r2-cache:
 
 services:
-
-  restic-local:
-    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-local
-    hostname: restic-local
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - local-cache:/root/.cache
-      - ${BACKUP_DIR:?}/restic:/repo
-      - ${DOCKER_DIR:?}:/docker-dir:ro
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      RESTIC_HOST: ${HOSTNAME:?}
-      RESTIC_REPOSITORY: /repo
-      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
-    command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
 
   restic-b2:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
@@ -43,6 +26,40 @@ services:
       RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT:?}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
     command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
 
+  restic-hetzner:
+    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    container_name: restic-hetzner
+    hostname: restic-hetzner
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - hetzner-cache:/root/.cache
+      - ${DOCKER_APP_DATA_DIR:?}/restic/root/ssh:/root/.ssh
+      - ${DOCKER_DIR:?}:/docker-dir:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
+
+  restic-local:
+    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    container_name: restic-local
+    hostname: restic-local
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - local-cache:/root/.cache
+      - ${BACKUP_DIR:?}/restic:/repo
+      - ${DOCKER_DIR:?}:/docker-dir:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_REPOSITORY: /repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
+
   restic-r2:
     image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
     container_name: restic-r2
@@ -59,21 +76,4 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
       RESTIC_REPOSITORY: s3:https://${R2_BUCKET_ENDPOINT:?}/${R2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
-    command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
-
-  restic-hetzner:
-    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
-    container_name: restic-hetzner
-    hostname: restic-hetzner
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - hetzner-cache:/root/.cache
-      - ${DOCKER_APP_DATA_DIR:?}/restic/root/ssh:/root/.ssh
-      - ${DOCKER_DIR:?}:/docker-dir:ro
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      RESTIC_HOST: ${HOSTNAME:?}
-      RESTIC_REPOSITORY: sftp:${STORAGE_BOX_USERNAME:?}@${STORAGE_BOX_USERNAME:?}.your-storagebox.de:${STORAGE_BOX_REPOSITORY:-restic/${HOSTNAME:?}}
-      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
     command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
