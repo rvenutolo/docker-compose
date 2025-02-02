@@ -70,4 +70,5 @@ function init_repo_if_not_exists() {
 
 init_repo_if_not_exists 'local' 'local'
 init_repo_if_not_exists 'Backblaze B2' 'b2'
+init_repo_if_not_exists 'Cloudflare R2' 'r2'
 init_repo_if_not_exists 'Hetzner Storage Box' 'hetzner'
