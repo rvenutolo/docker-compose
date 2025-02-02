@@ -39,6 +39,7 @@ http:
           X-Forwarded-Proto: "https"
           X-Robots-Tag: noarchive,noimageindex,none,nosnippet,notranslate
         #forceSTSHeader: true
+        frameDeny: false
         hostsProxyHeaders:
           - X-Forwarded-Host
         permissionsPolicy: camera=(), geolocation=(), microphone=(), payment=(), usb=(), vr=()
