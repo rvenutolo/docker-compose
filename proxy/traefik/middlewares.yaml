@@ -29,6 +29,7 @@ http:
           - PUT
         accessControlMaxAge: 100
         browserXssFilter: true
+        contentSecurityPolicy: "default-src 'self'"
         contentTypeNosniff: true
         customFrameOptionsValue: SAMEORIGIN
         customRequestHeaders:
