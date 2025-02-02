@@ -1,6 +1,7 @@
 volumes:
   local-cache:
   b2-cache:
+  r2-cache:
   hetzner-cache:
 
 services:
@@ -40,6 +41,24 @@ services:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
       RESTIC_REPOSITORY: s3:https://${B2_BUCKET_ENDPOINT:?}/${B2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
+    command: backup --tag 'docker-dir' --group-by 'host,tags' '/to-backup'
+
+  restic-r2:
+    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    container_name: restic-r2
+    hostname: restic-r2
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - r2-cache:/root/.cache
+      - ${DOCKER_DIR:?}:/to-backup:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      AWS_ACCESS_KEY_ID: ${R2_KEY_ID:?}
+      AWS_SECRET_ACCESS_KEY: ${R2_KEY:?}
+      RESTIC_HOST: ${HOSTNAME:?}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+      RESTIC_REPOSITORY: s3:https://${R2_BUCKET_ENDPOINT:?}/${R2_REPOSITORY:-${USER:?}-${HOSTNAME:?}-restic}
     command: backup --tag 'docker-dir' --group-by 'host,tags' '/to-backup'
 
   restic-hetzner:
