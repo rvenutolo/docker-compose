@@ -20,10 +20,10 @@ function get_var() {
 set_var 'RESTIC_PASSWORD' 'Restic encryption key --docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
 set_var 'B2_KEY_ID' 'Backblaze B2 application key ID'
 set_var 'B2_KEY' 'Backblaze B2 application key'
-set_var 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint'
+set_var 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint (domain only)'
 set_var 'R2_KEY_ID' 'Cloudflare R2 application key ID'
 set_var 'R2_KEY' 'Cloudflare R2 application key'
-set_var 'R2_BUCKET_ENDPOINT' 'Cloudflare R2 endpoint'
+set_var 'R2_BUCKET_ENDPOINT' 'Cloudflare R2 endpoint (domain only)'
 set_var 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
 create_dir "${BACKUP_DIR}/restic"
