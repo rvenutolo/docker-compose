@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_COMPOSE_DIR}/functions.bash"
+
+env_file="$(env_file)"
+readonly env_file
+if ! file_exists "${env_file}"; then
+  cp "${env_file}.template" "${env_file}"
+fi
+function set_var() {
+  set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
+}
+function get_var() {
+  get_env_file_defined_var "${env_file}" "$1"
+}
+
+readonly app_data_dir="${DOCKER_APP_DATA_DIR}/beszel"
+create_dir "${app_data_dir}"
+readonly ssh_key_dir="${app_data_dir}/beszel_data"
+create_dir "${ssh_key_dir}"
+readonly ssh_key_file="${ssh_key_dir}/id_ed25519"
+if ! file_exists "${ssh_key_file}"; then
+  log "Generating SSH key"
+  ssh-keygen -t 'ed25519' -C "${HOSTNAME} SSH key" -N '' -f "${ssh_key_file}"
+  log "Generated SSH key"
+fi
+sudo chown -R 'root:root' "${app_data_dir}"
