@@ -40,8 +40,6 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Created ${proxy_network} network"
 fi
 
-create_dir "${DOCKER_LOGS_DIR}/daily-tasks"
-sudo chown -R 'root:root' "${DOCKER_LOGS_DIR}/daily-tasks"
 readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
 copy_file "$(this_script_dir)/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
 copy_file "$(this_script_dir)/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
