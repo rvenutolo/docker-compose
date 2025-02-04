@@ -23,3 +23,4 @@ if ! file_exists "${ssh_key_file}"; then
   ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${ssh_key_file}"
   log "Generated SSH key"
 fi
+set_env_file_var_to_value "${env_file}" 'BESZEL_PUBLIC_KEY' "$(cat "${ssh_key_file}.pub")"
