@@ -17,14 +17,9 @@ function get_var() {
   get_env_file_defined_var "${env_file}" "$1"
 }
 
-readonly app_data_dir="${DOCKER_APP_DATA_DIR}/beszel"
-create_dir "${app_data_dir}"
-readonly ssh_key_dir="${app_data_dir}/beszel_data"
-create_dir "${ssh_key_dir}"
-readonly ssh_key_file="${ssh_key_dir}/id_ed25519"
+readonly ssh_key_file="$(this_script_dir)/id_ed25519"
 if ! file_exists "${ssh_key_file}"; then
   log "Generating SSH key"
-  ssh-keygen -t 'ed25519' -C "${HOSTNAME} SSH key" -N '' -f "${ssh_key_file}"
+  ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${ssh_key_file}"
   log "Generated SSH key"
 fi
-sudo chown -R 'root:root' "${app_data_dir}"
