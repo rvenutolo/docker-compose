@@ -3,8 +3,8 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 while read -r stack; do
-  docker compose --file "${stack}/compose.yaml" up --detach
-done < "$(this_script_dir)/stacks-to-start"
+  docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" up --detach
+done < "${DOCKER_DIR}/stacks-to-start"

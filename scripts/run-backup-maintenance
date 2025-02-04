@@ -3,19 +3,19 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 # $1 = repo desc
 # $2 = service
 function run_maintenance() {
   log "Running $1 backup maintenance"
-  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2" \
+  docker compose --file "${DOCKER_COMPOSE_DIR}/restic/compose.yaml" run --rm "restic-$2" \
     forget \
     --prune \
     --keep-daily 7 \
     --keep-weekly 5 \
     --keep-monthly 12
-  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2" \
+  docker compose --file "${DOCKER_COMPOSE_DIR}/restic/compose.yaml" run --rm "restic-$2" \
     check \
     --read-data-subset '10%'
   log "Ran $1 backup maintenance"

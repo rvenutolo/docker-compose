@@ -3,15 +3,13 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 ## TODO run clamav?
 
 log 'Running daily tasks'
 
-this_dir="$(this_script_dir)"
-
-"${this_dir}/proxy/run-crowdsec-hub-update-upgrade"
+"$(this_script_dir)/run-crowdsec-hub-update-upgrade"
 
 log 'Stopping containers before backup'
 for dir in "${DOCKER_APP_DATA_DIR}"/*; do
@@ -22,7 +20,7 @@ done
 log 'Stopped containers before backup'
 
 log 'Running backups'
-"${this_dir}/restic/run-backups" 'local' 'b2' 'r2'
+"$(this_script_dir)/run-backups" 'local' 'b2' 'r2'
 log 'Ran backups'
 
 log 'Starting containers stopped for backup'
@@ -37,7 +35,7 @@ done
 log 'Started containers stopped for backup'
 
 log 'Running backup maintenance'
-"${this_dir}/restic/run-backup-maintenance" 'local' 'b2' 'r2'
+"$(this_script_dir)/run-backup-maintenance" 'local' 'b2' 'r2'
 log 'Ran backup maintenance'
 
 log "Ran daily tasks in $(shell_elapsed_time)"

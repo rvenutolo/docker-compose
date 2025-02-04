@@ -25,5 +25,5 @@ My Docker Compose files.
 ## Initialize
 
 ```shell
-${DOCKER_COMPOSE_DIR}/init
+${DOCKER_DIR}/init
 ```

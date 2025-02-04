@@ -1,0 +1,6 @@
+[Unit]
+Description=Daily tasks
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -l -c '$${DOCKER_DIR}/scripts/daily-tasks 2>&1 | tee -a $${DOCKER_DIR}/daily-tasks.log'

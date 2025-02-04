@@ -8,6 +8,6 @@
 *.diff
 .env
 id_ed25519*
-guacamole/init-db.sql
-proxy/authelia-notifications.txt
+compose/guacamole/init-db.sql
+compose/proxy/authelia-notifications.txt
 ./stacks-to-start

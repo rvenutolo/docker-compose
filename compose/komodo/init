@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 env_file="$(env_file)"
 readonly env_file
@@ -14,5 +14,6 @@ function set_var() {
   set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
 }
 
-set_var 'DISCORD_WEBHOOK_ID'
-set_var 'DISCORD_TOKEN'
+set_var 'MONGO_PASSWORD'
+set_var 'KOMODO_PASSKEY'
+set_var 'KOMODO_JWT_SECRET'

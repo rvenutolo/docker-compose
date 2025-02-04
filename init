@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 for env_var in \
   BACKUP_DIR \
@@ -41,13 +41,13 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
 fi
 
 readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
-copy_file "$(this_script_dir)/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
-copy_file "$(this_script_dir)/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
+copy_file "${DOCKER_DIR}/systemd/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
+copy_file "${DOCKER_DIR}/systemd/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
 systemctl --user --quiet daemon-reload
 enable_user_service_unit 'daily-tasks.timer'
 
 if prompt_yn "Run init scripts?"; then
-  init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
+  init_scripts="$(find "${DOCKER_COMPOSE_DIR}" -mindepth 2 -type f -name 'init' | sort)"
   for init_script in ${init_scripts}; do
     if prompt_yn "Run ${init_script:2}?"; then
       log "Running ${init_script:2}"

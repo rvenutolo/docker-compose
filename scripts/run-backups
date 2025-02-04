@@ -3,13 +3,13 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_COMPOSE_DIR}/functions.bash"
+source "${DOCKER_DIR}/functions.bash"
 
 # $1 = repo desc
 # $2 = service
 function run_backup() {
   log "Running $1 backup"
-  docker compose --file "$(this_script_dir)/compose.yaml" run --rm "restic-$2"
+  docker compose --file "${DOCKER_COMPOSE_DIR}/restic/compose.yaml" run --rm "restic-$2"
   log "Ran $1 backup"
 }
 
