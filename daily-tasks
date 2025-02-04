@@ -7,6 +7,8 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 ## TODO run clamav?
 
+log "Running daily tasks"
+
 this_dir="$(this_script_dir)"
 
 "${this_dir}/proxy/run-crowdsec-hub-update-upgrade"
@@ -37,3 +39,5 @@ log 'Started containers stopped for backup'
 log 'Running backup maintenance'
 "${this_dir}/restic/run-backup-maintenance" 'local' 'b2' 'r2'
 log 'Ran backup maintenance'
+
+log "Ran daily tasks in $(shell_elapsed_time)"
