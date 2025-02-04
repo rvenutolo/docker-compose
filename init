@@ -57,6 +57,4 @@ if prompt_yn "Run init scripts?"; then
   done
 fi
 
-if prompt_yn "Run stacks?"; then
-  "${DOCKER_DIR}/start-stacks"
-fi
+git update-index --assume-unchanged "${DOCKER_DIR}/stacks-to-start"
