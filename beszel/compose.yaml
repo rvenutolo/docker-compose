@@ -24,18 +24,18 @@ services:
       - traefik.http.routers.beszel-rtr.rule=Host(`beszel.${DOMAIN_NAME:?}`)
       - traefik.http.services.beszel-svc.loadBalancer.server.port=8090
 
-#  beszel-agent:
-#    image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent}:${BESZEL_AGENT_IMAGE_TAG:-latest}
-#    container_name: beszel-agent
-#    hostname: beszel-agent
-#    restart: unless-stopped
-#    security_opt:
-#      - no-new-privileges:true
-#    network_mode: host
-#    volumes:
-#      ## TODO socket proxy
-#      - ${DOCKER_SOCKET:?}:/var/run/docker.sock:ro
-#      - /etc/localtime:/etc/localtime:ro
-#    environment:
-#      PORT: 45876
-#      KEY: ${BESZEL_PUBLIC_KEY:?}
+  beszel-agent:
+    image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent}:${BESZEL_AGENT_IMAGE_TAG:-latest}
+    container_name: beszel-agent
+    hostname: beszel-agent
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    network_mode: host
+    volumes:
+      ## TODO socket proxy
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      PORT: 45876
+      KEY: ${BESZEL_PUBLIC_KEY:?}
