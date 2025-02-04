@@ -23,5 +23,6 @@ services:
       SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}
       SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS:-35058,23094,51330}
     labels:
+      - traefik.enable=true
       - traefik.http.routers.speedtest-tracker-rtr.rule=Host(`speedtest-tracker.${DOMAIN_NAME:?}`)
       - traefik.http.services.speedtest-tracker-svc.loadBalancer.server.port=80

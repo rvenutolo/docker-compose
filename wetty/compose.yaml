@@ -23,5 +23,6 @@ services:
       SSHKEY: /id_ed25519
       TITLE: WeTTY - ${DOMAIN_NAME:?}
     labels:
+      - traefik.enable=true
       - traefik.http.routers.wetty-rtr.rule=Host(`wetty.${DOMAIN_NAME:?}`)
       - traefik.http.services.wetty-svc.loadBalancer.server.port=3000

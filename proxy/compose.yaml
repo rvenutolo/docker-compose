@@ -48,6 +48,7 @@ services:
       X_AUTHELIA_CONFIG: /config.yaml
       X_AUTHELIA_CONFIG_FILTERS: template
     labels:
+      - traefik.enable=true
       - traefik.http.routers.authelia-rtr.rule=Host(`authelia.${DOMAIN_NAME:?}`)
       - traefik.http.services.authelia-svc.loadBalancer.server.port=9091
 
@@ -195,11 +196,12 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.options=default-tls-opts@file
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
-      - --providers.docker.exposedByDefault=${TRAEFIK_DOCKER_EXPOSED_BY_DEFAULT:-true}
+      - --providers.docker.exposedByDefault=${TRAEFIK_DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.docker.network=proxy
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
     labels:
+      - traefik.enable=true
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
       - traefik.http.routers.traefik-rtr.service=api@internal
 

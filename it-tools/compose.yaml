@@ -15,5 +15,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - traefik.enable=true
       - traefik.http.routers.it-tools-rtr.rule=Host(`it-tools.${DOMAIN_NAME:?}`)
       - traefik.http.services.it-tools-svc.loadBalancer.server.port=80

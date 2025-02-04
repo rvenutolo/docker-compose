@@ -16,5 +16,6 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/memos/var/opt/memos:/var/opt/memos
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - traefik.enable=true
       - traefik.http.routers.memos-rtr.rule=Host(`memos.${DOMAIN_NAME:?}`)
       - traefik.http.services.memos-svc.loadBalancer.server.port=5230
