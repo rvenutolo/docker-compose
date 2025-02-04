@@ -25,5 +25,6 @@ My Docker Compose files.
 ## Initialize
 
 ```shell
+git clone git@github.com:rvenutolo/docker-compose.git ${DOCKER_DIR}
 ${DOCKER_DIR}/init
 ```
