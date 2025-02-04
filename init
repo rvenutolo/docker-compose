@@ -40,6 +40,13 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Created ${proxy_network} network"
 fi
 
+create_dir "${DOCKER_LOGS_DIR}/daily-tasks"
+readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
+copy_file "$(this_script_dir)/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
+copy_file "$(this_script_dir)/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
+systemctl --user --quiet daemon-reload
+enable_user_service_unit 'daily-tasks.timer'
+
 if prompt_yn "Run init scripts?"; then
   init_scripts="$(find . -mindepth 2 -type f -name 'init' | sort)"
   for init_script in ${init_scripts}; do
@@ -50,13 +57,3 @@ if prompt_yn "Run init scripts?"; then
     fi
   done
 fi
-
-readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
-copy_file "$(this_script_dir)/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
-copy_file "$(this_script_dir)/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
-if ! systemctl is-enabled --user --quiet 'daily-tasks.timer'; then
-  log 'Enabling daily-tasks timer'
-  systemctl enable --now --user --quiet 'daily-tasks.timer'
-  log 'Enabled daily-tasks timer'
-fi
-systemctl --user --quiet daemon-reload
