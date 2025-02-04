@@ -212,5 +212,5 @@ function set_env_file_var_if_not_defined() {
 
 # $1 = container name
 function container_is_running() {
-  [[ -n "$(docker ps --quiet --filter "name=^$1\$")" ]] && [[ "$(docker container inspect -f '{{.State.Status}}' $1)" == 'running' ]]
+  [[ -n "$(docker ps --quiet --filter "name=^$1\$")" ]] && [[ "$(docker container inspect -f '{{.State.Status}}' "$1")" == 'running' ]]
 }
