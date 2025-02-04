@@ -56,3 +56,7 @@ if prompt_yn "Run init scripts?"; then
     fi
   done
 fi
+
+if prompt_yn "Run stacks?"; then
+  "${DOCKER_DIR}/start-stacks"
+fi
