@@ -14,7 +14,7 @@ this_dir="$(this_script_dir)"
 "${this_dir}/proxy/run-crowdsec-hub-update-upgrade"
 
 log 'Stopping containers before backup'
-for dir in ${DOCKER_APP_DATA_DIR}/*; do
+for dir in "${DOCKER_APP_DATA_DIR}"/*; do
   name="$(basename "${dir}")"
   log "Running docker compose down for: ${name}"
   docker compose --file "${DOCKER_COMPOSE_DIR}/${name}/compose.yaml" down
@@ -27,7 +27,7 @@ log 'Ran backups'
 
 log 'Starting containers stopped for backup'
 readonly ignore_filename='.dc_ignore'
-for dir in ${DOCKER_APP_DATA_DIR}/*; do
+for dir in "${DOCKER_APP_DATA_DIR}"/*; do
   name="$(basename "${dir}")"
   if ! file_exists "${DOCKER_COMPOSE_DIR}/${name}/${ignore_filename}"; then
     log "Running docker compose up for: ${name}"
