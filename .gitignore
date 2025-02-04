@@ -7,6 +7,6 @@
 *.patch
 *.diff
 .env
+id_ed25519*
 guacamole/init-db.sql
 proxy/authelia-notifications.txt
-restic/.ssh
