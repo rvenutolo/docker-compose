@@ -23,9 +23,6 @@ if [[ "$#" -eq 0 ]]; then
   if prompt_yn 'Run Cloudflare R2 backup?'; then
     readonly run_r2=1
   fi
-  if prompt_yn 'Run Hetzner Storage Box backup?'; then
-    readonly run_hetzner=1
-  fi
 else
   for arg in "$@"; do
     case "${arg}" in
@@ -37,9 +34,6 @@ else
         ;;
       'r2')
         readonly run_r2=1
-        ;;
-      'hetzner')
-        readonly run_hetzner=1
         ;;
       *)
         die "Unexpected backup type: ${arg}"
@@ -56,7 +50,4 @@ if [[ -n "${run_b2:-}" ]]; then
 fi
 if [[ -n "${run_r2:-}" ]]; then
   run_backup 'Cloudflare R2' 'r2'
-fi
-if [[ -n "${run_hetzner:-}" ]]; then
-  run_backup 'Hetzner Storage Box' 'hetzner'
 fi

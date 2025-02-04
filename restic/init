@@ -24,21 +24,8 @@ set_var 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint (domain only)'
 set_var 'R2_KEY_ID' 'Cloudflare R2 application key ID'
 set_var 'R2_KEY' 'Cloudflare R2 application key'
 set_var 'R2_BUCKET_ENDPOINT' 'Cloudflare R2 endpoint (domain only)'
-set_var 'STORAGE_BOX_USERNAME' 'Hetzner Storage Box username'
 
 create_dir "${BACKUP_DIR}/restic"
-
-readonly ssh_key_file="$(this_script_dir)/id_ed25519"
-if ! file_exists "${ssh_key_file}"; then
-  log "Generating SSH key"
-  ssh-keygen -t 'ed25519' -C "restic SSH key" -N '' -f "${ssh_key_file}"
-  log "Generated SSH key"
-  log "Uploading SSH key to Hetzner storage box"
-  storage_box_username="$(get_var 'STORAGE_BOX_USERNAME')"
-  readonly storage_box_username
-  ssh -p '23' "${storage_box_username}@${storage_box_username}.your-storagebox.de" 'install-ssh-key' < "${ssh_key_file}.pub"
-  log "Uploaded SSH key to Hetzner storage box"
-fi
 
 # $1 = repo desc
 # $2 = service
@@ -68,4 +55,3 @@ function init_repo_if_not_exists() {
 init_repo_if_not_exists 'local' 'local'
 init_repo_if_not_exists 'Backblaze B2' 'b2'
 init_repo_if_not_exists 'Cloudflare R2' 'r2'
-init_repo_if_not_exists 'Hetzner Storage Box' 'hetzner'
