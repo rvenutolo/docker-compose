@@ -7,7 +7,7 @@ source "${DOCKER_COMPOSE_DIR}/functions.bash"
 
 ## TODO run clamav?
 
-log "Running daily tasks"
+log 'Running daily tasks'
 
 this_dir="$(this_script_dir)"
 
