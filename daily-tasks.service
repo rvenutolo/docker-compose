@@ -3,4 +3,4 @@ Description=Daily tasks
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bash -l -c '$${DOCKER_COMPOSE_DIR}/daily-tasks 2>&1 | tee -a $${DOCKER_LOGS_DIR}/daily-tasks/daily-tasks.log'
+ExecStart=/usr/bin/bash -l -c '$${DOCKER_COMPOSE_DIR}/daily-tasks 2>&1 | tee -a $${DOCKER_COMPOSE_DIR}/daily-tasks.log'
