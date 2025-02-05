@@ -59,8 +59,8 @@ if prompt_yn "Run init scripts?"; then
   done
 fi
 
-git update-index --assume-unchanged "${DOCKER_DIR}/stacks-to-run"
+git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
 
-if [[ ! -s "${DOCKER_DIR}/stacks-to-run" ]]; then
-  log "Remember to add stack names to stacks-to-run"
+if [[ ! -s "${DOCKER_DIR}/managed-stacks" ]]; then
+  log "Remember to add stack names to managed-stacks"
 fi

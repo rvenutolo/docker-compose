@@ -7,4 +7,4 @@ source "${DOCKER_DIR}/functions.bash"
 
 while read -r stack; do
   docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" down --remove-orphans
-done < "${DOCKER_DIR}/stacks-to-run"
+done < "${DOCKER_DIR}/managed-stacks"
