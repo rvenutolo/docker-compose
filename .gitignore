@@ -8,5 +8,7 @@
 *.diff
 .env
 id_ed25519*
+app-data
+logs
 compose/guacamole/init-db.sql
 compose/proxy/authelia-notifications.txt
