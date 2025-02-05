@@ -60,3 +60,7 @@ if prompt_yn "Run init scripts?"; then
 fi
 
 git update-index --assume-unchanged "${DOCKER_DIR}/stacks-to-start"
+
+if [[ ! -s "${DOCKER_DIR}/stacks-to-start" ]]; then
+  log "Remember to add stack names to stacks-to-start"
+fi
