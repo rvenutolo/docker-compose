@@ -23,4 +23,14 @@ if ! file_exists "${ssh_key_file}"; then
   ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${ssh_key_file}"
   log "Generated SSH key"
 fi
-set_env_file_var_to_value "${env_file}" 'BESZEL_PUBLIC_KEY' "$(cat "${ssh_key_file}.pub")"
+beszel_public_key="$(cat "${ssh_key_file}.pub")"
+readonly beszel_public_key
+set_env_file_var_to_value "${env_file}" 'BESZEL_PUBLIC_KEY' "${beszel_public_key}"
+
+if ! pgrep -x 'beszel-agent' &> '/dev/null' &&  prompt_yn 'Install beszel-agent?'; then
+    log 'Installing beszel-agent'
+    curl -sL 'https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh' -o '/tmp/install-agent.sh'
+    chmod +x '/tmp/install-agent.sh'
+    /tmp/install-agent.sh -p '45876' -k "${beszel_public_key}"
+    log 'Installed beszel-agent'
+fi
