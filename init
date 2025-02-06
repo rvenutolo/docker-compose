@@ -40,11 +40,13 @@ if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
   log "Created ${proxy_network} network"
 fi
 
+log 'Enabling daily-tasks service'
 readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
 copy_file "${DOCKER_DIR}/systemd/daily-tasks.service" "${systemd_service_dir}/daily-tasks.service"
 copy_file "${DOCKER_DIR}/systemd/daily-tasks.timer" "${systemd_service_dir}/daily-tasks.timer"
 systemctl --user --quiet daemon-reload
 enable_user_service_unit 'daily-tasks.timer'
+log 'Enabled daily-tasks service'
 
 if prompt_yn "Run init scripts?"; then
   init_scripts="$(find "${DOCKER_COMPOSE_DIR}" -mindepth 2 -type f -name 'init' | sort)"
