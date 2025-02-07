@@ -17,7 +17,7 @@ function get_var() {
   get_env_file_defined_var "${env_file}" "$1"
 }
 
-set_var 'RESTIC_PASSWORD' 'Restic encryption key --docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric docker run --rm authelia/authelia:latest authelia crypto rand --length 64 --charset alphanumeric'
+set_var 'RESTIC_PASSWORD' 'Restic encryption key (pwgen --secure --num-passwords 1 64)'
 set_var 'B2_KEY_ID' 'Backblaze B2 application key ID'
 set_var 'B2_KEY' 'Backblaze B2 application key'
 set_var 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint (domain only)'
