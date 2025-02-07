@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_DIR}/functions.bash"
+
+log 'Running Watchtower'
+WATCHTOWER_RUN_ONCE=true docker compose \
+  --file "${DOCKER_COMPOSE_DIR}/watchtower/compose.yaml" \
+  up \
+  --abort-on-container-exit \
+  --no-attach 'watchtower-socket-proxy'
+log 'Ran Watchtower'
