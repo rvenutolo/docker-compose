@@ -1,0 +1,20 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  dumbwhois:
+    image: ${DUMBWHOIS_IMAGE:-dumbwareio/dumbwhois}:${DUMBWHOIS_IMAGE_TAG:-latest}
+    container_name: dumbwhois
+    hostname: dumbwhois
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dumbwhois-rtr.rule=Host(`dumbwhois.${DOMAIN_NAME:?}`)
+      - traefik.http.services.dumbwhois-svc.loadBalancer.server.port=3000
