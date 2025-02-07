@@ -1,0 +1,25 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  tududi:
+    image: ${TUDUDI_IMAGE:-chrisvel/tududi}:${TUDUDI_IMAGE_TAG:-latest}
+    container_name: tududi
+    hostname: tududi
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/tududi/usr/src/app/tududi_db:/usr/src/app/tududi_db
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TUDUDI_SESSION_SECRET: ${TUDUDI_SESSION_SECRET:?}
+      TUDUDI_USER_EMAIL: ${TUDUDI_USER_EMAIL:?}
+      TUDUDI_USER_PASSWORD: ${TUDUDI_USER_PASSWORD:?}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.tududi-rtr.rule=Host(`tududi.${DOMAIN_NAME:?}`)
+      - traefik.http.services.tududi-svc.loadBalancer.server.port=9292
