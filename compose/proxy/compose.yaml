@@ -62,7 +62,6 @@ services:
     networks:
       - proxy
     volumes:
-      ## TODO do any of these need to be readonly?
       - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
       - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
