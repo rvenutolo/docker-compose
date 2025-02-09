@@ -5,8 +5,6 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/functions.bash"
 
-## TODO run clamav?
-
 log 'Running daily tasks'
 
 "$(this_script_dir)/run-crowdsec-hub-update-upgrade"
