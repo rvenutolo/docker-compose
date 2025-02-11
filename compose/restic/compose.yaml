@@ -1,6 +1,5 @@
 volumes:
   b2-cache:
-  hetzner-cache:
   local-cache:
   r2-cache:
 
