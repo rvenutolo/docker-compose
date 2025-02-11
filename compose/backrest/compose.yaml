@@ -2,6 +2,9 @@ networks:
   proxy:
     external: true
 
+volumes:
+  cache:
+
 services:
   backrest:
     image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
@@ -15,7 +18,7 @@ services:
     volumes:
       - ${DOCKER_DIR:?}:/to-backup
       - ${BACKUP_DIR:?}:/repos
-      - ${DOCKER_APP_DATA_DIR:?}/backrest/cache:/cache
+      - cache:/cache
       - ${DOCKER_APP_DATA_DIR:?}/backrest/config:/config
       - ${DOCKER_APP_DATA_DIR:?}/backrest/data:/data
       - ${DOCKER_APP_DATA_DIR:?}/backrest/root/.ssh:/root/.ssh
