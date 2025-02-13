@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 function log() {
-  echo -e "\033[0;32m[$(date +%T) ${0##*/}] $*\033[0m" >&2
+  echo -e "\033[0;32m[$(date '+%T') ${0##*/}] $*\033[0m" >&2
+}
+
+function log_with_date() {
+  echo -e "\033[0;32m[$(date '+%Y-%m-%d %T') ${0##*/}] $*\033[0m" >&2
 }
 
 function die() {

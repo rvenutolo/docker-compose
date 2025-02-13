@@ -5,44 +5,44 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
-log "Running daily tasks for $(date)"
+log_with_date "Running daily tasks for $(date)"
 
 "$(this_script_dir)/run-crowdsec-hub-update-upgrade"
 
-log 'Stopping stacks before backup'
+log_with_date 'Stopping stacks before backup'
 stacks_to_restart=()
 for stack in $(find "${DOCKER_APP_DATA_DIR}" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort); do
   if ! dir_exists "${DOCKER_COMPOSE_DIR}/${stack}"; then
-    log "Stack does not exist: ${stack}"
+    log_with_date "Stack does not exist: ${stack}"
     continue
   fi
   if [[ -z "$(docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" ps --quiet)" ]]; then
-    log "Stack is not running: ${stack}"
+    log_with_date "Stack is not running: ${stack}"
     continue
   fi
-  log "Running docker compose down for: ${stack}"
+  log_with_date "Running docker compose down for: ${stack}"
   docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" down
   stacks_to_restart+=("${stack}")
 done
-log 'Stopped stacks before backup'
+log_with_date 'Stopped stacks before backup'
 
-log 'Running backups'
+log_with_date 'Running backups'
 "$(this_script_dir)/run-backups" 'local' 'b2' 'r2'
-log 'Ran backups'
+log_with_date 'Ran backups'
 
 # Run Watchtower here rather than after restarting stacks, so the containers in
 # those stacks can be updated before starting them back up.
 "$(this_script_dir)/run-watchtower"
 
-log 'Starting stacks stopped for backup'
+log_with_date 'Starting stacks stopped for backup'
 for stack in "${stacks_to_restart[@]}"; do
-  log "Running docker compose up for: ${stack}"
+  log_with_date "Running docker compose up for: ${stack}"
   docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" up --detach
 done
-log 'Started stacks stopped for backup'
+log_with_date 'Started stacks stopped for backup'
 
-log 'Running backup maintenance'
+log_with_date 'Running backup maintenance'
 "$(this_script_dir)/run-backup-maintenance" 'local' 'b2' 'r2'
-log 'Ran backup maintenance'
+log_with_date 'Ran backup maintenance'
 
-log "Ran daily tasks in $(shell_elapsed_time)"
+log_with_date "Ran daily tasks in $(shell_elapsed_time)"
