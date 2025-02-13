@@ -5,7 +5,7 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
-log_with_date "Running daily tasks for $(date)"
+log_with_date 'Running daily tasks'
 
 "$(this_script_dir)/run-crowdsec-hub-update-upgrade"
 
