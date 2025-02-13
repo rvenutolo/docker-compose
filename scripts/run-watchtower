@@ -9,6 +9,6 @@ log 'Running Watchtower'
 WATCHTOWER_RUN_ONCE=true docker compose \
   --file "${DOCKER_COMPOSE_DIR}/watchtower/compose.yaml" \
   up \
-  --exit-code-from 'watchtower' \
+  --abort-on-container-exit \
   --no-attach 'watchtower-socket-proxy'
 log 'Ran Watchtower'
