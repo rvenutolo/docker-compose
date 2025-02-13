@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/functions.bash"
+source "${DOCKER_DIR}/scripts/functions.bash"
 
 # $1 = repo desc
 # $2 = service

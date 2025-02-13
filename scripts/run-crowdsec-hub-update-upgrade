@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/functions.bash"
+source "${DOCKER_DIR}/scripts/functions.bash"
 
 log 'Running CrowdSec hub update and upgrade'
 if container_is_running 'crowdsec'; then
