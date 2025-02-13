@@ -30,6 +30,10 @@ log 'Running backups'
 "$(this_script_dir)/run-backups" 'local' 'b2' 'r2'
 log 'Ran backups'
 
+# Run Watchtower here rather than after restarting stacks, so the containers in
+# those stacks can be updated before starting them back up.
+"$(this_script_dir)/run-watchtower"
+
 log 'Starting stacks stopped for backup'
 for stack in "${stacks_to_restart[@]}"; do
   log "Running docker compose up for: ${stack}"
@@ -40,7 +44,5 @@ log 'Started stacks stopped for backup'
 log 'Running backup maintenance'
 "$(this_script_dir)/run-backup-maintenance" 'local' 'b2' 'r2'
 log 'Ran backup maintenance'
-
-"$(this_script_dir)/run-watchtower"
 
 log "Ran daily tasks in $(shell_elapsed_time)"
