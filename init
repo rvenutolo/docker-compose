@@ -48,7 +48,7 @@ systemctl --user --quiet daemon-reload
 enable_user_service_unit 'daily-tasks.timer'
 log 'Enabled daily-tasks service'
 
-if promp_ny "Run init scripts?"; then
+if prompt_ny "Run init scripts?"; then
   init_scripts="$(find "${DOCKER_COMPOSE_DIR}" -mindepth 2 -type f -name 'init' | sort)"
   for init_script in ${init_scripts}; do
     init_script_dir="$(dirname "${init_script}")"
