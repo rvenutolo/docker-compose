@@ -18,7 +18,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       CRON_MIN: ${CRON_MIN:-13,43}
-      TRUSTED_PROXY: ${DOCKER_PROXY_NETWORK_SUBNET_CIDR:?}
+      TRUSTED_PROXY: ${DOCKER_NETWORK_CIDR:?}
       FRESHRSS_INSTALL: --auth-type http_auth --base-url https://freshrss.${DOMAIN_NAME:?} --default-user ${USER:?}
     labels:
       - traefik.enable=true
