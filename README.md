@@ -25,5 +25,6 @@ My Docker Compose files.
 
 ```shell
 git clone git@github.com:rvenutolo/docker-compose.git ${DOCKER_DIR}
+micro ${DOCKER_DIR}/managed-stacks
 ${DOCKER_DIR}/init
 ```
