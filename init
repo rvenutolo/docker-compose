@@ -5,6 +5,7 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
+# These should all have been set in the environment
 for env_var in \
   BACKUP_DIR \
   DATA_DIR \
