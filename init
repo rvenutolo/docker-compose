@@ -63,7 +63,3 @@ if prompt_ny "Run init scripts?"; then
 fi
 
 git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
-
-if [[ ! -s "${DOCKER_DIR}/managed-stacks" ]]; then
-  log "Remember to add stack names to managed-stacks"
-fi
