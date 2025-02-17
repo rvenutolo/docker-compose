@@ -52,7 +52,8 @@ enable_user_service_unit 'daily-tasks.timer'
 log 'Enabled daily-tasks service'
 
 if prompt_ny "Run init scripts?"; then
-  while read -r stack; do
+  managed_stacks="$(cat "${DOCKER_DIR}/managed-stacks")"
+  for stack in ${managed_stacks}; do
     init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
     init_script_name="${stack}/init"
     if file_exists "${init_script}" && prompt_ny "Run ${init_script_name}?"; then
@@ -60,5 +61,5 @@ if prompt_ny "Run init scripts?"; then
       ${init_script}
       log "Ran ${init_script_name}"
     fi
-  done < "${DOCKER_DIR}/managed-stacks"
+  done
 fi
