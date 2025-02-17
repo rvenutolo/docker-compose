@@ -50,16 +50,15 @@ enable_user_service_unit 'daily-tasks.timer'
 log 'Enabled daily-tasks service'
 
 if prompt_ny "Run init scripts?"; then
-  init_scripts="$(find "${DOCKER_COMPOSE_DIR}" -mindepth 2 -type f -name 'init' | sort)"
-  for init_script in ${init_scripts}; do
-    init_script_dir="$(dirname "${init_script}")"
-    stack_name="$(basename "${init_script_dir}")"
-    if prompt_ny "Run ${stack_name}/init?"; then
-      log "Running ${stack_name}/init"
-      "${init_script}"
-      log "Ran ${stack_name}/init"
+  while read -r stack; do
+    init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
+    init_script_name="${stack}/init"
+    if file_exists "${init_script}" && prompt_ny "Run ${init_script_name}?"; then
+      log "Running ${init_script_name}"
+      ${init_script}
+      log "Ran ${init_script_name}"
     fi
-  done
+  done < "${DOCKER_DIR}/managed-stacks"
 fi
 
 git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
