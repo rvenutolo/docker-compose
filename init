@@ -5,6 +5,8 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
+git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
+
 # These should all have been set in the environment
 for env_var in \
   BACKUP_DIR \
@@ -60,5 +62,3 @@ if prompt_ny "Run init scripts?"; then
     fi
   done < "${DOCKER_DIR}/managed-stacks"
 fi
-
-git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
