@@ -58,6 +58,7 @@ services:
       - guacamole-postgres
       - guacd
     labels:
+      - traefik.enable=true
       - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole
       - traefik.http.routers.guacamole-rtr.middlewares=guacamole-add-prefix-mdw@docker
       - traefik.http.routers.guacamole-rtr.rule=Host(`guacamole.${DOMAIN_NAME:?}`)
