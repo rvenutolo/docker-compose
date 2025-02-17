@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+while read -r stack; do
+  docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" pull
+done < "${DOCKER_DIR}/managed-stacks"
