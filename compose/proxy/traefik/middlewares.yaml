@@ -15,8 +15,8 @@ http:
         sourceRange:
           - 127.0.0.1/32
           - 100.64.0.0/10
-          - 172.17.0.0/16
-          - 172.18.0.0/16
+          ## TODO check if necessary
+          - 169.254.0.0/16
 
     rate-limit-mdw:
       rateLimit:
