@@ -14,6 +14,6 @@ function set_var() {
   set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
 }
 
-set_var 'MONGO_PASSWORD'
-set_var 'KOMODO_PASSKEY'
-set_var 'KOMODO_JWT_SECRET'
+set_var 'MONGO_PASSWORD' 'pwgen --secure --num-passwords 1 64'
+set_var 'KOMODO_PASSKEY' 'pwgen --secure --num-passwords 1 64'
+set_var 'KOMODO_JWT_SECRET' 'pwgen --secure --num-passwords 1 64'
