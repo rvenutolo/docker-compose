@@ -43,7 +43,7 @@ http:
         frameDeny: false
         hostsProxyHeaders:
           - X-Forwarded-Host
-        permissionsPolicy: camera=(), geolocation=(), microphone=(), payment=(), usb=(), vr=()
+        permissionsPolicy: accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), identity-credentials-get=(), idle-detection=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), otp-credentials=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), storage-access=(), usb=(), vr=(), web-share=(), window-management=(), xr-spatial-tracking=()
         referrerPolicy: same-origin
         sslProxyHeaders:
           X-Forwarded-Proto: https
