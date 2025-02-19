@@ -56,9 +56,7 @@ session:
       remember_me: 1d
   redis:
     host: authelia-redis
-    ## TODO check if necessary
-#    username: 'authelia'
-#    password: 'authelia'
+    password: {{ env "REDIS_PASSWORD" }}
   secret: {{ env "SESSION_ENCRYPTION_KEY" }}
 
 storage:
