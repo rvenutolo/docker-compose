@@ -15,7 +15,7 @@ services:
     networks:
       - default
     volumes:
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+      - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/docker-entrypoint-initdb.d/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
       - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/data:/data
       - /etc/localtime:/etc/localtime:ro
     environment:
