@@ -11,6 +11,7 @@ services:
     hostname: restic-b2
     security_opt:
       - no-new-privileges:true
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - b2-cache:/root/.cache
       - ${DOCKER_DIR:?}:/docker-dir:ro
@@ -36,6 +37,7 @@ services:
       - ${BACKUP_DIR:?}/restic:/repo
       - ${DOCKER_DIR:?}:/docker-dir:ro
       - /etc/localtime:/etc/localtime:ro
+    user: ${PUID:?}:${PGID:?}
     environment:
       RESTIC_HOST: ${HOSTNAME:?}
       RESTIC_REPOSITORY: /repo
@@ -52,6 +54,7 @@ services:
       - r2-cache:/root/.cache
       - ${DOCKER_DIR:?}:/docker-dir:ro
       - /etc/localtime:/etc/localtime:ro
+    user: ${PUID:?}:${PGID:?}
     environment:
       AWS_ACCESS_KEY_ID: ${R2_KEY_ID:?}
       AWS_SECRET_ACCESS_KEY: ${R2_KEY:?}

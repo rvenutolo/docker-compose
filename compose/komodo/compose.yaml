@@ -15,6 +15,7 @@ services:
       - no-new-privileges:true
     networks:
       - default
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data/configdb:/data/configdb
       - ${DOCKER_APP_DATA_DIR:?}/komodo/mongo/data/db:/data/db
@@ -38,6 +39,7 @@ services:
       - default
     depends_on:
       - komodo-mongo
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/action-cache:/action-cache
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/repo-cache:/repo-cache
@@ -109,6 +111,7 @@ services:
       - socket-proxy
     depends_on:
       - komodo-socket-proxy
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
       - /proc:/proc

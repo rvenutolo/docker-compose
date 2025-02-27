@@ -12,6 +12,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/freshrss/var/www/FreshRSS/data:/var/www/FreshRSS/data
       - ${DOCKER_APP_DATA_DIR:?}/freshrss/var/www/FreshRSS/extensions:/var/www/FreshRSS/extensions

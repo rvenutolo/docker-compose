@@ -12,6 +12,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ~/.keys/id_ed25519:/id_ed25519:ro
       - /etc/localtime:/etc/localtime:ro

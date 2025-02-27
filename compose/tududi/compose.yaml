@@ -12,6 +12,7 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/tududi/usr/src/app/tududi_db:/usr/src/app/tududi_db
       - /etc/localtime:/etc/localtime:ro
