@@ -15,5 +15,3 @@ function set_var() {
 }
 
 set_var 'APP_KEY' 'https://speedtest-tracker.dev/'
-
-create_app_data_dir 'speedtest-tracker/config'

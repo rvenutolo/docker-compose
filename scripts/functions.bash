@@ -81,18 +81,6 @@ function create_dir() {
   done
 }
 
-function create_app_data_dir() {
-  for target in "$@"; do
-    create_dir "${DOCKER_APP_DATA_DIR}/${target}"
-  done
-}
-
-function create_logs_dir() {
-  for target in "$@"; do
-    create_dir "${DOCKER_LOGS_DIR}/${target}"
-  done
-}
-
 # $1 = source file
 # $2 = destination file
 function root_copy_file() {
@@ -131,6 +119,9 @@ function copy_file() {
 # $2 = content
 function write_file() {
   log "Writing $1"
+  if [[ ! -d "$(dirname "$1")" ]]; then
+    mkdir --parents "$(dirname "$1")"
+  fi
   echo "${2:-}" > "$1"
   log "Wrote $1"
 }
@@ -145,27 +136,21 @@ function write_file_if_not_exists() {
 
 # $1 = file
 # $2 = content
-function write_app_data_file() {
+function root_write_file() {
   log "Writing $1"
-  echo "${2:-}" > "${DOCKER_APP_DATA_DIR}/$1"
-  sudo chown 'root:root' "${DOCKER_APP_DATA_DIR}/$1"
+  if [[ !-d "$(dirname "$1")" ]]; then
+    sudo mkdir --parents "$(dirname "$1")"
+  fi
+  echo "$2" | sudo tee "$1" > '/dev/null'
   log "Wrote $1"
 }
 
 # $1 = file
 # $2 = content
 function write_app_data_file_if_not_exists() {
-  if [[ ! -f "${1}" ]]; then
-    write_app_data_file "$1" "${2:-}"
+  if [[ ! -f "${DOCKER_APP_DATA_DIR}/$1" ]]; then
+    root_write_file "${DOCKER_APP_DATA_DIR}/$1" "${2:-}"
   fi
-}
-
-# $1 = file
-# $2 = content
-function root_write_file() {
-  log "Writing $1"
-  echo "$2" | sudo tee "$1" > '/dev/null'
-  log "Wrote $1"
 }
 
 function this_script_dir() {

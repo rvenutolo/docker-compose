@@ -32,18 +32,6 @@ set_var 'TRAEFIK_CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-toke
 authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
 write_file_if_not_exists "${authelia_notifications_file}"
 
-create_app_data_dir \
-  'proxy/authelia/config' \
-  'proxy/crowdsec/etc/crowdsec' \
-  'proxy/crowdsec/var/lib/crowdsec/data' \
-  'proxy/redis/data' \
-  'proxy/traefik/etc/traefik/certs' \
-  'proxy/traefik-geoip-filter/geoip'
-
-create_logs_dir \
-  'authelia' \
-  'traefik'
-
 crowdsec_bouncer_api_key="$(get_var 'CROWDSEC_BOUNCER_API_KEY')"
 crowdsec_engine_enroll_key="$(get_var 'CROWDSEC_ENGINE_ENROLL_KEY')"
 log "Run this after starting proxy stack (if not already run):

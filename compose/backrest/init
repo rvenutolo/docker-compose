@@ -5,9 +5,4 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
-create_app_data_dir \
-  'backrest/config' \
-  'backrest/data' \
-  'backrest/root/.ssh'
-
 create_dir "${BACKUP_DIR}"
