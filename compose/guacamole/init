@@ -5,13 +5,6 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/scripts/functions.bash"
 
-readonly postgres_data_dir="${DOCKER_APP_DATA_DIR}/guacamole/postgres"
-readonly postgres_init_file_dir="${postgres_data_dir}/docker-entrypoint-initdb.d"
-create_dir "${postgres_init_file_dir}"
-readonly postgres_init_file="${postgres_init_file_dir}/init-db.sql"
-readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
-write_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
-
 env_file="$(env_file)"
 readonly env_file
 if ! file_exists "${env_file}"; then
@@ -22,3 +15,10 @@ function set_var() {
 }
 
 set_var 'POSTGRES_PASSWORD' 'pwgen --secure --num-passwords 1 64'
+
+readonly entrypoint_path='guacamole/postgres/docker-entrypoint-initdb.d'
+create_app_data_dir "${entrypoint_path}"
+
+readonly postgres_init_file="${DOCKER_APP_DATA_DIR}/${entrypoint_path}/init-db.sql"
+readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
+write_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"

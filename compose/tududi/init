@@ -17,3 +17,5 @@ function set_var() {
 set_var 'TUDUDI_SESSION_SECRET' 'pwgen --secure --num-passwords 1 64'
 set_var 'TUDUDI_USER_EMAIL'
 set_var 'TUDUDI_USER_PASSWORD'
+
+create_app_data_dir 'tududi/usr/src/app/tududi_db'

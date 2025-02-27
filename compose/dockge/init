@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_DIR}/scripts/functions.bash"
+
+create_app_data_dir 'dockge/app/data'

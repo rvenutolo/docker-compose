@@ -17,3 +17,10 @@ function set_var() {
 set_var 'MONGO_PASSWORD' 'pwgen --secure --num-passwords 1 64'
 set_var 'KOMODO_PASSKEY' 'pwgen --secure --num-passwords 1 64'
 set_var 'KOMODO_JWT_SECRET' 'pwgen --secure --num-passwords 1 64'
+
+create_app_data_dir \
+  'komodo/komodo/action-cache' \
+  'komodo/komodo/repo-cache' \
+  'komodo/komodo/syncs' \
+  'komodo/mongo/data/configdb' \
+  'komodo/mongo/data/db'
