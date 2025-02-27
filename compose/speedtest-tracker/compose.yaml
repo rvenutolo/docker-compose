@@ -16,6 +16,8 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/speedtest-tracker/config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
+      PUID: ${PUID:?}
+      PGID: ${PGID:?}
       APP_KEY: ${APP_KEY:?}
       APP_URL: https://speedtest-tracker.${DOMAIN_NAME:?}
       DB_CONNECTION: sqlite

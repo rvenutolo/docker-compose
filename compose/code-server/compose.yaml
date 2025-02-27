@@ -18,6 +18,8 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/code-server/config:/config
       - /etc/localtime:/etc/localtime:ro
     environment:
+      PUID: ${PUID:?}
+      PGID: ${PGID:?}
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
       PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
