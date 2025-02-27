@@ -19,9 +19,7 @@ services:
       APP_KEY: ${APP_KEY:?}
       APP_URL: https://speedtest-tracker.${DOMAIN_NAME:?}
       DB_CONNECTION: sqlite
-      PGID: ${PGID:?}
       PRUNE_RESULTS_OLDER_THAN: 30
-      PUID: ${PUID:?}
       SPEEDTEST_SCHEDULE: ${SPEEDTEST_SCHEDULE:-22 * * * *}
       SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS:-35058,23094,51330}
     labels:

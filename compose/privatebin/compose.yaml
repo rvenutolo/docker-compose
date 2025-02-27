@@ -12,7 +12,6 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ./conf.php:/srv/cfg/conf.php:ro
       - ${DOCKER_APP_DATA_DIR:?}/privatebin/srv/data:/srv/data

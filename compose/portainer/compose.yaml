@@ -43,7 +43,6 @@ services:
       - socket-proxy
     depends_on:
       - portainer-socket-proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/portainer/data:/data
       - /etc/localtime:/etc/localtime:ro

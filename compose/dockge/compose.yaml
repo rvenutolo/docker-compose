@@ -44,7 +44,6 @@ services:
       - socket-proxy
     depends_on:
       - dockge-socket-proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
       - ${DOCKER_APP_DATA_DIR:?}/dockge/app/data:/app/data

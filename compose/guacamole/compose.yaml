@@ -14,7 +14,6 @@ services:
       - no-new-privileges:true
     networks:
       - default
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/docker-entrypoint-initdb.d/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
       - ${DOCKER_APP_DATA_DIR:?}/guacamole/postgres/data:/data

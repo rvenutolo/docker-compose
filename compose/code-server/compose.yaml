@@ -20,9 +20,7 @@ services:
     environment:
       DEFAULT_WORKSPACE: /code
       DOCKER_MODS: linuxserver/mods:code-server-extension-arguments
-      PGID: ${PGID:?}
       PROXY_DOMAIN: code-server.${DOMAIN_NAME:?}
-      PUID: ${PUID:?}
       VSCODE_EXTENSION_IDS: >
         | alefragnani.Bookmarks
         | alefragnani.project-manager

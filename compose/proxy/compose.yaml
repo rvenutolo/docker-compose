@@ -15,7 +15,6 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/proxy/redis/data:/data
       - /etc/localtime:/etc/localtime:ro
@@ -32,7 +31,6 @@ services:
       - proxy
     depends_on:
       - authelia-redis
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ./authelia-notifications.txt:/notifications.txt
       - ./authelia/config.yaml:/config.yaml:ro
@@ -65,7 +63,6 @@ services:
       - no-new-privileges:true
     networks:
       - proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
@@ -168,7 +165,6 @@ services:
     ports:
       - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ./traefik:/etc/traefik/conf:ro
       - ${DOCKER_APP_DATA_DIR:?}/proxy/traefik/etc/traefik/certs:/etc/traefik/certs
@@ -238,7 +234,6 @@ services:
     depends_on:
       - traefik
       - traefik-socket-proxy
-    user: ${PUID:?}:${PGID:?}
     volumes:
       - ${DOCKER_LOGS_DIR:?}/traefik:/var/log/traefik
       - /etc/localtime:/etc/localtime:ro
