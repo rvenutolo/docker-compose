@@ -21,4 +21,4 @@ create_app_data_dir "${entrypoint_path}" 'guacamole/postgres/data'
 
 readonly postgres_init_file="${DOCKER_APP_DATA_DIR}/${entrypoint_path}/init-db.sql"
 readonly postgres_init_file_content="$(docker run --rm --network none guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
-write_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
+write_app_data_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"

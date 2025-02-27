@@ -21,12 +21,14 @@ readonly data_dir="${DOCKER_APP_DATA_DIR}/beszel/beszel_data"
 create_dir "${data_dir}"
 
 readonly ssh_key_file="${data_dir}/id_ed25519"
+readonly ssh_pub_key_file="${ssh_key_file}.pub"
 if ! file_exists "${ssh_key_file}"; then
   log "Generating SSH key"
   ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${ssh_key_file}"
   log "Generated SSH key"
 fi
-beszel_public_key="$(cat "${ssh_key_file}.pub")"
+sudo chown 'root:root' "${ssh_key_file}" "${ssh_pub_key_file}"
+beszel_public_key="$(cat "${ssh_pub_key_file}")"
 readonly beszel_public_key
 set_env_file_var_to_value "${env_file}" 'BESZEL_PUBLIC_KEY' "${beszel_public_key}"
 

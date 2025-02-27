@@ -145,6 +145,23 @@ function write_file_if_not_exists() {
 
 # $1 = file
 # $2 = content
+function write_app_data_file() {
+  log "Writing $1"
+  echo "${2:-}" > "${DOCKER_APP_DATA_DIR}/$1"
+  sudo chown 'root:root' "${DOCKER_APP_DATA_DIR}/$1"
+  log "Wrote $1"
+}
+
+# $1 = file
+# $2 = content
+function write_app_data_file_if_not_exists() {
+  if [[ ! -f "${1}" ]]; then
+    write_app_data_file "$1" "${2:-}"
+  fi
+}
+
+# $1 = file
+# $2 = content
 function root_write_file() {
   log "Writing $1"
   echo "$2" | sudo tee "$1" > '/dev/null'
