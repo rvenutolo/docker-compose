@@ -138,7 +138,7 @@ function write_file_if_not_exists() {
 # $2 = content
 function root_write_file() {
   log "Writing $1"
-  if [[ !-d "$(dirname "$1")" ]]; then
+  if [[ ! -d "$(dirname "$1")" ]]; then
     sudo mkdir --parents "$(dirname "$1")"
   fi
   echo "$2" | sudo tee "$1" > '/dev/null'
