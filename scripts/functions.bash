@@ -81,6 +81,18 @@ function create_dir() {
   done
 }
 
+function create_app_data_dir() {
+  for target in "$@"; do
+    create_dir "${DOCKER_APP_DATA_DIR}/${target}"
+  done
+}
+
+function create_logs_dir() {
+  for target in "$@"; do
+    create_dir "${DOCKER_LOGS_DIR}/${target}"
+  done
+}
+
 # $1 = source file
 # $2 = destination file
 function root_copy_file() {
