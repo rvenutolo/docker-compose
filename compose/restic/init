@@ -13,9 +13,6 @@ fi
 function set_var() {
   set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
 }
-function get_var() {
-  get_env_file_defined_var "${env_file}" "$1"
-}
 
 set_var 'RESTIC_PASSWORD' 'Restic encryption key (pwgen --secure --num-passwords 1 64)'
 set_var 'B2_KEY_ID' 'Backblaze B2 application key ID'
