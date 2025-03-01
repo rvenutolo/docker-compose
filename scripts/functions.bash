@@ -81,21 +81,15 @@ function create_dir() {
   done
 }
 
-# $1 = source file
-# $2 = destination file
-function root_copy_file() {
-  if [[ ! -f "$1" ]]; then
-    die "$1 does not exist"
-  fi
-  if [[ "$1" == "$2" ]]; then
-    die "File paths are the same"
-  fi
-  if [[ ! -f "$2" ]] || ! cmp --silent "$1" "$2"; then
-    log "Copying: $1 -> $2"
-    sudo mkdir --parents "$(dirname "$2")"
-    sudo cp "$1" "$2"
-    log "Copied: $1 -> $2"
-  fi
+# $@ = targets
+function root_create_dir() {
+  for target in "$@"; do
+    if [[ ! -d "${target}" ]]; then
+      log "Creating ${target}"
+      sudo mkdir --parents "${target}"
+      log "Created ${target}"
+    fi
+  done
 }
 
 # $1 = old file location
@@ -115,6 +109,23 @@ function copy_file() {
   fi
 }
 
+# $1 = source file
+# $2 = destination file
+function root_copy_file() {
+  if [[ ! -f "$1" ]]; then
+    die "$1 does not exist"
+  fi
+  if [[ "$1" == "$2" ]]; then
+    die "File paths are the same"
+  fi
+  if [[ ! -f "$2" ]] || ! cmp --silent "$1" "$2"; then
+    log "Copying: $1 -> $2"
+    sudo mkdir --parents "$(dirname "$2")"
+    sudo cp "$1" "$2"
+    log "Copied: $1 -> $2"
+  fi
+}
+
 # $1 = file
 # $2 = content
 function write_file() {
@@ -128,6 +139,17 @@ function write_file() {
 
 # $1 = file
 # $2 = content
+function root_write_file() {
+  log "Writing $1"
+  if [[ ! -d "$(dirname "$1")" ]]; then
+    sudo mkdir --parents "$(dirname "$1")"
+  fi
+  echo "$2" | sudo tee "$1" > '/dev/null'
+  log "Wrote $1"
+}
+
+# $1 = file
+# $2 = content
 function write_file_if_not_exists() {
   if [[ ! -f "${1}" ]]; then
     write_file "$1" "${2:-}"
@@ -136,13 +158,10 @@ function write_file_if_not_exists() {
 
 # $1 = file
 # $2 = content
-function root_write_file() {
-  log "Writing $1"
-  if [[ ! -d "$(dirname "$1")" ]]; then
-    sudo mkdir --parents "$(dirname "$1")"
+function root_write_file_if_not_exists() {
+  if [[ ! -f "${1}" ]]; then
+    root_write_file "$1" "${2:-}"
   fi
-  echo "$2" | sudo tee "$1" > '/dev/null'
-  log "Wrote $1"
 }
 
 # $1 = file
