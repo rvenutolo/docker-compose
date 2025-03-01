@@ -13,9 +13,6 @@ fi
 function set_var() {
   set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
 }
-function get_var() {
-  get_env_file_defined_var "${env_file}" "$1"
-}
 
 readonly target_ssh_key_file="${DOCKER_APP_DATA_DIR}/beszel/beszel_data/id_ed25519"
 if ! file_exists "${target_ssh_key_file}"; then
