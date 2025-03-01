@@ -20,8 +20,8 @@ if ! file_exists "${target_ssh_key_file}"; then
   created_ssh_key_file="$(mktemp --directory)/id_ed25519"
   readonly created_ssh_key_file
   ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${created_ssh_key_file}"
-  root_copy_file "${created_ssh_key_file}" "${target_ssh_key_file}"
-  root_copy_file "${created_ssh_key_file}.pub" "${target_ssh_key_file}.pub"
+  root_write_file "${target_ssh_key_file}" "$(cat "${created_ssh_key_file}")"
+  root_write_file "${target_ssh_key_file}.pub" "$(cat "${created_ssh_key_file}.pub")"
   log 'Generated SSH key'
 fi
 
