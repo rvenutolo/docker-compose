@@ -12,7 +12,7 @@ http:
 network:
   host: 0.0.0.0
 node:
-  name: wazuh-indexer
+  name: wazuh.indexer
 path:
   data: /var/lib/wazuh-indexer
   logs: /var/log/wazuh-indexer
@@ -33,13 +33,13 @@ plugins:
     ssl:
       http:
         enabled: true
-        pemcert_filepath: /usr/share/wazuh-indexer/certs/wazuh-indexer.pem
-        pemkey_filepath: /usr/share/wazuh-indexer/certs/wazuh-indexer.key
+        pemcert_filepath: /usr/share/wazuh-indexer/certs/wazuh.indexer.pem
+        pemkey_filepath: /usr/share/wazuh-indexer/certs/wazuh.indexer.key
         pemtrustedcas_filepath: /usr/share/wazuh-indexer/certs/root-ca.pem
       transport:
         enforce_hostname_verification: false
-        pemcert_filepath: /usr/share/wazuh-indexer/certs/wazuh-indexer.pem
-        pemkey_filepath: /usr/share/wazuh-indexer/certs/wazuh-indexer.key
+        pemcert_filepath: /usr/share/wazuh-indexer/certs/wazuh.indexer.pem
+        pemkey_filepath: /usr/share/wazuh-indexer/certs/wazuh.indexer.key
         pemtrustedcas_filepath: /usr/share/wazuh-indexer/certs/root-ca.pem
         resolve_hostname: false
     system_indices:

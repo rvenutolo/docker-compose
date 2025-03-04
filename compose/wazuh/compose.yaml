@@ -8,7 +8,7 @@ services:
   wazuh-indexer:
     image: ${WAZUH_INDEXER_IMAGE:-wazuh/wazuh-indexer}:${WAZUH_INDEXER_IMAGE_TAG:-${WAZUH_VERSION:?}}
     container_name: wazuh-indexer
-    hostname: wazuh-indexer
+    hostname: wazuh.indexer
     restart: unless-stopped
     ulimits:
       memlock:
@@ -26,10 +26,93 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/admin-key.pem:/usr/share/wazuh-indexer/certs/admin-key.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/admin.pem:/usr/share/wazuh-indexer/certs/admin.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca.pem:/usr/share/wazuh-indexer/certs/root-ca.pem:ro
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh-indexer-key.pem:/usr/share/wazuh-indexer/certs/wazuh-indexer.key:ro
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh-indexer.pem:/usr/share/wazuh-indexer/certs/wazuh-indexer.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.indexer-key.pem:/usr/share/wazuh-indexer/certs/wazuh.indexer.key:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.indexer.pem:/usr/share/wazuh-indexer/certs/wazuh.indexer.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/indexer/usr/share/wazuh-indexer/opensearch-security/internal_users.yml:/usr/share/wazuh-indexer/opensearch-security/internal_users.yml:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/indexer/var/lib/wazuh-indexer:/var/lib/wazuh-indexer
       - /etc/localtime:/etc/localtime:ro
     environment:
       OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms1g -Xmx1g}
+
+  wazuh-manager:
+    image: ${WAZUH_MANAGER_IMAGE:-wazuh/wazuh-manager}:${WAZUH_MANAGER_IMAGE_TAG:-${WAZUH_VERSION:?}}
+    container_name: wazuh-manager
+    hostname: wazuh.manager
+    restart: unless-stopped
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 655360
+        hard: 655360
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - default
+    depends_on:
+      - wazuh-indexer
+    volumes:
+      - ./manager/ossec.conf:/wazuh-config-mount/etc/ossec.conf:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca-manager.pem:/etc/ssl/root-ca.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.manager.pem:/etc/ssl/filebeat.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.manager-key.pem:/etc/ssl/filebeat.key:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/api/configuration:/var/ossec/api/configuration
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/etc:/var/ossec/etc
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/logs:/var/ossec/logs
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/queue:/var/ossec/queue
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/var/multigroups:/var/ossec/var/multigroups
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/integrations:/var/ossec/integrations
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/active-response/bin:/var/ossec/active-response/bin
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/agentless:/var/ossec/agentless
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/wodles:/var/ossec/wodles
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/etc/filebeat:/etc/filebeat
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/lib/filebeat:/var/lib/filebeat
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      API_PASSWORD: MyS3cr37P450r.*-
+      API_USERNAME: wazuh-wui
+      FILEBEAT_SSL_VERIFICATION_MODE: full
+      INDEXER_PASSWORD: SecretPassword
+      INDEXER_URL: https://wazuh.indexer:9200
+      INDEXER_USERNAME: admin
+      SSL_CERTIFICATE: /etc/ssl/filebeat.pem
+      SSL_CERTIFICATE_AUTHORITIES: /etc/ssl/root-ca.pem
+      SSL_KEY: /etc/ssl/filebeat.key
+
+  wazuh-dashboard:
+    image: ${WAZUH_DASHBOARD_IMAGE:-wazuh/wazuh-dashboard}:${WAZUH_DASHBOARD_IMAGE_TAG:-${WAZUH_VERSION:?}}
+    container_name: wazuh-dashboard
+    hostname: wazuh.dashboard
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - default
+      - proxy
+    depends_on:
+      - wazuh-indexer
+    links:
+      - wazuh-indexer:wazuh.indexer
+      - wazuh-manager:wazuh.manager
+    volumes:
+      - ./dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml:ro
+      - ./dashboard/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config:/usr/share/wazuh-dashboard/data/wazuh/config
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      API_PASSWORD: MyS3cr37P450r.*-
+      API_USERNAME: wazuh-wui
+      DASHBOARD_PASSWORD: kibanaserver
+      DASHBOARD_USERNAME: kibanaserver
+      INDEXER_PASSWORD: SecretPassword
+      INDEXER_USERNAME: admin
+      WAZUH_API_URL: https://wazuh.manager
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wazuh-rtr.rule=Host(`wazuh.${DOMAIN_NAME:?}`)
+      - traefik.http.services.wazuh-svc.loadBalancer.server.port=5601

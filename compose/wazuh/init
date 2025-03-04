@@ -43,14 +43,14 @@ if ! dir_exists "${certs_dir}"; then
   cat > "${certs_conf_file}" << EOL
 nodes:
   indexer:
-    - name: wazuh-indexer
-      ip: wazuh-indexer.${DOMAIN_NAME}
+    - name: wazuh.indexer
+      ip: wazuh.indexer
   server:
-    - name: wazuh-manager
-      ip: wazuh-manager.${DOMAIN_NAME}
+    - name: wazuh.manager
+      ip: wazuh.manager
   dashboard:
-    - name: wazuh-dashboard
-      ip: wazuh-dashboard.${DOMAIN_NAME}
+    - name: wazuh.dashboard
+      ip: wazuh.dashboard
 EOL
   docker run \
     --rm \
@@ -67,23 +67,38 @@ if ! file_exists "${indexer_users_file}"; then
   readonly indexer_password_hash
   dashboard_password_hash="$(password_hash 'DASHBOARD_PASSWORD')"
   readonly dashboard_password_hash
-  root_write_file "${indexer_users_file}" "\
+#  root_write_file "${indexer_users_file}" "\
+#_meta:
+#  type: internalusers
+#  config_version: 2
+#
+#admin:
+#  hash: ${indexer_password_hash}
+#  reserved: true
+#  backend_roles:
+#  - admin
+#  description: admin user
+#
+#${USER}:
+#  hash: ${dashboard_password_hash}
+#  reserved: true
+#  description: Kibana user
+#"
+  root_write_file "${indexer_users_file}" '
 _meta:
-  type: internalusers
+  type: "internalusers"
   config_version: 2
-
 admin:
-  hash: ${indexer_password_hash}
+  hash: "$2y$12$K/SpwjtB.wOHJ/Nc6GVRDuc1h0rM1DfvziFRNPtk27P.c4yDr9njO"
   reserved: true
   backend_roles:
-  - admin
-  description: admin user
-
-${USER}:
-  hash: ${dashboard_password_hash}
+  - "admin"
+  description: "Demo admin user"
+kibanaserver:
+  hash: "$2a$12$4AcgAt3xwOWadA5s5blL6ev39OXDNhmOesEoo33eZtrq2N0YrU3H."
   reserved: true
-  description: Kibana user
-"
+  description: "Demo kibanaserver user"
+'
   log "Generated indexer users"
 fi
 
