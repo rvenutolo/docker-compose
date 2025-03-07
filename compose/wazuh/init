@@ -25,7 +25,7 @@ function password_hash() {
     --tty \
     "wazuh/wazuh-indexer:${wazuh_version}" \
     bash \
-    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "$1" \
+    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
     | tail --lines '1'
 }
 
