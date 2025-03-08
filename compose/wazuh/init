@@ -26,6 +26,7 @@ function password_hash() {
     "wazuh/wazuh-indexer:${wazuh_version}" \
     bash \
     /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
+    | tr --complement --delete '[:print:]\n' \
     | tail --lines '1'
 }
 
@@ -40,7 +41,7 @@ if ! dir_exists "${certs_dir}"; then
   log "Generating indexer certificates"
   certs_conf_file="$(mktemp --directory)/certs.yaml"
   readonly certs_conf_file
-  cat > "${certs_conf_file}" << EOL
+  write_file "${certs_conf_file}" "\
 nodes:
   indexer:
     - name: wazuh.indexer
@@ -51,7 +52,7 @@ nodes:
   dashboard:
     - name: wazuh.dashboard
       ip: wazuh.dashboard
-EOL
+"
   docker run \
     --rm \
     --volume "${certs_dir}:/certificates/" \
@@ -67,38 +68,21 @@ if ! file_exists "${indexer_users_file}"; then
   readonly indexer_password_hash
   dashboard_password_hash="$(password_hash 'DASHBOARD_PASSWORD')"
   readonly dashboard_password_hash
-#  root_write_file "${indexer_users_file}" "\
-#_meta:
-#  type: internalusers
-#  config_version: 2
-#
-#admin:
-#  hash: ${indexer_password_hash}
-#  reserved: true
-#  backend_roles:
-#  - admin
-#  description: admin user
-#
-#${USER}:
-#  hash: ${dashboard_password_hash}
-#  reserved: true
-#  description: Kibana user
-#"
-  root_write_file "${indexer_users_file}" '
+  root_write_file "${indexer_users_file}" "
 _meta:
-  type: "internalusers"
+  type: internalusers
   config_version: 2
 admin:
-  hash: "$2y$12$K/SpwjtB.wOHJ/Nc6GVRDuc1h0rM1DfvziFRNPtk27P.c4yDr9njO"
+  hash: ${indexer_password_hash}
   reserved: true
   backend_roles:
-  - "admin"
-  description: "Demo admin user"
+  - admin
+  description: admin user
 kibanaserver:
-  hash: "$2a$12$4AcgAt3xwOWadA5s5blL6ev39OXDNhmOesEoo33eZtrq2N0YrU3H."
+  hash: ${dashboard_password_hash}
   reserved: true
-  description: "Demo kibanaserver user"
-'
+  description: kibanaserver user
+"
   log "Generated indexer users"
 fi
 

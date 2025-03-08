@@ -73,7 +73,7 @@ services:
       API_PASSWORD: MyS3cr37P450r.*-
       API_USERNAME: wazuh-wui
       FILEBEAT_SSL_VERIFICATION_MODE: full
-      INDEXER_PASSWORD: SecretPassword
+      INDEXER_PASSWORD: ${INDEXER_PASSWORD:?}
       INDEXER_URL: https://wazuh.indexer:9200
       INDEXER_USERNAME: admin
       SSL_CERTIFICATE: /etc/ssl/filebeat.pem
@@ -107,9 +107,9 @@ services:
     environment:
       API_PASSWORD: MyS3cr37P450r.*-
       API_USERNAME: wazuh-wui
-      DASHBOARD_PASSWORD: kibanaserver
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:?}
       DASHBOARD_USERNAME: kibanaserver
-      INDEXER_PASSWORD: SecretPassword
+      INDEXER_PASSWORD: ${INDEXER_PASSWORD:?}
       INDEXER_USERNAME: admin
       WAZUH_API_URL: https://wazuh.manager
     labels:
