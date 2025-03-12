@@ -95,3 +95,20 @@ if ! dir_exists "${indexer_data_dir}"; then
   sudo chown '1000:1000' "${indexer_data_dir}"
   log "Created indexer data dir"
 fi
+
+readonly dashboard_hosts_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
+if ! file_exists "${dashboard_hosts_file}"; then
+  log "Generating dashboard hosts file"
+  api_password="$(get_var 'API_PASSWORD')"
+  readonly api_password
+  root_write_file "${dashboard_hosts_file}" "\
+hosts:
+  - ${HOSTNAME}:
+      url: https://wazuh.manager
+      port: 55000
+      username: wazuh-wui
+      password: ${api_password}
+      run_as: false
+"
+  log "Generated dashboard hosts file"
+fi
