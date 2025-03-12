@@ -63,12 +63,12 @@ fi
 
 readonly indexer_users_file="${DOCKER_APP_DATA_DIR}/wazuh/indexer/usr/share/wazuh-indexer/opensearch-security/internal_users.yml"
 if ! file_exists "${indexer_users_file}"; then
-  log "Generating indexer users"
+  log "Generating indexer users file"
   indexer_password_hash="$(password_hash 'INDEXER_PASSWORD')"
   readonly indexer_password_hash
   dashboard_password_hash="$(password_hash 'DASHBOARD_PASSWORD')"
   readonly dashboard_password_hash
-  root_write_file "${indexer_users_file}" "
+  root_write_file "${indexer_users_file}" "\
 _meta:
   type: internalusers
   config_version: 2
@@ -83,7 +83,7 @@ kibanaserver:
   reserved: true
   description: kibanaserver user
 "
-  log "Generated indexer users"
+  log "Generated indexer users file"
 fi
 
 indexer_data_dir="${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
