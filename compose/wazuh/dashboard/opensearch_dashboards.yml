@@ -1,16 +1,16 @@
 opensearch:
   hosts:
     - https://wazuh.indexer:9200
-  requestHeadersWhitelist: ["securitytenant", "Authorization"]
+  requestHeadersWhitelist: [securitytenant, Authorization]
   ssl:
-    certificateAuthorities: ["/usr/share/wazuh-dashboard/certs/root-ca.pem"]
+    certificateAuthorities: [/usr/share/wazuh-dashboard/certs/root-ca.pem]
     verificationMode: certificate
 
 opensearch_security:
   multitenancy:
     enabled: false
   readonly_mode:
-    roles: ["kibana_read_only"]
+    roles: [kibana_read_only]
 
 server:
   host: 0.0.0.0
