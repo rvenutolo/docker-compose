@@ -35,6 +35,16 @@ set_var 'API_PASSWORD' 'pwgen --symbols --num-passwords 1 64'
 set_var 'DASHBOARD_PASSWORD' 'pwgen --num-passwords 1 64'
 set_var 'INDEXER_PASSWORD' 'pwgen --num-passwords 1 64'
 
+indexer_data_dir="${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
+readonly indexer_data_dir
+if ! dir_exists "${indexer_data_dir}"; then
+  log "Creating indexer data dir"
+  root_create_dir "${indexer_data_dir}"
+  # indexer won't work if the data dir is not owned by 1000:1000
+  sudo chown '1000:1000' "${indexer_data_dir}"
+  log "Created indexer data dir"
+fi
+
 certs_dir="${DOCKER_APP_DATA_DIR}/wazuh/certs"
 readonly certs_dir
 if ! dir_exists "${certs_dir}"; then
@@ -83,16 +93,6 @@ kibanaserver:
   description: kibanaserver user
 "
 log "Generated indexer users file"
-
-indexer_data_dir="${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
-readonly indexer_data_dir
-if ! dir_exists "${indexer_data_dir}"; then
-  log "Creating indexer data dir"
-  root_create_dir "${indexer_data_dir}"
-  # indexer won't work if the data dir is not owned by 1000:1000
-  sudo chown '1000:1000' "${indexer_data_dir}"
-  log "Created indexer data dir"
-fi
 
 readonly dashboard_hosts_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
 log "Generating dashboard hosts file"
