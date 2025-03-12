@@ -1,0 +1,25 @@
+opensearch:
+  hosts:
+    - https://wazuh.indexer:9200
+  requestHeadersWhitelist: ["securitytenant", "Authorization"]
+  ssl:
+    certificateAuthorities: ["/usr/share/wazuh-dashboard/certs/root-ca.pem"]
+    verificationMode: certificate
+
+opensearch_security:
+  multitenancy:
+    enabled: false
+  readonly_mode:
+    roles: ["kibana_read_only"]
+
+server:
+  host: 0.0.0.0
+  port: 5601
+  ssl:
+    enabled: false
+    key: /usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
+    certificate: /usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
+
+uiSettings:
+  overrides:
+    defaultRoute: /app/wz-home
