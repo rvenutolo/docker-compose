@@ -31,9 +31,9 @@ function password_hash() {
 }
 
 set_var 'WAZUH_VERSION' 'https://hub.docker.com/r/wazuh/wazuh-manager/tags'
-set_var 'API_PASSWORD' 'pwgen --secure --num-passwords 1 64'
-set_var 'DASHBOARD_PASSWORD' 'pwgen --secure --num-passwords 1 64'
-set_var 'INDEXER_PASSWORD' 'pwgen --secure --num-passwords 1 64'
+set_var 'API_PASSWORD' 'pwgen --symbols --num-passwords 1 64'
+set_var 'DASHBOARD_PASSWORD' 'pwgen --num-passwords 1 64'
+set_var 'INDEXER_PASSWORD' 'pwgen --num-passwords 1 64'
 
 certs_dir="${DOCKER_APP_DATA_DIR}/wazuh/certs"
 readonly certs_dir
