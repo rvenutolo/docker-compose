@@ -307,3 +307,8 @@ function enable_user_service_unit() {
     log "User service unit files does not exist: $1"
   fi
 }
+
+# $1 = length
+function generate_password() {
+  pwgen --secure --capitalize --numerals --symbols --remove-chars '$\\:;=`"'\' --num-passwords 1 "${1:-32}"
+}
