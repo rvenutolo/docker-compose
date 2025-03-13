@@ -64,10 +64,24 @@ function prompt_yn() {
 }
 
 # $1 = question
+# $2 = default value (optional)
 function prompt_for_value() {
-  REPLY=''
-  read -rp "$1 : "
-  echo "${REPLY}"
+  if [[ -n "${2:-}" ]]; then
+    REPLY=''
+    if [[ "${REPLY}" == '' ]]; then
+      read -rp $'\e[0;33m'"$1 [$2"$']: \e[0m'
+      if [[ "${REPLY}" == '' ]]; then
+        REPLY="$2"
+      fi
+    fi
+    echo "${REPLY}"
+  else
+    REPLY=''
+    while [[ -z "${REPLY}" ]]; do
+      read -rp $'\e[0;33m'"$1"$': \e[0m'
+    done
+    echo "${REPLY}"
+  fi
 }
 
 # $@ = targets
