@@ -224,6 +224,14 @@ function get_env_file_defined_var() {
   get_env_file_var "$1" "$2"
 }
 
+# $1 = var
+function get_var() {
+  if [[ -z "${env_file:-}" ]]; then
+    die "env_file is not defined"
+  fi
+  get_env_file_defined_var "${env_file}" "$1"
+}
+
 # $1 = env file
 # $2 = var
 # $3 = info (optional)
@@ -245,6 +253,15 @@ function set_env_file_var_if_not_defined() {
   if ! env_file_var_defined "$1" "$2"; then
     set_env_file_var "$1" "$2" "${3:-}"
   fi
+}
+
+# $1 = var
+# $2 = info (optional)
+function set_var() {
+  if [[ -z "${env_file:-}" ]]; then
+    die "env_file is not defined"
+  fi
+  set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
 }
 
 # $1 = env file

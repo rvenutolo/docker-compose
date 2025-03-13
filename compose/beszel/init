@@ -10,9 +10,6 @@ readonly env_file
 if ! file_exists "${env_file}"; then
   cp "${env_file}.template" "${env_file}"
 fi
-function set_var() {
-  set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
-}
 
 readonly target_ssh_key_file="${DOCKER_APP_DATA_DIR}/beszel/beszel_data/id_ed25519"
 if ! file_exists "${target_ssh_key_file}"; then

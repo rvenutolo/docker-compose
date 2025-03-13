@@ -10,8 +10,5 @@ readonly env_file
 if ! file_exists "${env_file}"; then
   cp "${env_file}.template" "${env_file}"
 fi
-function set_var() {
-  set_env_file_var_if_not_defined "${env_file}" "$1" "${2:-}"
-}
 
 set_var 'APP_KEY' 'https://speedtest-tracker.dev/'
