@@ -70,22 +70,6 @@ function root_write_file() {
 
 # $1 = file
 # $2 = content
-function write_file_if_not_exists() {
-  if [[ ! -f "${1}" ]]; then
-    write_file "$1" "${2:-}"
-  fi
-}
-
-# $1 = file
-# $2 = content
-function root_write_file_if_not_exists() {
-  if [[ ! -f "${1}" ]]; then
-    root_write_file "$1" "${2:-}"
-  fi
-}
-
-# $1 = file
-# $2 = content
 function write_app_data_file_if_not_exists() {
   if [[ ! -f "${DOCKER_APP_DATA_DIR}/$1" ]]; then
     root_write_file "${DOCKER_APP_DATA_DIR}/$1" "${2:-}"
