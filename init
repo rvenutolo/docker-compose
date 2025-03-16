@@ -24,14 +24,9 @@ for env_var in \
   TAILNET_IP \
   USER; do
     if [[ -z "${env_var:-}" ]]; then
-      die='DIE'
-      log "${env_var} is not set to a non-empty value"
+      die "${env_var} is not set to a non-empty value"
     fi
 done
-
-if [[ -n "${die:-}" ]]; then
-  die 'Fix the missing env vars and re-run this script'
-fi
 
 create_dir "${DOCKER_APP_DATA_DIR}"
 create_dir "${DOCKER_LOGS_DIR}"
