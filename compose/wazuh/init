@@ -81,8 +81,7 @@ admin:
 kibanaserver:
   hash: ${dashboard_password_hash}
   reserved: true
-  description: kibanaserver user
-"
+  description: kibanaserver user"
 log 'Generated indexer users file'
 
 readonly dashboard_hosts_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
@@ -96,6 +95,5 @@ hosts:
       port: 55000
       username: wazuh-wui
       password: ${api_password}
-      run_as: false
-"
+      run_as: false"
 log 'Generated dashboard hosts file'
