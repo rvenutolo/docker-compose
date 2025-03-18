@@ -38,8 +38,7 @@ nodes:
       ip: wazuh.manager
   dashboard:
     - name: wazuh.dashboard
-      ip: wazuh.dashboard
-"
+      ip: wazuh.dashboard"
   docker run \
     --rm \
     --volume "${certs_dir}:/certificates/" \
