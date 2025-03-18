@@ -7,17 +7,17 @@ source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
 copy_env_file_template
 
-prompt_set_env_file_val 'AUTHELIA_DUO_API_HOSTNAME (https://admin-185050d5.duosecurity.com/applications)'
-prompt_set_env_file_val 'AUTHELIA_DUO_INTEGRATION_KEY (https://admin-185050d5.duosecurity.com/applications)'
-prompt_set_env_file_val 'AUTHELIA_DUO_SECRET_KEY (https://admin-185050d5.duosecurity.com/applications)'
+prompt_set_env_file_val 'AUTHELIA_DUO_API_HOSTNAME' 'https://admin-185050d5.duosecurity.com/applications'
+prompt_set_env_file_val 'AUTHELIA_DUO_INTEGRATION_KEY' 'https://admin-185050d5.duosecurity.com/applications'
+prompt_set_env_file_val 'AUTHELIA_DUO_SECRET_KEY' 'https://admin-185050d5.duosecurity.com/applications'
 prompt_set_env_file_password_val 'AUTHELIA_SESSION_ENCRYPTION_KEY'
 prompt_set_env_file_password_val 'AUTHELIA_STORAGE_ENCRYPTION_KEY'
 prompt_set_env_file_password_val 'CROWDSEC_BOUNCER_API_KEY'
-prompt_set_env_file_val 'CROWDSEC_ENGINE_ENROLL_KEY (https://app.crowdsec.net/security-engines)'
-prompt_set_env_file_val 'MAXMIND_ID (https://www.maxmind.com/en/accounts/1111942/license-key)'
-prompt_set_env_file_val 'MAXMIND_KEY (https://www.maxmind.com/en/accounts/1111942/license-key)'
+prompt_set_env_file_val 'CROWDSEC_ENGINE_ENROLL_KEY' 'https://app.crowdsec.net/security-engines'
+prompt_set_env_file_val 'MAXMIND_ID' 'https://www.maxmind.com/en/accounts/1111942/license-key'
+prompt_set_env_file_val 'MAXMIND_KEY' 'https://www.maxmind.com/en/accounts/1111942/license-key'
 prompt_set_env_file_password_val 'REDIS_PASSWORD'
-prompt_set_env_file_password_val 'TRAEFIK_CF_DNS_API_TOKEN (https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions)'
+prompt_set_env_file_val 'TRAEFIK_CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
 
 authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
 touch "${authelia_notifications_file}"

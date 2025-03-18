@@ -30,19 +30,21 @@ function set_env_file_val() {
 }
 
 # $1 = var
-# $2 = default (optional)
+# $2 = var info (optional)
 function prompt_set_env_file_val() {
   check_at_least_1_arg "$@"
   check_at_most_2_args "$@"
   assert_var_set 'ENV_FILE'
-  prompt_and_set_env_file_var_value_if_empty "${ENV_FILE}" "$1" "${2:-}"
+  prompt_env_file_var_value_if_empty "${ENV_FILE}" "$1" "${2:-}"
 }
 
 # $1 = var
+# $2 = var info (optional)
 function prompt_set_env_file_password_val() {
-  check_exactly_1_arg "$@"
+  check_at_least_1_arg "$@"
+  check_at_most_2_args "$@"
   assert_var_set 'ENV_FILE'
-  prompt_set_env_file_password_val "$1" "$(generate_password)"
+  prompt_env_file_pw_value_if_empty "$1" "${2:-}"
 }
 
 # $1 = app data file

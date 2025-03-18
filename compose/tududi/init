@@ -9,4 +9,4 @@ copy_env_file_template
 
 prompt_set_env_file_password_val 'TUDUDI_SESSION_SECRET'
 prompt_set_env_file_val 'TUDUDI_USER_EMAIL'
-prompt_set_env_file_val 'TUDUDI_USER_PASSWORD'
+prompt_set_env_file_password_val 'TUDUDI_USER_PASSWORD'

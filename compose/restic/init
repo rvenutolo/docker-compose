@@ -7,13 +7,13 @@ source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
 copy_env_file_template
 
-prompt_set_env_file_password_val 'RESTIC_PASSWORD (Restic encryption key)'
-prompt_set_env_file_val 'B2_KEY_ID (Backblaze B2 application key ID)'
-prompt_set_env_file_val 'B2_KEY (Backblaze B2 application key)'
-prompt_set_env_file_val 'B2_BUCKET_ENDPOINT (Backblaze B2 endpoint - domain only)'
-prompt_set_env_file_val 'R2_KEY_ID (Cloudflare R2 application key ID)'
-prompt_set_env_file_val 'R2_KEY (Cloudflare R2 application key)'
-prompt_set_env_file_val 'R2_BUCKET_ENDPOINT (Cloudflare R2 endpoint - domain only)'
+prompt_set_env_file_password_val 'RESTIC_PASSWORD' '(Restic encryption key)'
+prompt_set_env_file_val 'B2_KEY_ID' 'Backblaze B2 application key ID'
+prompt_set_env_file_val 'B2_KEY' 'Backblaze B2 application key'
+prompt_set_env_file_val 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint - domain only'
+prompt_set_env_file_val 'R2_KEY_ID' 'Cloudflare R2 application key ID'
+prompt_set_env_file_val 'R2_KEY' 'Cloudflare R2 application key'
+prompt_set_env_file_val 'R2_BUCKET_ENDPOINT' 'Cloudflare R2 endpoint - domain only'
 
 create_dir "${BACKUP_DIR}/restic"
 
