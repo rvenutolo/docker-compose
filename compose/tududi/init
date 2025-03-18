@@ -3,14 +3,10 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-set_var 'TUDUDI_SESSION_SECRET' 'pwgen --secure --num-passwords 1 64'
-set_var 'TUDUDI_USER_EMAIL'
-set_var 'TUDUDI_USER_PASSWORD'
+prompt_set_env_file_password_val 'TUDUDI_SESSION_SECRET'
+prompt_set_env_file_val 'TUDUDI_USER_EMAIL'
+prompt_set_env_file_val 'TUDUDI_USER_PASSWORD'

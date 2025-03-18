@@ -3,21 +3,17 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-set_var 'RESTIC_PASSWORD' 'Restic encryption key (pwgen --secure --num-passwords 1 64)'
-set_var 'B2_KEY_ID' 'Backblaze B2 application key ID'
-set_var 'B2_KEY' 'Backblaze B2 application key'
-set_var 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint (domain only)'
-set_var 'R2_KEY_ID' 'Cloudflare R2 application key ID'
-set_var 'R2_KEY' 'Cloudflare R2 application key'
-set_var 'R2_BUCKET_ENDPOINT' 'Cloudflare R2 endpoint (domain only)'
+prompt_set_env_file_password_val 'RESTIC_PASSWORD (Restic encryption key)'
+prompt_set_env_file_val 'B2_KEY_ID (Backblaze B2 application key ID)'
+prompt_set_env_file_val 'B2_KEY (Backblaze B2 application key)'
+prompt_set_env_file_val 'B2_BUCKET_ENDPOINT (Backblaze B2 endpoint - domain only)'
+prompt_set_env_file_val 'R2_KEY_ID (Cloudflare R2 application key ID)'
+prompt_set_env_file_val 'R2_KEY (Cloudflare R2 application key)'
+prompt_set_env_file_val 'R2_BUCKET_ENDPOINT (Cloudflare R2 endpoint - domain only)'
 
 create_dir "${BACKUP_DIR}/restic"
 

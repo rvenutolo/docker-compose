@@ -3,32 +3,14 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-function password_hash() {
-  local wazuh_version="$(get_var 'WAZUH_VERSION')"
-  local password="$(get_var "$1")"
-  docker run \
-    --rm \
-    --interactive \
-    --tty \
-    "wazuh/wazuh-indexer:${wazuh_version}" \
-    bash \
-    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
-    | tr --complement --delete '[:print:]\n' \
-    | tail --lines '1'
-}
-
-set_var 'WAZUH_VERSION' 'https://hub.docker.com/r/wazuh/wazuh-manager/tags'
-set_var 'API_PASSWORD' 'pwgen --symbols --num-passwords 1 64'
-set_var 'DASHBOARD_PASSWORD' 'pwgen --num-passwords 1 64'
-set_var 'INDEXER_PASSWORD' 'pwgen --num-passwords 1 64'
+prompt_set_env_file_val 'WAZUH_VERSION (https://hub.docker.com/r/wazuh/wazuh-manager/tags)'
+prompt_set_env_file_password_val 'API_PASSWORD'
+prompt_set_env_file_password_val 'DASHBOARD_PASSWORD'
+prompt_set_env_file_password_val 'INDEXER_PASSWORD'
 
 indexer_data_dir="${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
 readonly indexer_data_dir
@@ -66,6 +48,20 @@ nodes:
   log 'Generated indexer certificates'
 fi
 
+function password_hash() {
+  local wazuh_version="$(env_file_val 'WAZUH_VERSION')"
+  local password="$(env_file_val "$1")"
+  docker run \
+    --rm \
+    --interactive \
+    --tty \
+    "wazuh/wazuh-indexer:${wazuh_version}" \
+    bash \
+    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
+    | tr --complement --delete '[:print:]\n' \
+    | tail --lines '1'
+}
+
 readonly indexer_users_file="${DOCKER_APP_DATA_DIR}/wazuh/indexer/usr/share/wazuh-indexer/opensearch-security/internal_users.yml"
 log 'Generating indexer users file'
 indexer_password_hash="$(password_hash 'INDEXER_PASSWORD')"
@@ -91,7 +87,7 @@ log 'Generated indexer users file'
 
 readonly dashboard_hosts_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
 log 'Generating dashboard hosts file'
-api_password="$(get_var 'API_PASSWORD')"
+api_password="$(env_file_val 'API_PASSWORD')"
 readonly api_password
 root_write_file "${dashboard_hosts_file}" "\
 hosts:

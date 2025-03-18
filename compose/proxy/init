@@ -3,30 +3,26 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-set_var 'AUTHELIA_DUO_API_HOSTNAME' 'https://admin-185050d5.duosecurity.com/applications'
-set_var 'AUTHELIA_DUO_INTEGRATION_KEY' 'https://admin-185050d5.duosecurity.com/applications'
-set_var 'AUTHELIA_DUO_SECRET_KEY' 'https://admin-185050d5.duosecurity.com/applications'
-set_var 'AUTHELIA_SESSION_ENCRYPTION_KEY' 'pwgen --secure --num-passwords 1 64'
-set_var 'AUTHELIA_STORAGE_ENCRYPTION_KEY' 'pwgen --secure --num-passwords 1 64'
-set_var 'CROWDSEC_BOUNCER_API_KEY' 'pwgen --secure --num-passwords 1 64'
-set_var 'CROWDSEC_ENGINE_ENROLL_KEY' 'https://app.crowdsec.net/security-engines'
-set_var 'MAXMIND_ID'
-set_var 'MAXMIND_KEY'
-set_var 'REDIS_PASSWORD' 'pwgen --secure --num-passwords 1 64'
-set_var 'TRAEFIK_CF_DNS_API_TOKEN' 'https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions'
+prompt_set_env_file_val 'AUTHELIA_DUO_API_HOSTNAME (https://admin-185050d5.duosecurity.com/applications)'
+prompt_set_env_file_val 'AUTHELIA_DUO_INTEGRATION_KEY (https://admin-185050d5.duosecurity.com/applications)'
+prompt_set_env_file_val 'AUTHELIA_DUO_SECRET_KEY (https://admin-185050d5.duosecurity.com/applications)'
+prompt_set_env_file_password_val 'AUTHELIA_SESSION_ENCRYPTION_KEY'
+prompt_set_env_file_password_val 'AUTHELIA_STORAGE_ENCRYPTION_KEY'
+prompt_set_env_file_password_val 'CROWDSEC_BOUNCER_API_KEY'
+prompt_set_env_file_val 'CROWDSEC_ENGINE_ENROLL_KEY (https://app.crowdsec.net/security-engines)'
+prompt_set_env_file_val 'MAXMIND_ID (https://www.maxmind.com/en/accounts/1111942/license-key)'
+prompt_set_env_file_val 'MAXMIND_KEY (https://www.maxmind.com/en/accounts/1111942/license-key)'
+prompt_set_env_file_password_val 'REDIS_PASSWORD'
+prompt_set_env_file_password_val 'TRAEFIK_CF_DNS_API_TOKEN (https://dash.cloudflare.com/profile/api-tokens - Zone/Zone/Read and Zone/DNS/Edit permissions)'
 
 authelia_notifications_file="$(this_script_dir)/authelia-notifications.txt"
 touch "${authelia_notifications_file}"
 
-crowdsec_bouncer_api_key="$(get_var 'CROWDSEC_BOUNCER_API_KEY')"
-crowdsec_engine_enroll_key="$(get_var 'CROWDSEC_ENGINE_ENROLL_KEY')"
+crowdsec_bouncer_api_key="$(env_file_val 'CROWDSEC_BOUNCER_API_KEY')"
+crowdsec_engine_enroll_key="$(env_file_val 'CROWDSEC_ENGINE_ENROLL_KEY')"
 log "Run this after starting proxy stack (if not already run):
 > docker exec 'crowdsec' cscli bouncers add 'traefik-crowdsec-bouncer' --key '${crowdsec_bouncer_api_key}' && docker exec 'crowdsec' cscli console enroll -e context --name '${DOMAIN_NAME}' '${crowdsec_engine_enroll_key}'"

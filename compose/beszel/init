@@ -3,28 +3,20 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
 readonly target_ssh_key_file="${DOCKER_APP_DATA_DIR}/beszel/beszel_data/id_ed25519"
 if ! file_exists "${target_ssh_key_file}"; then
   log 'Generating SSH key'
-  created_ssh_key_file="$(mktemp --directory)/id_ed25519"
-  readonly created_ssh_key_file
-  ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${created_ssh_key_file}"
-  root_write_file "${target_ssh_key_file}" "$(cat "${created_ssh_key_file}")"
-  root_write_file "${target_ssh_key_file}.pub" "$(cat "${created_ssh_key_file}.pub")"
+  ssh-keygen -t 'ed25519' -C "beszel SSH key" -N '' -f "${target_ssh_key_file}"
   log 'Generated SSH key'
 fi
 
 beszel_public_key="$(cat "${target_ssh_key_file}.pub")"
 readonly beszel_public_key
-set_env_file_var_to_value "${env_file}" 'BESZEL_PUBLIC_KEY' "${beszel_public_key}"
+set_env_file_val 'BESZEL_PUBLIC_KEY' "${beszel_public_key}"
 
 if ! pgrep --exact 'beszel-agent' &> '/dev/null' &&  prompt_yn 'Install beszel-agent?'; then
     log 'Installing beszel-agent'

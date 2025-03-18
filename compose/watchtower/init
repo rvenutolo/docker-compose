@@ -3,13 +3,9 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-set_var 'DISCORD_WEBHOOK_ID'
-set_var 'DISCORD_TOKEN'
+prompt_set_env_file_val 'DISCORD_WEBHOOK_ID'
+prompt_set_env_file_val 'DISCORD_TOKEN'

@@ -3,15 +3,11 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-env_file="$(env_file)"
-readonly env_file
-if ! file_exists "${env_file}"; then
-  cp "${env_file}.template" "${env_file}"
-fi
+copy_env_file_template
 
-set_var 'POSTGRES_PASSWORD' 'pwgen --secure --num-passwords 1 64'
+prompt_set_env_file_val 'POSTGRES_PASSWORD' "$(generate_password)"
 
 readonly postgres_init_file="guacamole/postgres/docker-entrypoint-initdb.d/init-db.sql"
 readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
