@@ -44,7 +44,7 @@ function prompt_set_env_file_password_val() {
   check_at_least_1_arg "$@"
   check_at_most_2_args "$@"
   assert_var_set 'ENV_FILE'
-  prompt_env_file_pw_value_if_empty "$1" "${2:-}"
+  prompt_env_file_pw_value_if_empty "${ENV_FILE}" "$1" "${2:-}"
 }
 
 # $1 = app data file
