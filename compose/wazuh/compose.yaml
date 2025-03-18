@@ -8,7 +8,7 @@ services:
   wazuh-indexer:
     image: ${WAZUH_INDEXER_IMAGE:-wazuh/wazuh-indexer}:${WAZUH_INDEXER_IMAGE_TAG:-${WAZUH_VERSION:?}}
     container_name: wazuh-indexer
-    hostname: wazuh.indexer
+    hostname: wazuh-indexer
     restart: unless-stopped
     ulimits:
       memlock:
@@ -37,7 +37,7 @@ services:
   wazuh-manager:
     image: ${WAZUH_MANAGER_IMAGE:-wazuh/wazuh-manager}:${WAZUH_MANAGER_IMAGE_TAG:-${WAZUH_VERSION:?}}
     container_name: wazuh-manager
-    hostname: wazuh.manager
+    hostname: wazuh-manager
     restart: unless-stopped
     ulimits:
       memlock:
@@ -52,6 +52,8 @@ services:
       - default
     depends_on:
       - wazuh-indexer
+    links:
+      - wazuh-indexer:wazuh.indexer
     volumes:
       - ./manager/ossec.conf.xml:/wazuh-config-mount/etc/ossec.conf:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca-manager.pem:/etc/ssl/root-ca.pem:ro
@@ -83,7 +85,7 @@ services:
   wazuh-dashboard:
     image: ${WAZUH_DASHBOARD_IMAGE:-wazuh/wazuh-dashboard}:${WAZUH_DASHBOARD_IMAGE_TAG:-${WAZUH_VERSION:?}}
     container_name: wazuh-dashboard
-    hostname: wazuh.dashboard
+    hostname: wazuh-dashboard
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -92,6 +94,7 @@ services:
       - proxy
     depends_on:
       - wazuh-indexer
+      - wazuh-manager
     links:
       - wazuh-indexer:wazuh.indexer
       - wazuh-manager:wazuh.manager
