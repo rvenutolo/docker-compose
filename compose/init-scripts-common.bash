@@ -55,6 +55,8 @@ function write_app_data_file_if_not_exists() {
   fi
 }
 
+# $1 = app data file
+# $2 = content
 function root_write_app_data_file_if_not_exists() {
   local target_file="${DOCKER_APP_DATA_DIR}/$1"
   if ! file_exists "${target_file}"; then
