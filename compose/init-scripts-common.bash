@@ -2,8 +2,7 @@
 
 source "${SCRIPTS_DIR}/functions.bash"
 
-# TODO do i need export?
-export ENV_FILE="$(cd -- "$(dirname -- "${BASH_SOURCE[1]}")" &> '/dev/null' && pwd)/.env"
+ENV_FILE="$(cd -- "$(dirname -- "${BASH_SOURCE[1]}")" &> '/dev/null' && pwd)/.env"
 
 function copy_env_file_template() {
   check_no_args "$@"
