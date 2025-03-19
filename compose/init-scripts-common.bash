@@ -46,9 +46,22 @@ function prompt_set_env_file_password_val() {
   prompt_env_file_pw_value_if_empty "${ENV_FILE}" "$1" "${2:-}"
 }
 
+# $1 = dir
+function create_app_data_dir() {
+  check_exactly_1_arg "$@"
+  create_dir "${DOCKER_APP_DATA_DIR}/$1"
+}
+
+# $1 = dir
+function root_create_app_data_dir() {
+  check_exactly_1_arg "$@"
+  root_create_dir "${DOCKER_APP_DATA_DIR}/$1"
+}
+
 # $1 = app data file
 # $2 = content
 function write_app_data_file_if_not_exists() {
+  check_exactly_2_args "$@"
   local target_file="${DOCKER_APP_DATA_DIR}/$1"
   if ! file_exists "${target_file}"; then
     write_file "${target_file}" "$2"
@@ -58,6 +71,7 @@ function write_app_data_file_if_not_exists() {
 # $1 = app data file
 # $2 = content
 function root_write_app_data_file_if_not_exists() {
+  check_exactly_2_args "$@"
   local target_file="${DOCKER_APP_DATA_DIR}/$1"
   if ! file_exists "${target_file}"; then
     root_write_file "${target_file}" "$2"
