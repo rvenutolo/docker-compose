@@ -102,8 +102,6 @@ services:
       - ./dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem:ro
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem:ro
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config:/usr/share/wazuh-dashboard/data/wazuh/config
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
       - /etc/localtime:/etc/localtime:ro

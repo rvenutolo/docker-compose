@@ -17,8 +17,6 @@ server:
   port: 5601
   ssl:
     enabled: false
-    key: /usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
-    certificate: /usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
 
 uiSettings:
   overrides:
