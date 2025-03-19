@@ -59,17 +59,17 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca-manager.pem:/etc/ssl/root-ca.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.manager.pem:/etc/ssl/filebeat.pem:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/wazuh.manager-key.pem:/etc/ssl/filebeat.key:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/etc/filebeat:/etc/filebeat
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/lib/filebeat:/var/lib/filebeat
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/active-response/bin:/var/ossec/active-response/bin
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/agentless:/var/ossec/agentless
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/api/configuration:/var/ossec/api/configuration
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/etc:/var/ossec/etc
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/integrations:/var/ossec/integrations
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/logs:/var/ossec/logs
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/queue:/var/ossec/queue
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/var/multigroups:/var/ossec/var/multigroups
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/integrations:/var/ossec/integrations
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/active-response/bin:/var/ossec/active-response/bin
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/agentless:/var/ossec/agentless
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/ossec/wodles:/var/ossec/wodles
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/etc/filebeat:/etc/filebeat
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/manager/var/lib/filebeat:/var/lib/filebeat
       - /etc/localtime:/etc/localtime:ro
     environment:
       API_PASSWORD: ${API_PASSWORD:?}
@@ -100,8 +100,8 @@ services:
       - wazuh-manager:wazuh.manager
     volumes:
       - ./dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml:ro
-      - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem:ro
+      - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:ro
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config:/usr/share/wazuh-dashboard/data/wazuh/config
       - ${DOCKER_APP_DATA_DIR:?}/wazuh/dashboard/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
       - /etc/localtime:/etc/localtime:ro
