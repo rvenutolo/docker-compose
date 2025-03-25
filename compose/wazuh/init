@@ -5,22 +5,26 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
+function wazuh_password_hash() {
+  local wazuh_version="$(env_file_val 'WAZUH_VERSION')"
+  local password="$(env_file_val "$1")"
+  docker run \
+    --rm \
+    --interactive \
+    --tty \
+    "wazuh/wazuh-indexer:${wazuh_version}" \
+    bash \
+    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
+    | tr --complement --delete '[:print:]\n' \
+    | tail --lines '1'
+}
+
 copy_env_file_template
 
 prompt_set_env_file_val 'WAZUH_VERSION' 'https://hub.docker.com/r/wazuh/wazuh-manager/tags'
 prompt_set_env_file_password_val 'API_PASSWORD'
 prompt_set_env_file_password_val 'DASHBOARD_PASSWORD'
 prompt_set_env_file_password_val 'INDEXER_PASSWORD'
-
-indexer_data_dir="${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
-readonly indexer_data_dir
-if ! dir_exists "${indexer_data_dir}"; then
-  log 'Creating indexer data dir'
-  root_create_dir "${indexer_data_dir}"
-  # indexer won't work if the data dir is not owned by 1000:1000
-  sudo chown '1000:1000' "${indexer_data_dir}"
-  log 'Created indexer data dir'
-fi
 
 certs_dir="${DOCKER_APP_DATA_DIR}/wazuh/certs"
 readonly certs_dir
@@ -44,27 +48,19 @@ nodes:
   log 'Generated indexer certificates'
 fi
 
-function password_hash() {
-  local wazuh_version="$(env_file_val 'WAZUH_VERSION')"
-  local password="$(env_file_val "$1")"
-  docker run \
-    --rm \
-    --interactive \
-    --tty \
-    "wazuh/wazuh-indexer:${wazuh_version}" \
-    bash \
-    /usr/share/wazuh-indexer/plugins/opensearch-security/tools/hash.sh --password "${password}" \
-    | tr --complement --delete '[:print:]\n' \
-    | tail --lines '1'
-}
+root_create_app_data_dir \
+  'wazuh/indexer/usr/share/wazuh-indexer/opensearch-security' \
+  'wazuh/indexer/var/lib/wazuh-indexer'
+sudo chown -R '1000:1000' "${DOCKER_APP_DATA_DIR}/wazuh/indexer/usr/share/wazuh-indexer"
+sudo chown -R '1000:1000' "${DOCKER_APP_DATA_DIR}/wazuh/indexer/var/lib/wazuh-indexer"
 
 readonly indexer_users_file="${DOCKER_APP_DATA_DIR}/wazuh/indexer/usr/share/wazuh-indexer/opensearch-security/internal_users.yml"
 log 'Generating indexer users file'
-indexer_password_hash="$(password_hash 'INDEXER_PASSWORD')"
+indexer_password_hash="$(wazuh_password_hash 'INDEXER_PASSWORD')"
 readonly indexer_password_hash
-dashboard_password_hash="$(password_hash 'DASHBOARD_PASSWORD')"
+dashboard_password_hash="$(wazuh_password_hash 'DASHBOARD_PASSWORD')"
 readonly dashboard_password_hash
-root_write_file "${indexer_users_file}" "\
+write_file "${indexer_users_file}" "\
 _meta:
   type: internalusers
   config_version: 2
@@ -80,13 +76,18 @@ kibanaserver:
   description: kibanaserver user"
 log 'Generated indexer users file'
 
-readonly dashboard_hosts_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
+root_create_app_data_dir \
+  'wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config' \
+  'wazuh/dashboard/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom'
+sudo chown -R '1000:1000' "${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard"
+
+readonly dashboard_config_file="${DOCKER_APP_DATA_DIR}/wazuh/dashboard/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml"
 log 'Generating dashboard hosts file'
 api_password="$(env_file_val 'API_PASSWORD')"
 readonly api_password
-root_write_file "${dashboard_hosts_file}" "\
+write_file "${dashboard_config_file}" "\
 hosts:
-  - ${HOSTNAME}:
+  - 1513629884013:
       url: https://wazuh.manager
       port: 55000
       username: wazuh-wui
