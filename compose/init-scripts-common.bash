@@ -46,16 +46,24 @@ function prompt_set_env_file_password_val() {
   prompt_env_file_pw_value_if_empty "${ENV_FILE}" "$1" "${2:-}"
 }
 
-# $1 = dir
+# $1 = dirs
 function create_app_data_dir() {
-  check_exactly_1_arg "$@"
-  create_dir "${DOCKER_APP_DATA_DIR}/$1"
+  check_at_least_1_arg "$@"
+    local new_args=()
+    for dir in "$@"; do
+      new_args+=("${DOCKER_APP_DATA_DIR}/${dir}")
+    done
+  create_dir "${new_args[@]}"
 }
 
-# $1 = dir
+# $1 = dirs
 function root_create_app_data_dir() {
-  check_exactly_1_arg "$@"
-  root_create_dir "${DOCKER_APP_DATA_DIR}/$1"
+  check_at_least_1_arg "$@"
+  local new_args=()
+  for dir in "$@"; do
+    new_args+=("${DOCKER_APP_DATA_DIR}/${dir}")
+  done
+  root_create_dir "${new_args[@]}"
 }
 
 # $1 = app data file
