@@ -6,7 +6,7 @@ networks:
 services:
 
   dockge-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: dockge-socket-proxy
     hostname: dockge-socket-proxy
     restart: unless-stopped
@@ -33,7 +33,7 @@ services:
       SERVICES: 1
 
   dockge:
-    image: ${DOCKGE_IMAGE:-louislam/dockge}:${DOCKGE_IMAGE_TAG:-latest}
+    image: louislam/dockge:latest
     container_name: dockge
     hostname: dockge
     restart: unless-stopped

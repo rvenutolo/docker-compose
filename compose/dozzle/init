@@ -5,4 +5,4 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
-create_dir "${BACKUP_DIR}"
+copy_env_file_template

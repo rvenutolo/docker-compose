@@ -7,7 +7,7 @@ networks:
 services:
 
   authelia-redis:
-    image: ${REDIS_IMAGE:-redis}:${REDIS_IMAGE_TAG:-alpine}
+    image: redis:alpine
     container_name: authelia-redis
     hostname: authelia-redis
     restart: unless-stopped
@@ -21,7 +21,7 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD:?}
 
   authelia:
-    image: ${AUTHELIA_IMAGE:-authelia/authelia}:${AUTHELIA_IMAGE_TAG:-latest}
+    image: authelia/authelia:latest
     container_name: authelia
     hostname: authelia
     restart: unless-stopped
@@ -55,7 +55,7 @@ services:
       - traefik.http.services.authelia-svc.loadBalancer.server.port=9091
 
   crowdsec:
-    image: ${CROWDSEC_IMAGE:-crowdsecurity/crowdsec}:${CROWDSEC_IMAGE_TAG:-latest}
+    image: crowdsecurity/crowdsec:latest
     container_name: crowdsec
     hostname: crowdsec
     restart: unless-stopped
@@ -92,7 +92,7 @@ services:
         ${CROWDSEC_EXTRA_COLLECTIONS:-}
 
   crowdsec-bouncer:
-    image: ${CROWDSEC_BOUNCER_IMAGE:-fbonalair/traefik-crowdsec-bouncer}:${CROWDSEC_BOUNCER_IMAGE_TAG:-latest}
+    image: fbonalair/traefik-crowdsec-bouncer:latest
     container_name: crowdsec-bouncer
     hostname: crowdsec-bouncer
     restart: unless-stopped
@@ -111,7 +111,7 @@ services:
       GIN_MODE: ${CROWDSEC_BOUNCER_GIN_MODE:-release}
 
   traefik-geoip-filter:
-    image: ${GEOIP_FILTER_IMAGE:-mpdcampbell/traefik-geoip-filter}:${GEOIP_FILTER_IMAGE_TAG:-latest}
+    image: mpdcampbell/traefik-geoip-filter:latest
     container_name: traefik-geoip-filter
     hostname: traefik-geoip-filter
     restart: unless-stopped
@@ -130,7 +130,7 @@ services:
       MAXMIND_KEY: ${MAXMIND_KEY:?}
 
   traefik-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: traefik-socket-proxy
     hostname: traefik-socket-proxy
     restart: unless-stopped
@@ -148,7 +148,7 @@ services:
       CONTAINERS: 1
 
   traefik:
-    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
+    image: traefik:v3
     container_name: traefik
     hostname: traefik
     restart: unless-stopped
@@ -204,7 +204,7 @@ services:
       - traefik.http.routers.traefik-rtr.service=api@internal
 
   traefik-logger-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: traefik-logger-socket-proxy
     hostname: traefik-logger-socket-proxy
     restart: unless-stopped
@@ -223,7 +223,7 @@ services:
       PROXY_READ_TIMEOUT: 999d
 
   traefik-logger:
-    image: ${TRAEFIK_LOGGER_IMAGE:-docker}:${TRAEFIK_LOGGER_IMAGE_TAG:-dind}
+    image: docker:dind
     container_name: traefik-logger
     hostname: traefik-logger
     restart: unless-stopped

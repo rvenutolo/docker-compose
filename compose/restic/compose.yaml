@@ -6,7 +6,7 @@ volumes:
 services:
 
   restic-b2:
-    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    image: restic/restic:latest
     container_name: restic-b2
     hostname: restic-b2
     security_opt:
@@ -26,7 +26,7 @@ services:
     command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
 
   restic-local:
-    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    image: restic/restic:latest
     container_name: restic-local
     hostname: restic-local
     security_opt:
@@ -43,7 +43,7 @@ services:
     command: backup --tag 'docker-dir' --group-by 'host,tags' '/docker-dir'
 
   restic-r2:
-    image: ${RESTIC_IMAGE:-restic/restic}:${RESTIC_IMAGE_TAG:-latest}
+    image: restic/restic:latest
     container_name: restic-r2
     hostname: restic-r2
     security_opt:

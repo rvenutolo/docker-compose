@@ -7,7 +7,7 @@ volumes:
 
 services:
   backrest:
-    image: ${BACKREST_IMAGE:-garethgeorge/backrest}:${BACKREST_IMAGE_TAG:-latest}
+    image: garethgeorge/backrest:latest
     container_name: backrest
     hostname: backrest
     restart: unless-stopped

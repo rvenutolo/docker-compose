@@ -6,7 +6,7 @@ networks:
 services:
 
   wazuh-indexer:
-    image: ${WAZUH_INDEXER_IMAGE:-wazuh/wazuh-indexer}:${WAZUH_INDEXER_IMAGE_TAG:-${WAZUH_VERSION:?}}
+    image: wazuh/wazuh-indexer:${WAZUH_VERSION:?}
     container_name: wazuh-indexer
     hostname: wazuh-indexer
     restart: unless-stopped
@@ -35,7 +35,7 @@ services:
       OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms1g -Xmx1g}
 
   wazuh-manager:
-    image: ${WAZUH_MANAGER_IMAGE:-wazuh/wazuh-manager}:${WAZUH_MANAGER_IMAGE_TAG:-${WAZUH_VERSION:?}}
+    image: wazuh/wazuh-manager:${WAZUH_VERSION:?}
     container_name: wazuh-manager
     hostname: wazuh-manager
     restart: unless-stopped
@@ -86,7 +86,7 @@ services:
       SSL_KEY: /etc/ssl/filebeat.key
 
   wazuh-dashboard:
-    image: ${WAZUH_DASHBOARD_IMAGE:-wazuh/wazuh-dashboard}:${WAZUH_DASHBOARD_IMAGE_TAG:-${WAZUH_VERSION:?}}
+    image: wazuh/wazuh-dashboard:${WAZUH_VERSION:?}
     container_name: wazuh-dashboard
     hostname: wazuh-dashboard
     restart: unless-stopped

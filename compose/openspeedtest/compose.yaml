@@ -4,7 +4,7 @@ networks:
 
 services:
   openspeedtest:
-    image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
+    image: openspeedtest/latest:latest
     container_name: openspeedtest
     hostname: openspeedtest
     restart: unless-stopped

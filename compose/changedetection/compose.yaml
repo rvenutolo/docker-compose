@@ -4,7 +4,7 @@ networks:
 
 services:
   changedetection:
-    image: ${CHANGEDETECTION_IMAGE:-dgtlmoon/changedetection.io}:${CHANGEDETECTION_IMAGE_TAG:-latest}
+    image: dgtlmoon/changedetection.io:latest
     container_name: changedetection
     hostname: changedetection
     restart: unless-stopped

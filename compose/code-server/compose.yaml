@@ -4,7 +4,7 @@ networks:
 
 services:
   code-server:
-    image: ${CODE_SERVER_IMAGE:-lscr.io/linuxserver/code-server}:${CODE_SERVER_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
     hostname: code-server
     restart: unless-stopped

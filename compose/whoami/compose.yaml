@@ -4,7 +4,7 @@ networks:
 
 services:
   whoami:
-    image: ${WHOAMI_IMAGE:-traefik/whoami}:${WHOAMI_IMAGE_TAG:-latest}
+    image: traefik/whoami:latest
     container_name: whoami
     hostname: whoami
     restart: unless-stopped

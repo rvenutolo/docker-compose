@@ -6,7 +6,7 @@ networks:
 services:
 
   guacamole-postgres:
-    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_IMAGE_TAG:-17}
+    image: postgres:17
     container_name: guacamole-postgres
     hostname: guacamole-postgres
     restart: unless-stopped
@@ -25,7 +25,7 @@ services:
       POSTGRES_DB: guacamole_db
 
   guacd:
-    image: ${GUACD_IMAGE:-guacamole/guacd}:${GUACD_IMAGE_TAG:-latest}
+    image: guacamole/guacd:latest
     container_name: guacd
     hostname: guacd
     restart: unless-stopped
@@ -37,7 +37,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   guacamole:
-    image: ${GUACAMOLE_IMAGE:-guacamole/guacamole}:${GUACAMOLE_IMAGE_TAG:-latest}
+    image: guacamole/guacamole:latest
     container_name: guacamole
     hostname: guacamole
     restart: unless-stopped

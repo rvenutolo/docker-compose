@@ -4,7 +4,7 @@ networks:
 
 services:
   beszel:
-    image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_IMAGE_TAG:-latest}
+    image: henrygd/beszel:latest
     container_name: beszel
     hostname: beszel
     restart: unless-stopped

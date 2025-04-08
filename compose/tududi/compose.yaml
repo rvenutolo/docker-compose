@@ -4,7 +4,7 @@ networks:
 
 services:
   tududi:
-    image: ${TUDUDI_IMAGE:-chrisvel/tududi}:${TUDUDI_IMAGE_TAG:-latest}
+    image: chrisvel/tududi:latest
     container_name: tududi
     hostname: tududi
     restart: unless-stopped

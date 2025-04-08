@@ -7,7 +7,7 @@ networks:
 services:
 
   komodo-mongo:
-    image: ${MONGO_IMAGE:-mongo}:${MONGO_IMAGE_TAG:-8}
+    image: mongo:8
     container_name: komodo-mongo
     hostname: komodo-mongo
     restart: unless-stopped
@@ -27,7 +27,7 @@ services:
       - komodo.skip
 
   komodo:
-    image: ${KOMODO_IMAGE:-ghcr.io/mbecker20/komodo}:${KOMODO_IMAGE_TAG:-latest}
+    image: ghcr.io/mbecker20/komodo:latest
     container_name: komodo
     hostname: komodo
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
       - traefik.http.services.komodo-svc.loadBalancer.server.port=9120
 
   komodo-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: komodo-socket-proxy
     hostname: komodo-socket-proxy
     restart: unless-stopped
@@ -98,7 +98,7 @@ services:
       - komodo.skip
 
   komodo-periphery:
-    image: ${KOMODO_PERIPHERY_IMAGE:-ghcr.io/mbecker20/periphery}:${KOMODO_PERIPHERY_IMAGE_TAG:-latest}
+    image: ghcr.io/mbecker20/periphery:latest
     container_name: komodo-periphery
     hostname: komodo-periphery
     restart: unless-stopped

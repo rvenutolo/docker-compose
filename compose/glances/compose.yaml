@@ -6,7 +6,7 @@ networks:
 services:
 
   glances-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: glances-socket-proxy
     hostname: glances-socket-proxy
     restart: unless-stopped
@@ -25,7 +25,7 @@ services:
       IMAGES: 1
 
   glances:
-    image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-latest-full}
+    image: nicolargo/glances:latest-full
     container_name: glances
     hostname: glances
     restart: unless-stopped

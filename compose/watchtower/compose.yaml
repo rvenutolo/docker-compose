@@ -4,7 +4,7 @@ networks:
 services:
 
   watchtower-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: watchtower-socket-proxy
     hostname: watchtower-socket-proxy
     restart: unless-stopped
@@ -29,7 +29,7 @@ services:
       VOLUMES: 1
 
   watchtower:
-    image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
+    image: containrrr/watchtower:latest
     container_name: watchtower
     hostname: watchtower
     restart: unless-stopped

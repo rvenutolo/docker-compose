@@ -6,7 +6,7 @@ networks:
 services:
 
   portainer-socket-proxy:
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: lscr.io/linuxserver/socket-proxy:latest
     container_name: portainer-socket-proxy
     hostname: portainer-socket-proxy
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
       VOLUMES: 1
 
   portainer:
-    image: ${PORTAINER_IMAGE:-portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-latest}
+    image: portainer/portainer-ce:latest
     container_name: portainer
     hostname: portainer
     restart: unless-stopped
