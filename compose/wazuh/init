@@ -35,11 +35,11 @@ if ! dir_exists "${certs_dir}"; then
   write_file "${certs_conf_file}" "\
 nodes:
   indexer:
-    - name: wazuh.indexer
-      ip: wazuh.indexer
+    - name: wazuh-indexer
+      ip: wazuh-indexer.internal
   server:
-    - name: wazuh.manager
-      ip: wazuh.manager"
+    - name: wazuh-manager
+      ip: wazuh-manager.internal"
   docker run \
     --rm \
     --volume "${certs_dir}:/certificates/" \
@@ -88,7 +88,7 @@ readonly api_password
 write_file "${dashboard_config_file}" "\
 hosts:
   - 1513629884013:
-      url: https://wazuh.manager
+      url: https://wazuh-manager.internal
       port: 55000
       username: wazuh-wui
       password: ${api_password}

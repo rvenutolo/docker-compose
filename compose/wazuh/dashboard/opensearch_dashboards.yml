@@ -1,6 +1,6 @@
 opensearch:
   hosts:
-    - https://wazuh.indexer:9200
+    - https://wazuh-indexer.internal:9200
   requestHeadersWhitelist: [securitytenant, Authorization]
   ssl:
     certificateAuthorities: [/usr/share/wazuh-dashboard/certs/root-ca.pem]
