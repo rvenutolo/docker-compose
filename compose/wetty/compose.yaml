@@ -6,7 +6,6 @@ services:
   wetty:
     image: wettyoss/wetty:latest
     container_name: wetty
-    hostname: wetty
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

@@ -6,7 +6,6 @@ services:
   openspeedtest:
     image: openspeedtest/latest:latest
     container_name: openspeedtest
-    hostname: openspeedtest
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

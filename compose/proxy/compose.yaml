@@ -9,7 +9,6 @@ services:
   authelia-redis:
     image: redis:alpine
     container_name: authelia-redis
-    hostname: authelia-redis
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -23,7 +22,6 @@ services:
   authelia:
     image: authelia/authelia:latest
     container_name: authelia
-    hostname: authelia
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -57,7 +55,6 @@ services:
   crowdsec:
     image: crowdsecurity/crowdsec:latest
     container_name: crowdsec
-    hostname: crowdsec
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -94,7 +91,6 @@ services:
   crowdsec-bouncer:
     image: fbonalair/traefik-crowdsec-bouncer:latest
     container_name: crowdsec-bouncer
-    hostname: crowdsec-bouncer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -113,7 +109,6 @@ services:
   traefik-geoip-filter:
     image: mpdcampbell/traefik-geoip-filter:latest
     container_name: traefik-geoip-filter
-    hostname: traefik-geoip-filter
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -132,7 +127,6 @@ services:
   traefik-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: traefik-socket-proxy
-    hostname: traefik-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -150,7 +144,6 @@ services:
   traefik:
     image: traefik:v3
     container_name: traefik
-    hostname: traefik
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -206,7 +199,6 @@ services:
   traefik-logger-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: traefik-logger-socket-proxy
-    hostname: traefik-logger-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -225,7 +217,6 @@ services:
   traefik-logger:
     image: docker:dind
     container_name: traefik-logger
-    hostname: traefik-logger
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

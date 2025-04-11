@@ -8,7 +8,6 @@ services:
   dozzle-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: dozzle-socket-proxy
-    hostname: dozzle-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -30,7 +29,6 @@ services:
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
-    hostname: dozzle
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

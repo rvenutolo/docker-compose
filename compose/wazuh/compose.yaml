@@ -8,7 +8,6 @@ services:
   wazuh-indexer:
     image: wazuh/wazuh-indexer:${WAZUH_VERSION:?}
     container_name: wazuh-indexer
-    hostname: wazuh-indexer
     restart: unless-stopped
     ulimits:
       memlock:
@@ -37,7 +36,6 @@ services:
   wazuh-manager:
     image: wazuh/wazuh-manager:${WAZUH_VERSION:?}
     container_name: wazuh-manager
-    hostname: wazuh-manager
     restart: unless-stopped
     ulimits:
       memlock:
@@ -88,7 +86,6 @@ services:
   wazuh-dashboard:
     image: wazuh/wazuh-dashboard:${WAZUH_VERSION:?}
     container_name: wazuh-dashboard
-    hostname: wazuh-dashboard
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

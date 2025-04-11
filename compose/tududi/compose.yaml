@@ -6,7 +6,6 @@ services:
   tududi:
     image: chrisvel/tududi:latest
     container_name: tududi
-    hostname: tududi
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

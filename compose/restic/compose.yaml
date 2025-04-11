@@ -8,7 +8,6 @@ services:
   restic-b2:
     image: restic/restic:latest
     container_name: restic-b2
-    hostname: restic-b2
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -28,7 +27,6 @@ services:
   restic-local:
     image: restic/restic:latest
     container_name: restic-local
-    hostname: restic-local
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -45,7 +43,6 @@ services:
   restic-r2:
     image: restic/restic:latest
     container_name: restic-r2
-    hostname: restic-r2
     security_opt:
       - no-new-privileges:true
     volumes:

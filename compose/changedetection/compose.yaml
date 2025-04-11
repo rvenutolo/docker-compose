@@ -6,7 +6,6 @@ services:
   changedetection:
     image: dgtlmoon/changedetection.io:latest
     container_name: changedetection
-    hostname: changedetection
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

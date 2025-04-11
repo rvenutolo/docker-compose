@@ -6,7 +6,6 @@ services:
   code-server:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
-    hostname: code-server
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

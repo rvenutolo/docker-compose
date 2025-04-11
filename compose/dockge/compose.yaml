@@ -8,7 +8,6 @@ services:
   dockge-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: dockge-socket-proxy
-    hostname: dockge-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -35,7 +34,6 @@ services:
   dockge:
     image: louislam/dockge:latest
     container_name: dockge
-    hostname: dockge
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -62,8 +60,7 @@ services:
       DOCKER_TZ: ${DOCKER_TZ:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
       DOMAIN_NAME_REGEX: ${DOMAIN_NAME_REGEX:?}
-      HOSTNAME: ${HOSTNAME:?}
-      PGID: ${PGID:?}
+        PGID: ${PGID:?}
       PUID: ${PUID:?}
       TAILNET_IP: ${TAILNET_IP:?}
       USER: ${USER:?}

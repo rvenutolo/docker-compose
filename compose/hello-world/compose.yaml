@@ -6,7 +6,6 @@ services:
   hello-world:
     image: crccheck/hello-world:latest
     container_name: hello-world
-    hostname: hello-world
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

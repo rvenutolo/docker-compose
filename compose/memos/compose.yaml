@@ -6,7 +6,6 @@ services:
   memos:
     image: neosmemo/memos:latest
     container_name: memos
-    hostname: memos
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

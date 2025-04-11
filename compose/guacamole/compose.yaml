@@ -8,7 +8,6 @@ services:
   guacamole-postgres:
     image: postgres:17
     container_name: guacamole-postgres
-    hostname: guacamole-postgres
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -27,7 +26,6 @@ services:
   guacd:
     image: guacamole/guacd:latest
     container_name: guacd
-    hostname: guacd
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -39,7 +37,6 @@ services:
   guacamole:
     image: guacamole/guacamole:latest
     container_name: guacamole
-    hostname: guacamole
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

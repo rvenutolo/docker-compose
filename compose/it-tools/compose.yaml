@@ -6,7 +6,6 @@ services:
   it-tools:
     image: corentinth/it-tools:latest
     container_name: it-tools
-    hostname: it-tools
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

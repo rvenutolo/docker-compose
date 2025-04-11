@@ -8,7 +8,6 @@ services:
   glances-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: glances-socket-proxy
-    hostname: glances-socket-proxy
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -27,7 +26,6 @@ services:
   glances:
     image: nicolargo/glances:latest-full
     container_name: glances
-    hostname: glances
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

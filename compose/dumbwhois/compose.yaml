@@ -6,7 +6,6 @@ services:
   dumbwhois:
     image: dumbwareio/dumbwhois:latest
     container_name: dumbwhois
-    hostname: dumbwhois
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
