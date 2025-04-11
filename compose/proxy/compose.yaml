@@ -230,4 +230,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       DOCKER_HOST: tcp://traefik-logger-socket-proxy:2375
-    command: sh -c 'docker logs --follow traefik | tee /var/log/traefik/traefik.log'
+    command: sh -c '(docker logs --follow traefik || until docker logs --follow --since 0s traefik; do echo restarting; done) | tee /var/log/traefik/traefik.log'
