@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/scripts/functions.bash"
+source "${SCRIPTS_DIR}/functions.bash"
 
 git update-index --assume-unchanged "${DOCKER_DIR}/managed-stacks"
 
