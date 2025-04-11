@@ -41,7 +41,7 @@ systemctl --user --quiet daemon-reload
 enable_user_service_unit 'daily-tasks.timer'
 log 'Enabled daily-tasks service'
 
-if prompt_yn "Run init scripts?"; then
+if prompt_yn 'Run init scripts?'; then
   managed_stacks="$(cat "${DOCKER_DIR}/managed-stacks")"
   for stack in ${managed_stacks}; do
     init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
