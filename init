@@ -31,12 +31,7 @@ done
 create_dir "${DOCKER_APP_DATA_DIR}"
 create_dir "${DOCKER_LOGS_DIR}"
 
-proxy_network='proxy'
-if ! docker network inspect "${proxy_network}" &> '/dev/null'; then
-  log "Creating ${proxy_network} network"
-  docker network create "${proxy_network}"
-  log "Created ${proxy_network} network"
-fi
+create_docker_network 'proxy'
 
 log 'Enabling daily-tasks service'
 readonly systemd_service_dir="${XDG_CONFIG_HOME}/systemd/user"
