@@ -21,5 +21,5 @@ services:
       - traefik.http.middlewares.uptime-redirect-mdw.redirectRegex.replacement=https://uptime-kuma.${DOMAIN_NAME:?}/$${1}
       - traefik.http.routers.uptime-kuma-rtr.rule=Host(`uptime-kuma.${DOMAIN_NAME:?}`)
       - traefik.http.routers.uptime-redirect-rtr.middlewares=uptime-redirect-mdw
-      - traefik.http.routers.uptime-redirect-rtr.rule=Host(`uptime.${DOMAIN_NAME:?}`
+      - traefik.http.routers.uptime-redirect-rtr.rule=Host(`uptime.${DOMAIN_NAME:?}`)
       - traefik.http.services.uptime-kuma-svc.loadBalancer.server.port=3001
