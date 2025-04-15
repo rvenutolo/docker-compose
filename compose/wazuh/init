@@ -22,7 +22,7 @@ function wazuh_password_hash() {
 copy_env_file_template
 
 prompt_set_env_file_val 'WAZUH_VERSION' 'https://hub.docker.com/r/wazuh/wazuh-manager/tags'
-prompt_set_env_file_password_val 'API_PASSWORD'
+prompt_set_env_file_password_with_symbols_val 'API_PASSWORD'
 prompt_set_env_file_val 'DASHBOARD_PASSWORD'
 prompt_set_env_file_val 'INDEXER_PASSWORD'
 
