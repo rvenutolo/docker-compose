@@ -23,8 +23,8 @@ copy_env_file_template
 
 prompt_set_env_file_val 'WAZUH_VERSION' 'https://hub.docker.com/r/wazuh/wazuh-manager/tags'
 prompt_set_env_file_password_val 'API_PASSWORD'
-prompt_set_env_file_password_val 'DASHBOARD_PASSWORD'
-prompt_set_env_file_password_val 'INDEXER_PASSWORD'
+prompt_set_env_file_val 'DASHBOARD_PASSWORD'
+prompt_set_env_file_val 'INDEXER_PASSWORD'
 
 certs_dir="${DOCKER_APP_DATA_DIR}/wazuh/certs"
 readonly certs_dir
