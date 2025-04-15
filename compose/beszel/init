@@ -20,11 +20,11 @@ readonly beszel_public_key
 set_env_file_val 'BESZEL_PUBLIC_KEY' "${beszel_public_key}"
 
 if ! pgrep --exact 'beszel-agent' &> '/dev/null' &&  prompt_yn 'Install beszel-agent?'; then
-    log 'Installing beszel-agent'
-    install_agent_script="$(mktemp --direcotry)/install-agent.sh"
-    readonly install_agent_script
-    curl --silent --location 'https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh' --output "${install_agent_script}"
-    chmod +x "${install_agent_script}"
-    "${install_agent_script}" -p '45876' -k "${beszel_public_key}"
-    log 'Installed beszel-agent'
+  log 'Installing beszel-agent'
+  install_agent_script="$(mktemp --directory)/install-agent.sh"
+  readonly install_agent_script
+  curl --silent --location 'https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh' --output "${install_agent_script}"
+  chmod +x "${install_agent_script}"
+  "${install_agent_script}" -p '45876' -k "${beszel_public_key}"
+  log 'Installed beszel-agent'
 fi
