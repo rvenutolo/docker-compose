@@ -175,9 +175,6 @@ services:
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,8.8.8.8:53
       - --certificatesResolvers.dns-cloudflare.acme.storage=/etc/traefik/certs/cloudflare-acme.json
-      - --entrypoints.web.address=:80
-      - --entryPoints.web.forwardedHeaders.trustedIPs=${TRAEFIK_TRUSTED_IPS:-127.0.0.1/32,100.64.0.0/10}
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.asDefault=true
       - --entryPoints.websecure.forwardedHeaders.trustedIPs=${TRAEFIK_TRUSTED_IPS:-127.0.0.1/32,100.64.0.0/10}
