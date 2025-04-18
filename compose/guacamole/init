@@ -11,4 +11,4 @@ prompt_set_env_file_password_val 'POSTGRES_PASSWORD'
 
 readonly postgres_init_file="guacamole/postgres/docker-entrypoint-initdb.d/init-db.sql"
 readonly postgres_init_file_content="$(docker run --rm guacamole/guacamole:latest /opt/guacamole/bin/initdb.sh --postgresql)"
-write_app_data_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
+root_write_app_data_file_if_not_exists "${postgres_init_file}" "${postgres_init_file_content}"
