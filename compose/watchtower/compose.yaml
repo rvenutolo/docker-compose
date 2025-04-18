@@ -26,6 +26,8 @@ services:
       NETWORKS: 1
       POST: 1
       VOLUMES: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   watchtower:
     image: containrrr/watchtower:latest
@@ -36,7 +38,8 @@ services:
     networks:
       - socket-proxy
     depends_on:
-      - watchtower-socket-proxy
+      watchtower-socket-proxy:
+        condition: service_healthy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

@@ -30,6 +30,8 @@ services:
       NETWORKS: 1
       POST: 1
       SERVICES: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   dockge:
     image: louislam/dockge:latest
@@ -41,7 +43,8 @@ services:
       - proxy
       - socket-proxy
     depends_on:
-      - dockge-socket-proxy
+      dockge-socket-proxy:
+        condition: service_healthy
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/opt/stacks
       - ${DOCKER_APP_DATA_DIR:?}/dockge/app/data:/app/data

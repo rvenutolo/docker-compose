@@ -29,6 +29,8 @@ services:
       INFO: 1
       NETWORKS: 1
       VOLUMES: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   portainer:
     image: portainer/portainer-ce:latest
@@ -40,7 +42,8 @@ services:
       - proxy
       - socket-proxy
     depends_on:
-      - portainer-socket-proxy
+      portainer-socket-proxy:
+        condition: service_healthy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/portainer/data:/data
       - /etc/localtime:/etc/localtime:ro

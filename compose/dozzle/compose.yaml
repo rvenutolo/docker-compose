@@ -25,6 +25,8 @@ services:
       ALLOW_RESTARTS: 1
       CONTAINERS: 1
       INFO: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   dozzle:
     image: amir20/dozzle:latest
@@ -36,7 +38,8 @@ services:
       - proxy
       - socket-proxy
     depends_on:
-      - dozzle-socket-proxy
+      dozzle-socket-proxy:
+        condition: service_healthy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:

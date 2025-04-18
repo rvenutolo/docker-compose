@@ -91,6 +91,8 @@ services:
       NETWORKS: 1
       POST: 1
       SERVICES: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
     labels:
       - komodo.skip
 
@@ -104,7 +106,8 @@ services:
       - default
       - socket-proxy
     depends_on:
-      - komodo-socket-proxy
+      komodo-socket-proxy:
+        condition: service_healthy
     volumes:
       - ${DOCKER_COMPOSE_DIR:?}:/etc/komodo/stacks
       - /proc:/proc
