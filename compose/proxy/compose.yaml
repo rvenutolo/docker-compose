@@ -18,6 +18,8 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/proxy/redis/data:/data
       - /etc/localtime:/etc/localtime:ro
     command: redis-server --requirepass ${REDIS_PASSWORD:?}
+    healthcheck:
+      test: "[ $$(redis-cli -a ${REDIS_PASSWORD:?} ping) = 'PONG' ]"
 
   authelia:
     image: authelia/authelia:latest
@@ -28,7 +30,8 @@ services:
     networks:
       - proxy
     depends_on:
-      - authelia-redis
+      authelia-redis:
+        condition: service_healthy
     volumes:
       - ./authelia-notifications.txt:/notifications.txt
       - ./authelia/config.yaml:/config.yaml:ro
@@ -87,7 +90,8 @@ services:
         crowdsecurity/traefik
         LePresidente/authelia
         ${CROWDSEC_EXTRA_COLLECTIONS:-}
-
+    healthcheck:
+      test: wget --spider --quiet http://localhost:8080/health || exit 1
   crowdsec-bouncer:
     image: fbonalair/traefik-crowdsec-bouncer:latest
     container_name: crowdsec-bouncer
@@ -97,7 +101,8 @@ services:
     networks:
       - proxy
     depends_on:
-      - crowdsec
+      crowdsec:
+        condition: service_healthy
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -123,6 +128,8 @@ services:
       FILTER_TYPE: allow
       MAXMIND_ID: ${MAXMIND_ID:?}
       MAXMIND_KEY: ${MAXMIND_KEY:?}
+    healthcheck:
+      test: pgrep -x crond || exit 1
 
   traefik-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
@@ -140,6 +147,8 @@ services:
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       CONTAINERS: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   traefik:
     image: traefik:v3
@@ -151,10 +160,14 @@ services:
       - proxy
       - traefik-socket-proxy
     depends_on:
-      - authelia
-      - crowdsec-bouncer
-      - traefik-geoip-filter
-      - traefik-socket-proxy
+      authelia:
+        condition: service_healthy
+      crowdsec-bouncer:
+        condition: service_healthy
+      traefik-geoip-filter:
+        condition: service_healthy
+      traefik-socket-proxy:
+        condition: service_healthy
     ports:
       - "${TAILNET_IP:?}:443:443"
     volumes:
@@ -182,11 +195,14 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN_NAME:?}
       - --entrypoints.websecure.http.tls.options=default-tls-opts@file
+      - --ping=true
       - --providers.docker.endpoint=tcp://traefik-socket-proxy:2375
       - --providers.docker.exposedByDefault=${TRAEFIK_DOCKER_EXPOSED_BY_DEFAULT:-false}
       - --providers.docker.network=proxy
       - --providers.file.directory=/etc/traefik/conf
       - --providers.file.watch=true
+    healthcheck:
+      test: traefik healthcheck --ping
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
@@ -208,6 +224,8 @@ services:
       - ${DOCKER_SOCKET:?}:/var/run/docker.sock
     environment:
       CONTAINERS: 1
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
 
   traefik-logger:
     image: docker:dind
@@ -218,11 +236,15 @@ services:
     networks:
       - traefik-logger-socket-proxy
     depends_on:
-      - traefik
-      - traefik-socket-proxy
+      traefik:
+        condition: service_healthy
+      traefik-logger-socket-proxy:
+        condition: service_healthy
     volumes:
       - ${DOCKER_LOGS_DIR:?}/traefik:/var/log/traefik
       - /etc/localtime:/etc/localtime:ro
     environment:
       DOCKER_HOST: tcp://traefik-logger-socket-proxy:2375
     command: sh -c '(docker logs --follow traefik || until docker logs --follow --since 0s traefik; do :; done) | tee /var/log/traefik/traefik.log'
+    healthcheck:
+      test: pgrep -x tee || exit 1
