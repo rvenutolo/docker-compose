@@ -60,7 +60,7 @@ services:
       DOCKER_TZ: ${DOCKER_TZ:?}
       DOMAIN_NAME: ${DOMAIN_NAME:?}
       DOMAIN_NAME_REGEX: ${DOMAIN_NAME_REGEX:?}
-        PGID: ${PGID:?}
+      PGID: ${PGID:?}
       PUID: ${PUID:?}
       TAILNET_IP: ${TAILNET_IP:?}
       USER: ${USER:?}
