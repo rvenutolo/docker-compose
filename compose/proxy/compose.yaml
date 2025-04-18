@@ -156,7 +156,6 @@ services:
       - traefik-geoip-filter
       - traefik-socket-proxy
     ports:
-      - "${TAILNET_IP:?}:80:80"
       - "${TAILNET_IP:?}:443:443"
     volumes:
       - ./traefik:/etc/traefik/conf:ro
