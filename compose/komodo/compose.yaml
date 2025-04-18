@@ -22,6 +22,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?}
       MONGO_INITDB_ROOT_USERNAME: komodo
     command: --quiet --wiredTigerCacheSizeGB 0.25
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet | grep 1 || exit 1
     labels:
       - komodo.skip
 
@@ -35,7 +37,8 @@ services:
       - proxy
       - default
     depends_on:
-      - komodo-mongo
+      komodo-mongo:
+        condition: service_healthy
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/action-cache:/action-cache
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/repo-cache:/repo-cache

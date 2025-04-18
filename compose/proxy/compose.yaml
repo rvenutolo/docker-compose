@@ -19,7 +19,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     command: redis-server --requirepass ${REDIS_PASSWORD:?}
     healthcheck:
-      test: "[ $$(redis-cli -a ${REDIS_PASSWORD:?} ping) = 'PONG' ]"
+      test : redis-cli -a ${REDIS_PASSWORD:?} ping | grep -F PONG || exit 1
 
   authelia:
     image: authelia/authelia:latest
