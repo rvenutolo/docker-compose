@@ -54,9 +54,8 @@ services:
       POSTGRESQL_USER: guacamole_user
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:?}
     depends_on:
-      # no depends_on guacd because it takes a long time to get healthy
-      guacamole-postgres:
-        condition: service_healthy
+      - guacamole-postgres
+      - guacd
     labels:
       - traefik.enable=true
       - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole

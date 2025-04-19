@@ -37,8 +37,7 @@ services:
       - proxy
       - default
     depends_on:
-      komodo-mongo:
-        condition: service_healthy
+      - komodo-mongo
     volumes:
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/action-cache:/action-cache
       - ${DOCKER_APP_DATA_DIR:?}/komodo/komodo/repo-cache:/repo-cache
