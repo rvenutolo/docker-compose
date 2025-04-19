@@ -32,6 +32,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms1g -Xmx1g}
+    healthcheck:
+      test: curl -ksSf -u admin:${INDEXER_PASSWORD:?} https://localhost:9200/_cluster/health || exit 1
 
   wazuh-manager:
     image: wazuh/wazuh-manager:${WAZUH_VERSION:?}
@@ -82,6 +84,8 @@ services:
       SSL_CERTIFICATE: /etc/ssl/filebeat.pem
       SSL_CERTIFICATE_AUTHORITIES: /etc/ssl/root-ca.pem
       SSL_KEY: /etc/ssl/filebeat.key
+    healthcheck:
+      test: 'curl -ksSf https://localhost:55000/ -H "Authorization: Bearer $(curl -ksSf -u $${API_USERNAME}:$${API_PASSWORD} -X POST https://localhost:55000/security/user/authenticate?raw=true)" || exit 1'
 
   wazuh-dashboard:
     image: wazuh/wazuh-dashboard:${WAZUH_VERSION:?}
@@ -112,6 +116,8 @@ services:
       INDEXER_PASSWORD: ${INDEXER_PASSWORD:?}
       INDEXER_USERNAME: admin
       WAZUH_API_URL: https://wazuh-manager.internal
+    healthcheck:
+      test: curl -sSfLI http://localhost:5601 | grep '200 OK' || exit 1
     labels:
       - traefik.enable=true
       - traefik.http.routers.wazuh-rtr.rule=Host(`wazuh.${DOMAIN_NAME:?}`)
