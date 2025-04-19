@@ -17,7 +17,9 @@ services:
     environment:
       DISABLE_PASSWORD_AUTH: ${DISABLE_PASSWORD_AUTH:-false}
     healthcheck:
-      test: /beszel health --url http://localhost:8090
+      interval: 120s
+      start_period: 5s
+      test: [ 'CMD', '/beszel', 'health', '--url', 'http://localhost:8090' ]
     labels:
       - traefik.enable=true
       - traefik.http.routers.beszel-rtr.rule=Host(`beszel.${DOMAIN_NAME:?}`)
