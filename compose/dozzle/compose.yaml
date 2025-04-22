@@ -47,6 +47,8 @@ services:
       DOZZLE_HOSTNAME: dozzle.${DOMAIN_NAME:?}
       DOZZLE_LEVEL: ${DOZZLE_LEVEL:-info}
       DOZZLE_REMOTE_HOST: tcp://dozzle-socket-proxy:2375
+    healthcheck:
+      test: [ 'CMD', '/dozzle', 'healthcheck' ]
     labels:
       - traefik.enable=true
       - traefik.http.routers.dozzle-rtr.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
