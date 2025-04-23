@@ -1,5 +1,6 @@
 proxy
 beszel
+dockerstats
 dozzle
 glances
 hello-world
