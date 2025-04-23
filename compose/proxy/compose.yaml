@@ -20,6 +20,8 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD:?}
     healthcheck:
       test : redis-cli -a ${REDIS_PASSWORD:?} ping | grep -F PONG || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   authelia:
     image: authelia/authelia:latest
@@ -51,6 +53,7 @@ services:
       X_AUTHELIA_CONFIG: /config.yaml
       X_AUTHELIA_CONFIG_FILTERS: template
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.authelia-rtr.rule=Host(`authelia.${DOMAIN_NAME:?}`)
       - traefik.http.services.authelia-svc.loadBalancer.server.port=9091
@@ -92,6 +95,9 @@ services:
         ${CROWDSEC_EXTRA_COLLECTIONS:-}
     healthcheck:
       test: wget --spider --quiet http://localhost:8080/health || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
   crowdsec-bouncer:
     image: fbonalair/traefik-crowdsec-bouncer:latest
     container_name: crowdsec-bouncer
@@ -110,6 +116,8 @@ services:
       CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:?}
       CROWDSEC_BOUNCER_LOG_LEVEL: ${CROWDSEC_BOUNCER_LOG_LEVEL:-info}
       GIN_MODE: ${CROWDSEC_BOUNCER_GIN_MODE:-release}
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   traefik-geoip-filter:
     image: mpdcampbell/traefik-geoip-filter:latest
@@ -130,6 +138,8 @@ services:
       MAXMIND_KEY: ${MAXMIND_KEY:?}
     healthcheck:
       test: pgrep -x crond || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   traefik-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
@@ -149,6 +159,8 @@ services:
       CONTAINERS: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   traefik:
     image: traefik:v3
@@ -204,6 +216,7 @@ services:
     healthcheck:
       test: traefik healthcheck --ping
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.traefik-rtr.rule=Host(`traefik.${DOMAIN_NAME:?}`)
       - traefik.http.routers.traefik-rtr.service=api@internal
@@ -226,6 +239,8 @@ services:
       CONTAINERS: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   traefik-logger:
     image: docker:dind
@@ -248,3 +263,5 @@ services:
     command: sh -c '(docker logs --follow traefik || until docker logs --follow --since 0s traefik; do :; done) | tee /var/log/traefik/traefik.log'
     healthcheck:
       test: pgrep -x tee || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true

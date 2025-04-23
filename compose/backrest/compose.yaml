@@ -27,6 +27,7 @@ services:
       BACKREST_DATA: /data
       XDG_CACHE_HOME: /cache
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.backrest-rtr.rule=Host(`backrest.${DOMAIN_NAME:?}`)
       - traefik.http.services.backrest-svc.loadBalancer.server.port=9898

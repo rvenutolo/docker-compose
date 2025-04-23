@@ -25,6 +25,7 @@ services:
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet | grep 1 || exit 1
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - komodo.skip
 
   komodo:
@@ -96,6 +97,7 @@ services:
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - komodo.skip
 
   komodo-periphery:
@@ -118,4 +120,5 @@ services:
       DOCKER_HOST: tcp://komodo-socket-proxy:2375
       PERIPHERY_PASSKEYS: ${KOMODO_PASSKEY:?}
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - komodo.skip

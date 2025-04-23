@@ -32,6 +32,8 @@ services:
       SERVICES: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   dockge:
     image: louislam/dockge:latest
@@ -68,6 +70,7 @@ services:
       TAILNET_IP: ${TAILNET_IP:?}
       USER: ${USER:?}
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.dockge-rtr.rule=Host(`dockge.${DOMAIN_NAME:?}`)
       - traefik.http.services.dockge-svc.loadBalancer.server.port=5001

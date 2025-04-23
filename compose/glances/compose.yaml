@@ -24,6 +24,8 @@ services:
       IMAGES: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   glances:
     image: nicolargo/glances:latest-full
@@ -45,6 +47,7 @@ services:
     healthcheck:
       test: curl -fILsS http://localhost:61208/api/4/status | head -n 1 | grep -Fw '200 OK' || exit 1
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.glances-rtr.rule=Host(`glances.${DOMAIN_NAME:?}`)
       - traefik.http.services.glances-svc.loadBalancer.server.port=61208

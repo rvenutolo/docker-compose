@@ -21,6 +21,7 @@ services:
       start_period: 5s
       test: [ 'CMD', '/beszel', 'health', '--url', 'http://localhost:8090' ]
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.beszel-rtr.rule=Host(`beszel.${DOMAIN_NAME:?}`)
       - traefik.http.services.beszel-svc.loadBalancer.server.port=8090

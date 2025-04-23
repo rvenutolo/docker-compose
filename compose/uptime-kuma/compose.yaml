@@ -16,6 +16,7 @@ services:
       - ${DOCKER_APP_DATA_DIR:?}/uptime-kuma/app/data:/app/data
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.middlewares.uptime-redirect-mdw.redirectRegex.regex=^https://uptime\.${DOMAIN_NAME_REGEX:?}/(.*)
       - traefik.http.middlewares.uptime-redirect-mdw.redirectRegex.replacement=https://uptime-kuma.${DOMAIN_NAME:?}/$${1}

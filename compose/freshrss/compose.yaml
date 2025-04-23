@@ -20,6 +20,7 @@ services:
       TRUSTED_PROXY: ${DOCKER_NETWORK_CIDR:?}
       FRESHRSS_INSTALL: --auth-type http_auth --base-url https://freshrss.${DOMAIN_NAME:?} --default-user ${USER:?}
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.freshrss-rtr.rule=Host(`freshrss.${DOMAIN_NAME:?}`)
       - traefik.http.services.freshrss-svc.loadBalancer.server.port=80

@@ -14,6 +14,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.regex=^https://hello\.${DOMAIN_NAME_REGEX:?}/(.*)
       - traefik.http.middlewares.hello-redirect-mdw.redirectRegex.replacement=https://hello-world.${DOMAIN_NAME:?}/$${1}

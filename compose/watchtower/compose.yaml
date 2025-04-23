@@ -28,6 +28,8 @@ services:
       VOLUMES: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   watchtower:
     image: containrrr/watchtower:latest
@@ -62,3 +64,5 @@ services:
       WATCHTOWER_SCHEDULE: ${WATCHTOWER_SCHEDULE:-0 0 3 * * *}
       WATCHTOWER_TIMEOUT: ${WATCHTOWER_TIMEOUT:-30s}
     entrypoint: ${WATCHTOWER_ENTRY_POINT:-/watchtower}
+    labels:
+      - deunhealth.restart.on.unhealthy=true

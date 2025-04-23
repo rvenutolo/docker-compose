@@ -34,6 +34,8 @@ services:
       OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms1g -Xmx1g}
     healthcheck:
       test: curl -fikLsS -u admin:${INDEXER_PASSWORD:?} https://localhost:9200/_cluster/health | head -n 1 | grep -Fw '200 OK' || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   wazuh-manager:
     image: wazuh/wazuh-manager:${WAZUH_VERSION:?}
@@ -86,6 +88,8 @@ services:
       SSL_KEY: /etc/ssl/filebeat.key
     healthcheck:
       test: 'curl -fIkLsS https://localhost:55000/ -H "Authorization: Bearer $(curl -ksSf -u $${API_USERNAME}:$${API_PASSWORD} -X POST https://localhost:55000/security/user/authenticate?raw=true)" | head -n 1 | grep -Fw "200 OK" || exit 1'
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   wazuh-dashboard:
     image: wazuh/wazuh-dashboard:${WAZUH_VERSION:?}
@@ -119,6 +123,7 @@ services:
     healthcheck:
       test: curl -fILsS http://localhost:5601 | grep '200 OK' || exit 1
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.wazuh-rtr.rule=Host(`wazuh.${DOMAIN_NAME:?}`)
       - traefik.http.services.wazuh-svc.loadBalancer.server.port=5601

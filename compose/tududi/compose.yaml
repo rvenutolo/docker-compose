@@ -19,6 +19,7 @@ services:
       TUDUDI_USER_EMAIL: ${TUDUDI_USER_EMAIL:?}
       TUDUDI_USER_PASSWORD: ${TUDUDI_USER_PASSWORD:?}
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.tududi-rtr.rule=Host(`tududi.${DOMAIN_NAME:?}`)
       - traefik.http.services.tududi-svc.loadBalancer.server.port=9292

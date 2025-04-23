@@ -24,6 +24,8 @@ services:
       POSTGRES_DB: guacamole_db
     healthcheck:
       test: pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   guacd:
     image: guacamole/guacd:latest
@@ -35,6 +37,8 @@ services:
       - default
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   guacamole:
     image: guacamole/guacamole:latest
@@ -57,6 +61,7 @@ services:
       - guacamole-postgres
       - guacd
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.middlewares.guacamole-add-prefix-mdw.addPrefix.prefix=/guacamole
       - traefik.http.routers.guacamole-rtr.middlewares=guacamole-add-prefix-mdw@docker

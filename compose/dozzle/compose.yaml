@@ -27,6 +27,8 @@ services:
       INFO: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
 
   dozzle:
     image: amir20/dozzle:latest
@@ -50,6 +52,7 @@ services:
     healthcheck:
       test: [ 'CMD', '/dozzle', 'healthcheck' ]
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.dozzle-rtr.rule=Host(`dozzle.${DOMAIN_NAME:?}`)
       - traefik.http.services.dozzle-svc.loadBalancer.server.port=8080

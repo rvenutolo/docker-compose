@@ -16,6 +16,7 @@ services:
     environment:
       SET_SERVER_NAME: openspeedtest.${DOMAIN_NAME:?}
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.openspeedtest-rtr.rule=Host(`openspeedtest.${DOMAIN_NAME:?}`)
       - traefik.http.services.openspeedtest-svc.loadBalancer.server.port=3000

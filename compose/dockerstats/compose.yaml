@@ -49,6 +49,8 @@ services:
 #      VOLUMES: 0
 #    healthcheck:
 #      test: wget --spider --quiet http://localhost:2375/version || exit 1
+#        labels:
+#          - deunhealth.restart.on.unhealthy=true
 
   dockerstats:
     image: drakonis96/dockerstats:latest
@@ -68,6 +70,7 @@ services:
 #    environment:
 #      DOCKER_HOST: tcp://dockerstats-socket-proxy:2375
     labels:
+      - deunhealth.restart.on.unhealthy=true
       - traefik.enable=true
       - traefik.http.routers.dockerstats-rtr.rule=Host(`dockerstats.${DOMAIN_NAME:?}`)
       - traefik.http.services.dockerstats-svc.loadBalancer.server.port=5000
