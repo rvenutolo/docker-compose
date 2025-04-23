@@ -29,7 +29,8 @@ http:
           - PUT
         accessControlMaxAge: 100
         browserXssFilter: true
-        contentSecurityPolicy: "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+        ## TODO re-enable
+#        contentSecurityPolicy: "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
         contentTypeNosniff: true
         customFrameOptionsValue: SAMEORIGIN
         customRequestHeaders:
