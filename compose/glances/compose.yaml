@@ -43,7 +43,7 @@ services:
       DOCKER_HOST: tcp://glances-socket-proxy:2375
       GLANCES_OPT: --webserver
     healthcheck:
-      test: curl -sSfi http://localhost:61208/api/4/status | head -n 1 | grep -Fw '200 OK' || exit 1
+      test: curl -fILsS http://localhost:61208/api/4/status | head -n 1 | grep -Fw '200 OK' || exit 1
     labels:
       - traefik.enable=true
       - traefik.http.routers.glances-rtr.rule=Host(`glances.${DOMAIN_NAME:?}`)
