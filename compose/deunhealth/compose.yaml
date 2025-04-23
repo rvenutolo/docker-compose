@@ -1,0 +1,64 @@
+networks:
+  socket-proxy:
+
+services:
+
+  deunhealth-socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: deunhealth-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      ## TODO figure these out
+      ALLOW_START: 0
+      ALLOW_STOP: 0
+      ALLOW_RESTARTS: 0
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 0
+      DISABLE_IPV6: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
+      NODES: 0
+      POST: 0
+      PLUGINS: 0
+      SECRETS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
+
+  deunhealth:
+    image: qmcgaw/deunhealth:latest
+    container_name: deunhealth
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - socket-proxy
+    depends_on:
+      deunhealth-socket-proxy:
+        condition: service_healthy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DOCKER_HOST: tcp://deunhealth-socket-proxy:2375
+      LOG_LEVEL: ${LOG_LEVEL:-info}
