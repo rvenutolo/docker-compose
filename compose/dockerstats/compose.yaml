@@ -1,0 +1,73 @@
+networks:
+  proxy:
+    external: true
+  socket-proxy:
+
+services:
+
+## TODO use socket proxy when dockerstats allows for TCP socket proxy
+
+#  dockerstats-socket-proxy:
+#    image: lscr.io/linuxserver/socket-proxy:latest
+#    container_name: dockerstats-socket-proxy
+#    restart: unless-stopped
+#    security_opt:
+#      - no-new-privileges:true
+#    read_only: true
+#    tmpfs:
+#      - /run
+#    networks:
+#      - socket-proxy
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+#    environment:
+#      ## TODO figure these out
+#      ALLOW_START: 1
+#      ALLOW_STOP: 1
+#      ALLOW_RESTARTS: 1
+#      AUTH: 0
+#      BUILD: 0
+#      COMMIT: 0
+#      CONFIGS: 0
+#      CONTAINERS: 1
+#      DISABLE_IPV6: 0
+#      DISTRIBUTION: 0
+#      EXEC: 0
+#      IMAGES: 0
+#      INFO: 0
+#      NETWORKS: 0
+#      NODES: 0
+#      POST: 0
+#      PLUGINS: 0
+#      SECRETS: 0
+#      SERVICES: 0
+#      SESSION: 0
+#      SWARM: 0
+#      SYSTEM: 0
+#      TASKS: 0
+#      VOLUMES: 0
+#    healthcheck:
+#      test: wget --spider --quiet http://localhost:2375/version || exit 1
+
+  dockerstats:
+    image: drakonis96/dockerstats:latest
+    container_name: dockerstats
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - socket-proxy
+#    depends_on:
+#      dockerstats-socket-proxy:
+#        condition: service_healthy
+    volumes:
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+#    environment:
+#      DOCKER_HOST: tcp://dockerstats-socket-proxy:2375
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dockerstats-rtr.rule=Host(`dockerstats.${DOMAIN_NAME:?}`)
+      - traefik.http.services.dockerstats-svc.loadBalancer.server.port=5000
