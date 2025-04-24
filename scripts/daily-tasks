@@ -10,19 +10,17 @@ log_with_date 'Running daily tasks'
 "$(this_script_dir)/run-crowdsec-hub-update-upgrade"
 
 log_with_date 'Stopping stacks before backup'
-stacks_to_restart=()
-for stack in $(find "${DOCKER_APP_DATA_DIR}" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort); do
-  if ! dir_exists "${DOCKER_COMPOSE_DIR}/${stack}"; then
-    log_with_date "Stack does not exist: ${stack}"
-    continue
+compose_files_to_restart=()
+for compose_file in $(docker compose ls | tail --lines '+2' | awk '{ print $3 }' | sort); do
+  stack="$(basename "$(dirname "${compose_file}")")"
+  app_data_dir="${DOCKER_APP_DATA_DIR}/${stack}"
+  if ! dir_exists "${app_data_dir}"; then
+    log_with_date "Stack does not have app data: ${stack}"
+  else
+    log "Running docker compose down for: ${stack}"
+    docker compose --file "${compose_file}" down
+    compose_files_to_restart+=("${compose_file}")
   fi
-  if [[ -z "$(docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" ps --quiet)" ]]; then
-    log_with_date "Stack is not running: ${stack}"
-    continue
-  fi
-  log_with_date "Running docker compose down for: ${stack}"
-  docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" down
-  stacks_to_restart+=("${stack}")
 done
 log_with_date 'Stopped stacks before backup'
 
@@ -35,9 +33,10 @@ log_with_date 'Ran backups'
 "$(this_script_dir)/run-watchtower"
 
 log_with_date 'Starting stacks stopped for backup'
-for stack in "${stacks_to_restart[@]}"; do
+for compose_file in "${compose_files_to_restart[@]}"; do
+  stack="$(basename "$(dirname "${compose_file}")")"
   log_with_date "Running docker compose up for: ${stack}"
-  docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" up --detach
+  docker compose --file "${compose_file}" up --detach
 done
 log_with_date 'Started stacks stopped for backup'
 
