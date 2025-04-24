@@ -43,6 +43,7 @@ services:
       watchtower-socket-proxy:
         condition: service_healthy
     volumes:
+      - ~/.config/docker/config.json:/config.json:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       DOCKER_HOST: tcp://watchtower-socket-proxy:2375
