@@ -45,6 +45,7 @@ fi
 
 if prompt_yn 'Run init scripts?'; then
   managed_stacks="$(cat "${DOCKER_DIR}/managed-stacks")"
+  readonly managed_stacks
   for stack in ${managed_stacks}; do
     init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
     init_script_name="${stack}/init"
