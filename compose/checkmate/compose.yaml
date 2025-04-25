@@ -1,0 +1,139 @@
+networks:
+  proxy:
+    external: true
+  socket-proxy:
+  default:
+
+services:
+
+  checkmate-mongo:
+    image: bluewaveuptime/uptime_database_mongo:latest
+    container_name: checkmate-mongo
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - default
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/checkmate/mongo/data/db:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin --quiet | grep 1 || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  checkmate-redis:
+    image: bluewaveuptime/uptime_redis:latest
+    container_name: checkmate-redis
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - default
+    volumes:
+      - ${DOCKER_APP_DATA_DIR:?}/checkmate/redis/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: redis-cli ping | grep -F PONG || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  checkmate-socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: checkmate-socket-proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - socket-proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_SOCKET:?}:/var/run/docker.sock
+    environment:
+      ## TODO figure these out
+      ALLOW_START: 0
+      ALLOW_STOP: 0
+      ALLOW_RESTARTS: 0
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 0
+      DISABLE_IPV6: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
+      NODES: 0
+      POST: 0
+      PLUGINS: 0
+      SECRETS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+    healthcheck:
+      test: wget --spider --quiet http://localhost:2375/version || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  checkmate-server:
+    image: bluewaveuptime/uptime_server:latest
+    container_name: checkmate-server
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - socket-proxy
+      - default
+    ## TODO check on this
+    ports:
+      - "127.0.0.1:5000:5000"
+    depends_on:
+      checkmate-mongo:
+        condition: service_healthy
+      checkmate-redis:
+        condition: service_healthy
+      checkmate-socket-proxy:
+        condition: service_healthy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DB_CONNECTION_STRING: mongodb://checkmate-mongo:27017/uptime_db
+      DOCKER_HOST: tcp://checkmate-socket-proxy:2375
+      REDIS_HOST: checkmate-redis
+    healthcheck:
+      test: wget --spider --quiet http://localhost:5000/api-docs || exit 1
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  checkmate-client:
+    image: bluewaveuptime/uptime_client:latest
+    container_name: checkmate-client
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - default
+    depends_on:
+      checkmate-server:
+        condition: service_healthy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      UPTIME_APP_API_BASE_URL: https://checkmate.${DOMAIN_NAME:?}/api/v1
+    links:
+      # the nginx conf file hardcodes the server's hostname as 'server'
+      - checkmate-server:server
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+      - traefik.enable=true
+      - traefik.http.routers.checkmate-rtr.rule=Host(`checkmate.${DOMAIN_NAME:?}`)
+      - traefik.http.services.checkmate-svc.loadBalancer.server.port=80
