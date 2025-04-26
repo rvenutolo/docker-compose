@@ -113,3 +113,25 @@ services:
       - traefik.enable=true
       - traefik.http.routers.checkmate-rtr.rule=Host(`checkmate.${DOMAIN_NAME:?}`)
       - traefik.http.services.checkmate-svc.loadBalancer.server.port=80
+
+#  checkmate-capture:
+#    image: ghcr.io/bluewave-labs/capture:latest
+#    container_name: checkmate-capture
+#    restart: unless-stopped
+#    security_opt:
+#      - no-new-privileges:true
+#    networks:
+#      - default
+#    ## TODO check on this
+#    ports:
+#      - "127.0.0.1:59232:59232"
+#    depends_on:
+#      checkmate-server:
+#        condition: service_healthy
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - /etc/os-release:/etc/os-release:ro
+#    environment:
+#      API_SECRET: ${API_SECRET:?}
+#    labels:
+#      - deunhealth.restart.on.unhealthy=true
