@@ -7,7 +7,7 @@ source "${DOCKER_DIR}/compose/init-scripts-common.bash"
 
 copy_env_file_template
 
-prompt_set_env_file_password_val 'RESTIC_PASSWORD' '(Restic encryption key)'
+prompt_set_env_file_password_val 'RESTIC_PASSWORD' 'Restic encryption key'
 prompt_set_env_file_val 'B2_KEY_ID' 'Backblaze B2 application key ID'
 prompt_set_env_file_val 'B2_KEY' 'Backblaze B2 application key'
 prompt_set_env_file_val 'B2_BUCKET_ENDPOINT' 'Backblaze B2 endpoint - domain only'
