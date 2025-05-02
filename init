@@ -47,14 +47,15 @@ if prompt_yn 'Run init scripts?'; then
   managed_stacks="$(cat "${DOCKER_DIR}/managed-stacks")"
   readonly managed_stacks
   for stack in ${managed_stacks} 'restic' 'watchtower'; do
-    if [[ -n "${stack}" ]]; then
-      init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
-      init_script_name="${stack}/init"
-      if file_exists "${init_script}" && prompt_yn "Run ${init_script_name}?"; then
-        log "Running ${init_script_name}"
-        ${init_script}
-        log "Ran ${init_script_name}"
-      fi
-    done
+    if [[ -z "${stack}" ]]; then
+      continue
+    fi
+    init_script="${DOCKER_COMPOSE_DIR}/${stack}/init"
+    init_script_name="${stack}/init"
+    if file_exists "${init_script}" && prompt_yn "Run ${init_script_name}?"; then
+      log "Running ${init_script_name}"
+      ${init_script}
+      log "Ran ${init_script_name}"
+    fi
   done
 fi
