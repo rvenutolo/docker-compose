@@ -76,6 +76,11 @@ function root_create_app_data_dir() {
 }
 
 # $1 = app data file
+function app_data_file_exists() {
+  file_exists "${DOCKER_APP_DATA_DIR}/$1"
+}
+
+# $1 = app data file
 # $2 = content
 function write_app_data_file_if_not_exists() {
   check_exactly_2_args "$@"
