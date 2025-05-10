@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+## TODO test this
+
+WATCHTOWER_RUN_ONCE=true docker compose \
+  --file "${DOCKER_COMPOSE_DIR}/mediarr/configarr/compose.yaml" \
+  run \
+  --rm \
+  --name 'watchtower' \
+  'watchtower'
