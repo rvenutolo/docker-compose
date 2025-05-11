@@ -6,7 +6,6 @@ services:
   watchtower-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: watchtower-socket-proxy
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     read_only: true
@@ -28,8 +27,6 @@ services:
       VOLUMES: 1
     healthcheck:
       test: wget --spider --quiet http://localhost:2375/version || exit 1
-    labels:
-      - deunhealth.restart.on.unhealthy=true
 
   watchtower:
     image: containrrr/watchtower:latest
@@ -57,13 +54,8 @@ services:
       WATCHTOWER_NO_STARTUP_MESSAGE: ${WATCHTOWER_NO_STARTUP_MESSAGE:-true}
       WATCHTOWER_NOTIFICATION_URL: discord://${DISCORD_TOKEN:?}@${DISCORD_WEBHOOK_ID:?}
       WATCHTOWER_NOTIFICATIONS: shoutrrr
-      WATCHTOWER_POLL_INTERVAL: ${WATCHTOWER_POLL_INTERVAL:-86400}
       WATCHTOWER_REMOVE_VOLUMES: ${WATCHTOWER_REMOVE_VOLUMES:-true}
       WATCHTOWER_REVIVE_STOPPED: ${WATCHTOWER_REVIVE_STOPPED:-false}
       WATCHTOWER_ROLLING_RESTART: ${WATCHTOWER_ROLLING_RESTART:-false}
-      WATCHTOWER_RUN_ONCE: ${WATCHTOWER_RUN_ONCE:-false}
-      WATCHTOWER_SCHEDULE: ${WATCHTOWER_SCHEDULE:-0 0 3 * * *}
       WATCHTOWER_TIMEOUT: ${WATCHTOWER_TIMEOUT:-30s}
-    entrypoint: ${WATCHTOWER_ENTRY_POINT:-/watchtower}
-    labels:
-      - deunhealth.restart.on.unhealthy=true
+    command: --run-once

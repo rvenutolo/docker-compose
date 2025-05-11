@@ -6,10 +6,5 @@ set -euo pipefail
 source "${SCRIPTS_DIR}/functions.bash"
 
 log 'Running Watchtower'
-# this exits with exit code 2 for some reason
-WATCHTOWER_RUN_ONCE=true docker compose \
-  --file "${DOCKER_COMPOSE_DIR}/watchtower/compose.yaml" \
-  up \
-  --exit-code-from 'watchtower' \
-  --no-attach 'watchtower-socket-proxy' || true
+"${DOCKER_COMPOSE_DIR}/watchtower/run"
 log 'Ran Watchtower'

@@ -2,10 +2,11 @@
 
 set -euo pipefail
 
-## TODO test this
+#shellcheck disable=SC1091
+source "${DOCKER_DIR}/scripts/common.bash"
 
-WATCHTOWER_RUN_ONCE=true docker compose \
-  --file "${DOCKER_COMPOSE_DIR}/mediarr/configarr/compose.yaml" \
+docker compose \
+  --file "${DOCKER_COMPOSE_DIR}/watchtower/compose.yaml" \
   run \
   --rm \
   --name 'watchtower' \
