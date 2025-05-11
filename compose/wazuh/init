@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/compose/init-scripts-common.bash"
+source "${DOCKER_DIR}/scripts/common.bash"
 
 function wazuh_password_hash() {
   local wazuh_version="$(env_file_val 'WAZUH_VERSION')"

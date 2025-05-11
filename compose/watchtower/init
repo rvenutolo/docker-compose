@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #shellcheck disable=SC1091
-source "${DOCKER_DIR}/compose/init-scripts-common.bash"
+source "${DOCKER_DIR}/scripts/common.bash"
 
 copy_env_file_template
 
