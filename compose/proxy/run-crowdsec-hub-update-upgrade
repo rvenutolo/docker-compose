@@ -5,9 +5,9 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${SCRIPTS_DIR}/functions.bash"
 
-log 'Running CrowdSec hub update and upgrade'
 if container_is_running 'crowdsec'; then
+  log 'Running CrowdSec hub update and upgrade'
   docker exec 'crowdsec' cscli hub update
   docker exec 'crowdsec' cscli hub upgrade
+  log 'Ran CrowdSec hub update and upgrade'
 fi
-log 'Ran CrowdSec hub update and upgrade'

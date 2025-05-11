@@ -7,7 +7,7 @@ source "${SCRIPTS_DIR}/functions.bash"
 
 log_with_date 'Running daily tasks'
 
-"$(this_script_dir)/run-crowdsec-hub-update-upgrade"
+"${DOCKER_COMPOSE_DIR}/proxy/run-crowdsec-hub-update-upgrade"
 
 log_with_date 'Stopping stacks before backup'
 compose_files_to_restart=()
@@ -25,12 +25,14 @@ done
 log_with_date 'Stopped stacks before backup'
 
 log_with_date 'Running backups'
-"$(this_script_dir)/run-backups" 'local' 'b2' 'r2'
+"${DOCKER_COMPOSE_DIR}/restic/run-backups" 'local' 'b2' 'r2'
 log_with_date 'Ran backups'
 
 # Run Watchtower here rather than after restarting stacks, so the containers in
 # those stacks can be updated before starting them back up.
-"$(this_script_dir)/run-watchtower"
+log 'Running Watchtower'
+"${DOCKER_COMPOSE_DIR}/watchtower/run"
+log 'Ran Watchtower'
 
 log_with_date 'Starting stacks stopped for backup'
 for compose_file in "${compose_files_to_restart[@]}"; do
@@ -41,7 +43,7 @@ done
 log_with_date 'Started stacks stopped for backup'
 
 log_with_date 'Running backup maintenance'
-"$(this_script_dir)/run-backup-maintenance" 'local' 'b2' 'r2'
+"${DOCKER_COMPOSE_DIR}/restic/run-backup-maintenance" 'local' 'b2' 'r2'
 log_with_date 'Ran backup maintenance'
 
 log_with_date "Ran daily tasks in $(shell_elapsed_time)"
