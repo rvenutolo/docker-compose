@@ -6,5 +6,9 @@ while read -r stack; do
   if [[ -z "${stack}" ]]; then
     continue
   fi
-  docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" up --detach
+  if file_exists "${DOCKER_COMPOSE_DIR}/${stack}/run"; then
+    log "Skipping: ${stack}"
+  else
+    docker compose --file "${DOCKER_COMPOSE_DIR}/${stack}/compose.yaml" up --detach
+  fi
 done < "${DOCKER_DIR}/managed-stacks"
