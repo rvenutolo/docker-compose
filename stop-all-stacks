@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+#shellcheck disable=SC1091
+source "${DOCKER_DIR}/scripts/common.bash"
+
 while read -r compose_file; do
   docker compose --file "${compose_file}" down --remove-orphans
 done < <(docker compose ls | tail --lines '+2' | awk '{ print $3 }' | sort)
