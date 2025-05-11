@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#shellcheck disable=SC1091
+source "${DOCKER_DIR}/scripts/common.bash"
+
+"$(this_script_dir)/run-backups"
+"$(this_script_dir)/run-backup-maintenance"
