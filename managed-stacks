@@ -5,5 +5,7 @@ dockerstats
 dozzle
 glances
 hello-world
+restic
+watchtower
 wazuh
 whoami
