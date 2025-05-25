@@ -82,12 +82,28 @@ function app_data_file_exists() {
 
 # $1 = app data file
 # $2 = content
+function write_app_data_file() {
+  check_exactly_2_args "$@"
+  local target_file="${DOCKER_APP_DATA_DIR}/$1"
+  write_file "${target_file}" "$2"
+}
+
+# $1 = app data file
+# $2 = content
 function write_app_data_file_if_not_exists() {
   check_exactly_2_args "$@"
   local target_file="${DOCKER_APP_DATA_DIR}/$1"
   if ! file_exists "${target_file}"; then
     write_file "${target_file}" "$2"
   fi
+}
+
+# $1 = app data file
+# $2 = content
+function root_write_app_data_file() {
+  check_exactly_2_args "$@"
+  local target_file="${DOCKER_APP_DATA_DIR}/$1"
+  root_write_file "${target_file}" "$2"
 }
 
 # $1 = app data file
