@@ -10,4 +10,5 @@ docker compose \
   run \
   --rm \
   --name 'watchtower' \
-  'watchtower'
+  'watchtower' \
+  "$@"
