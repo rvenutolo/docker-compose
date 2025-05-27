@@ -1,0 +1,6 @@
+name: tailnet-whitelist
+description: "Whitelist events from Tailnet"
+whitelist:
+  reason: "Tailnet"
+  cidr:
+      - "100.64.0.0/10"

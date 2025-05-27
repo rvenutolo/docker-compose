@@ -70,6 +70,7 @@ services:
       - ./crowdsec/acquis:/etc/crowdsec/acquis.d:ro
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
       - ./crowdsec/config.yaml:/etc/crowdsec/config.yaml.local:ro
+      - ./crowdsec/tailnet-whitelist.yaml:/etc/crowdsec/parsers/s02-enrich/tailnet-whitelist.yaml:ro
       - ${DOCKER_APP_DATA_DIR:?}/proxy/crowdsec/etc/crowdsec:/etc/crowdsec
       - ${DOCKER_APP_DATA_DIR:?}/proxy/crowdsec/var/lib/crowdsec/data:/var/lib/crowdsec/data
       - ${DOCKER_LOGS_DIR:?}/authelia:/var/log/external/authelia:ro
