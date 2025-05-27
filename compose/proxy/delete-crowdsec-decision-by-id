@@ -5,4 +5,4 @@ set -euo pipefail
 #shellcheck disable=SC1091
 source "${SCRIPTS_DIR}/functions.bash"
 
-docker exec 'crowdsec' cscli decisions delete --range "${TAILNET_CIDR}"
+docker exec 'crowdsec' cscli decisions delete --id "$@"
